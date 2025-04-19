@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+  width: 100%;
+}
+
+#button-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.button:hover {
+  background-color: #e0e0e0;
+}
+
+.button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.visualizations {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+#legend {
+  text-align: center;
+  width: 100%;
+}
+
+.legend-rect {
+  stroke: #333;
+  stroke-width: 0.1;
+}
+
+#my_dataviz {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.choropleth {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 auto;
+  display: block;
+}
+
+.departments {
+  stroke: #fff;
+  stroke-width: 0.5px;
+}
+
+.departments:hover {
+  stroke: #bfc9ca;
+  stroke-width: 1.2px;
+  filter: drop-shadow(0 0 2px rgba(133, 146, 158, 0.5));
+}
+
+.departments.active {
+  stroke: #bfc9ca;
+  stroke-width: 1.2px;
+  filter: drop-shadow(0 0 2px rgba(133, 146, 158, 0.5));
+}
+
+.dept-borders {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.axis text {
+  font-size: 12px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 14px;
+  z-index: 1000;
+  line-height: 1.4;
+}
+
+.tooltip p {
+  margin: 0;
+  padding: 2px 0;
+}
+
+.value-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Header and Footer styles */
+header {
+  width: 100vw;
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+footer {
+  width: 100vw;
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  margin-top: auto;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* Ensure content within header and footer is centered and has max-width */
+header .container,
+footer .container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}
+
+h1{
+  color: #eaeded;
+}
+h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #333;
+}
+
+p {
+  line-height: 1.5;
+  color: #fff;
+}
