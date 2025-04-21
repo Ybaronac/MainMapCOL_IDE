@@ -23,12 +23,12 @@ const CollapsibleMenuContainer = () => {
     fetchData();
   }, []);
 
-  if (loading) return <div className="p-4">Loading...</div>;
-  if (error) return <div className="p-4 text-red-500">Error: {error}</div>;
+  if (loading) return <div className="p-4 text-center">Loading...</div>;
+  if (error) return <div className="p-4 text-red-500 text-center">Error: {error}</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-start p-4">
-      <h1 className="text-2xl font-bold">Menú Colapsable</h1>
+    <div className="collapsible-menu-container">
+      <h1 className="menu-title">Menú Colapsable</h1>
       <CollapsibleMenu data={metrics} />
     </div>
   );

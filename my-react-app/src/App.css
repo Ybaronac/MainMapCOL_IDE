@@ -21,37 +21,46 @@ body {
   width: 100%;
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-.app-container {
+/* Add new styles for the main content area */
+.app-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin: 0;
-  padding: 0;
 }
 
-.main-content {
+.main-content-area {
+  background-color: #f5f5f5; /* Light grey background */
   flex: 1;
   padding: 2rem;
   width: 100%;
-  max-width: 1280px;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 
+.content-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem
+}
+
+/* Add white background to components */
+.controls, 
+#legend,
+#my_dataviz,
+.choropleth,
+.collapsible-menu {
+  background-color: white;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+/* Update existing styles */
 .controls {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
   gap: 20px;
   width: 100%;
 }
@@ -90,6 +99,16 @@ body {
   width: 100%;
 }
 
+/* Update text colors for better contrast */
+h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+p {
+  color: #333; /* Override the white color for paragraphs */
+}
+
 #legend {
   width: 100%;
 }
@@ -107,8 +126,6 @@ body {
 }
 
 .choropleth {
-  border: 1px solid #ccc;
-  border-radius: 4px;
   margin: 0 auto;
   display: block;
 }
@@ -155,7 +172,6 @@ body {
   padding: 10px;
   background: rgba(0, 0, 0, 0.8);
   color: white;
-  border-radius: 4px;
   pointer-events: none;
   font-size: 14px;
   z-index: 1000;
@@ -228,4 +244,174 @@ p {
 
 .collapsible-menu .border-b {
   border-color: #d1d5db !important; /* border-gray-300 */
+}
+
+.collapsible-menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px; 
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.menu-title {
+  color: #333;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.collapsible-menu {
+  width: 100%;
+  padding: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.visualization-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 800px;
+}
+
+.map-box {
+  width: 100%;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.map-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+#year-slider {
+  width: 600px !important; /* Match D3Map width */
+  padding: 0 !important;
+  margin: 0 !important;
+  justify-content: center;
+  display: flex;
+}
+
+.choropleth {
+  width: 800px;
+  height: 600px;
+  margin: 0 !important;
+}
+
+#legend {
+  width: 600px !important; /* Reduced from 800px */
+  padding: 0 !important;
+  margin: 0 auto !important; /* Center the legend */
+  background: none;
+  box-shadow: none;
+}
+
+.chart-box {
+  width: 100%;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Update existing button container styles */
+#button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+}
+
+/* Remove any conflicting styles */
+.controls {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+.visualizations {
+  gap: 0;
+}
+
+
+/* Add styles for the new button box */
+.button-box {
+  width: 800px;
+  background-color: white;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+/* Update button container styles */
+#button-container {
+  width: fit-content; /* Allow the container to shrink to fit buttons */
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+}
+
+/* Update button styles for better visibility */
+.button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.button:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+.button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Update visualization container to handle the new box */
+.visualization-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Consistent spacing between boxes */
+  width: 800px;
+  margin: 0 auto;
+}
+
+/* Ensure other boxes maintain consistent styling */
+.map-box, .chart-box {
+  width: 100%;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Keep the map content centered */
+.map-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
 }

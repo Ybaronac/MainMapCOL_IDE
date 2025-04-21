@@ -74,31 +74,37 @@ const MapVisualization = () => {
 
   return (
     <div className="app">
-      <div className="controls">
-        <ButtonGroup
-          selectedIndex={buttonIndex}
-          onButtonClick={handleButtonClick}
-        />
-        <YearSlider
-          selectedYear={selectedYear}
-          onYearChange={handleYearChange}
-        />
-      </div>
-      <div className="visualizations">
-        <D3Map
-          selectedYear={selectedYear}
-          buttonIndex={buttonIndex}
-          dataIDE={dataIDE}
-          countryData={countryData}
-          onDepartmentClick={handleDepartmentClick}
-          selectedDepartment={selectedDepartment}
-        />
-        <div id="legend">
-          <Legend
-            buttonIndex={buttonIndex}
+      <div className="visualization-container">
+        <div className="button-box">
+          <ButtonGroup
+            selectedIndex={buttonIndex}
+            onButtonClick={handleButtonClick}
           />
         </div>
-        <div id="my_dataviz">
+        <div className="map-box">
+          <div className="map-content">
+            <YearSlider
+              selectedYear={selectedYear}
+              onYearChange={handleYearChange}
+              width={600}
+            />
+            <D3Map
+              selectedYear={selectedYear}
+              buttonIndex={buttonIndex}
+              dataIDE={dataIDE}
+              countryData={countryData}
+              onDepartmentClick={handleDepartmentClick}
+              selectedDepartment={selectedDepartment}
+              width={800}
+              height={600}
+            />
+            <Legend
+              buttonIndex={buttonIndex}
+              width={750}
+            />
+          </div>
+        </div>
+        <div className="chart-box">
           <BarChart
             data={barChartData}
             selectedYear={selectedYear}
