@@ -1,417 +1,822 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* ==========================================================================
+   Font Imports
+   ========================================================================== */
+   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+   
+   /* ==========================================================================
+      Reset & Base Styles
+      ========================================================================== */
+   * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+     font-family: 'Poppins', sans-serif;
+   }
+   
+   body {
+     margin: 0;
+     padding: 0;
+     width: 100%;
+     overflow-x: hidden;
+   }
+   
+   #root {
+     max-width: 100%;
+     margin: 0;
+     padding: 0;
+     width: 100%;
+   }
+   
+   /* ==========================================================================
+      Typography
+      ========================================================================== */
+   h1 {
+     font-family: 'Montserrat', sans-serif;
+     font-size: 2.5rem;
+     font-weight: 700;
+     color: #ffffff;
+     margin: 0;
+     line-height: 1.2;
+   }
+   
+   h2 {
+     font-family: 'Montserrat', sans-serif;
+     font-size: 2rem;
+     font-weight: 600;
+     color: #2d3748;
+     margin-bottom: 1.5rem;
+     text-align: center;
+   }
+   
+   h3 {
+     font-family: 'Poppins', sans-serif;
+     font-size: 1.5rem;
+     font-weight: 600;
+     color: #2d3748;
+     margin-bottom: 1rem;
+   }
+   
+   h4 {
+     font-family: 'Poppins', sans-serif;
+     font-size: 1.25rem;
+     font-weight: 600;
+     color: #4a5568;
+     margin-bottom: 0.75rem;
+   }
+   
+   h5 {
+     font-family: 'Poppins', sans-serif;
+     font-size: 1.1rem;
+     font-weight: 600;
+     color: #4a5568;
+     margin-bottom: 0.5rem;
+   }
+   
+   h6 {
+     font-family: 'Poppins', sans-serif;
+     font-size: 1rem;
+     font-weight: 600;
+     color: #4a5568;
+     margin-bottom: 0.5rem;
+   }
+   
+   p {
+     font-family: 'Poppins', sans-serif;
+     font-weight: 400;
+     line-height: 1.5;
+     color: #333;
+   }
+   
+   /* ==========================================================================
+      Layout & Containers
+      ========================================================================== */
+   .app-wrapper {
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+   }
+   
+   .main-content-area {
+     background-color: #f5f5f5;
+     flex: 1;
+     padding: 2rem;
+     width: 100%;
+   }
+   
+   .content-container {
+     max-width: 1280px;
+     margin: 0 auto;
+     width: 100%;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 2rem;
+   }
+   
+   .content-container > * {
+     margin-bottom: 1.5rem;
+   }
+   
+   .content-container > *:last-child {
+     margin-bottom: 0;
+   }
+   
+   /* ==========================================================================
+      Visualization Components
+      ========================================================================== */
+   .visualization-container {
+      width: 100%;
+      max-width: 1200px; /* Ajustar el ancho máximo para que quepan ambas cajas */
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row; /* Botones y mapa en fila por defecto */
+      gap: 1rem; /* Separación leve entre las cajas */
+      align-items: flex-start; /* Alinear al inicio verticalmente */
+   }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
+   .button-sidebar {
+      background-color: white;
+      padding: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 200px;
+  }
 
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-}
+  .menu-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff; /* Texto blanco para contrastar con el fondo */
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+   
+   /* Map Box */
+   .map-box {
+      width: 100%;
+      max-width: 800px; /* Mantener el ancho del mapa */
+      background-color: white;
+      padding: 2rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+   }
+   
+   .map-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 800px;
+   }
+   
+   /* Chart Box */
+   .chart-box {
+     width: 100%;
+     background-color: white;
+     align-items: center;
+     padding: 2rem;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+   }
+   
+   /* ==========================================================================
+      Interactive Elements
+      ========================================================================== */
+   /* Buttons */
+   #button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px; /* Más espacio entre botones */
+      margin: 0;
+      padding: 0;
+      width: 100%;
+   }
+   
+   .button {
+      font-family: 'Poppins', sans-serif;
+      padding: 12px 20px; /* Botones más grandes */
+      border: none;
+      border-radius: 6px; /* Bordes más redondeados */
+      background-color: #4a5568; /* Fondo gris oscuro */
+      color: #ffffff; /* Texto blanco */
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.1s;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      width: 100%; /* Ocupar todo el ancho disponible */
+      text-align: center;
+   }
+   
+   .button:hover {
+    background-color: #5a677a; /* Gris más claro al hover */
+    transform: translateY(-2px);
+  }
+  
+  .button.active {
+    background-color: #007bff; /* Mantener el azul para el botón activo */
+    color: white;
+  }
+   
+   /* Year Slider */
+   #year-slider {
+     width: 600px !important;
+     padding: 0 !important;
+     margin: 0 auto !important;
+     display: flex;
+     justify-content: center;
+   }
+   
+   /* ==========================================================================
+      Visualization Elements
+      ========================================================================== */
+   /* Map */
+   .choropleth {
+     width: 800px;
+     height: 600px;
+     margin: 0 !important;
+   }
+   
+   /* Legend */
+   #legend {
+     width: 600px !important;
+     padding: 0 !important;
+     margin: 0 auto !important;
+     background: none;
+     box-shadow: none;
+   }
+   
+   /* ==========================================================================
+      Collapsible Menu
+      ========================================================================== */
+   .collapsible-menu-container {
+     width: 800px;
+     margin: 0 auto;
+     padding: 1.5rem;
+     background-color: white;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+   }
+   
+   .menu-title {
+     font-family: 'Poppins', sans-serif;
+     font-size: 1.5rem;
+     font-weight: 600;
+     color: #2d3748;
+     margin-bottom: 1.5rem;
+     text-align: center;
+     width: 100%;
+   }
+   
+   .collapsible-menu {
+     font-family: 'Poppins', sans-serif;
+     width: 100%;
+     padding: 0;
+     box-shadow: none;
+     margin-bottom: 0;
+   }
+   
+   /* Add styles for collapsible menu items */
+   .collapsible-menu span {
+     font-family: 'Poppins', sans-serif;
+   }
+   
+   .collapsible-menu .text-gray-600 {
+     font-family: 'Poppins', sans-serif;
+   }
+   
+   /* ==========================================================================
+      Utilities
+      ========================================================================== */
+   .card {
+     padding: 2em;
+   }
+   
+   .read-the-docs {
+     color: #888;
+   }
+   
+   /* Add new styles for the main content area */
+   .app-wrapper {
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+   }
+   
+   .main-content-area {
+     background-color: #f5f5f5; /* Light grey background */
+     flex: 1;
+     padding: 2rem;
+     width: 100%;
+   }
+   
+   .content-container {
+     max-width: 1280px;
+     margin: 0 auto;
+     width: 100%;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 2rem; /* Add consistent spacing between components */
+   }
+   
+   /* Add white background to components */
+   .controls, 
+   #legend,
+   #my_dataviz,
+   .choropleth,
+   .collapsible-menu {
+     background-color: white;
+     padding: 1.5rem;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     margin-bottom: 1.5rem;
+   }
+   
+   /* Update existing styles */
+   .controls {
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+     width: 100%;
+   }
+   
+   #button-container {
+     display: flex;
+     gap: 10px;
+     margin-bottom: 20px;
+     width: 100%;
+   }
+   
+   .button {
+     padding: 8px 16px;
+     border: none;
+     border-radius: 4px;
+     background-color: #f0f0f0;
+     cursor: pointer;
+     transition: background-color 0.3s;
+     font-weight: 500;
+     letter-spacing: 0.5px;
+   }
+   
+   .button:hover {
+     background-color: #e0e0e0;
+   }
+   
+   .button.active {
+     background-color: #007bff;
+     color: white;
+   }
+   
+   .visualizations {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 20px;
+     width: 100%;
+   }
+   
+   /* Update text colors for better contrast */
+   h2 {
+     color: #333;
+     margin-bottom: 1.5rem;
+   }
+   
+   p {
+     color: #333; /* Override the white color for paragraphs */
+   }
+   
+   #legend {
+     width: 100%;
+   }
+   
+   .legend-rect {
+     stroke: #333;
+     stroke-width: 0.1;
+   }
+   
+   #my_dataviz {
+     margin-top: 20px;
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+   }
+   
+   .departments {
+     stroke: #fff;
+     stroke-width: 0.5px;
+   }
+   
+   .departments:hover {
+     stroke: #bfc9ca;
+     stroke-width: 1.2px;
+     filter: drop-shadow(0 0 2px rgba(133, 146, 158, 0.5));
+   }
+   
+   .departments.active {
+     stroke: #bfc9ca;
+     stroke-width: 1.2px;
+     filter: drop-shadow(0 0 2px rgba(133, 146, 158, 0.5));
+   }
+   
+   .dept-borders {
+     fill: none;
+     stroke: #fff;
+     stroke-width: 0.5px;
+     stroke-linejoin: round;
+     stroke-linecap: round;
+     pointer-events: none;
+   }
+   
+   .axis text {
+     font-family: 'Poppins', sans-serif;
+     font-size: 12px;
+   }
+   
+   .axis path,
+   .axis line {
+     fill: none;
+     stroke: #000;
+     shape-rendering: crispEdges;
+   }
+   
+   .tooltip {
+     font-family: 'Poppins', sans-serif;
+     position: absolute;
+     padding: 10px;
+     background: rgba(0, 0, 0, 0.8);
+     color: white;
+     pointer-events: none;
+     font-size: 14px;
+     z-index: 1000;
+     line-height: 1.4;
+   }
+   
+   .tooltip p {
+     font-family: 'Poppins', sans-serif;
+     margin: 0;
+     padding: 2px 0;
+   }
+   
+   .value-label {
+     font-family: 'Poppins', sans-serif;
+     font-size: 12px;
+     font-weight: 500;
+   }
+   
+   /* Header and Footer styles */
+   header {
+     width: 100vw;
+     background-color: #f8f9fa;
+     padding: 1rem 0;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     margin: 0;
+     position: relative;
+     left: 50%;
+     right: 50%;
+     margin-left: -50vw;
+     margin-right: -50vw;
+   }
+   
+   footer {
+     width: 100vw;
+     background-color: #f8f9fa;
+     padding: 1rem 0;
+     margin-top: auto;
+     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+     position: relative;
+     left: 50%;
+     right: 50%;
+     margin-left: -50vw;
+     margin-right: -50vw;
+   }
+   
+   /* Ensure content within header and footer is centered and has max-width */
+   header .container,
+   footer .container {
+     max-width: 1280px;
+     margin: 0 auto;
+     padding: 0 1rem;
+     width: 100%;
+   }
+   
+   h1 {
+     font-family: 'Montserrat', sans-serif;
+     font-size: 2.5rem;
+     font-weight: 700;
+     color: #ffffff;
+     margin: 0;
+     line-height: 1.2;
+   }
+   
+   h2, h3, h4, h5, h6 {
+     font-weight: 600;
+     color: #333;
+   }
+   
+   p {
+     line-height: 1.5;
+     color: #fff;
+   }
+   
+   /* Estilos específicos para el menú colapsable */
+   .collapsible-menu [class*="ml-"] {
+     margin-left: inherit !important;
+   }
+   
+   .collapsible-menu .border-b {
+     border-color: #d1d5db !important; /* border-gray-300 */
+   }
+   
+   .collapsible-menu-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     width: 800px; /* Match the width of other components */
+     margin: 0 auto;
+     padding: 1.5rem;
+     background-color: white;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+   }
+   
+   .menu-title {
+     color: #333;
+     margin-bottom: 1.5rem;
+     text-align: center;
+     width: 100%;
+   }
+   
+   .collapsible-menu {
+     width: 100%;
+     padding: 0;
+     box-shadow: none;
+     margin-bottom: 0;
+   }
+   
+   /* Add these new styles to your existing App.css */
+   
+   .visualization-container {
+     display: flex;
+     flex-direction: column;
+     gap: 2rem;
+     width: 800px; /* Match the width of other components */
+     margin: 0 auto;
+   }
+   
+   .map-box {
+     width: 100%;
+     background-color: white;
+     padding: 2rem;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     display: flex;
+     flex-direction: column;
+     gap: 1.5rem;
+   }
+   
+   .map-content {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 1.5rem;
+     width: 100%;
+   }
+   
+   #year-slider {
+     width: 600px !important; /* Reduced from 800px */
+     padding: 0 !important;
+     margin: 0 auto !important; /* Center the slider */
+     display: flex;
+     justify-content: center;
+   }
+   
+   .choropleth {
+     width: 800px;
+     height: 600px;
+     margin: 0 !important;
+   }
+   
+   #legend {
+     width: 600px !important; /* Reduced from 800px */
+     padding: 0 !important;
+     margin: 0 auto !important; /* Center the legend */
+     background: none;
+     box-shadow: none;
+   }
+   
+   .chart-box {
+     width: 100%;
+     background-color: white;
+     padding: 2rem;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+   }
+   
+   /* Update existing button container styles */
+   #button-container {
+     width: 100%;
+     display: flex;
+     justify-content: center;
+     gap: 10px;
+     margin: 0;
+   }
+   
+   /* Remove any conflicting styles */
+   .controls {
+     background: none;
+     box-shadow: none;
+     padding: 0;
+     margin: 0;
+   }
+   
+   .visualizations {
+     gap: 0;
+   }
+   
+   /* Add styles for the new button box */
+   .button-box {
+     width: 800px;
+     background-color: white;
+     padding: 1.5rem;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     display: flex;
+     justify-content: center;
+   }
+   
+   /* Update button container styles */
+   #button-container {
+     width: fit-content; /* Allow the container to shrink to fit buttons */
+     display: flex;
+     justify-content: center;
+     gap: 10px;
+     margin: 0;
+   }
+   
+   /* Update button styles for better visibility */
+   .button {
+     padding: 8px 16px;
+     border: none;
+     border-radius: 4px;
+     background-color: #f0f0f0;
+     cursor: pointer;
+     transition: background-color 0.3s, transform 0.1s;
+     font-weight: 500;
+     letter-spacing: 0.5px;
+   }
+   
+   .button:hover {
+     background-color: #e0e0e0;
+     transform: translateY(-1px);
+   }
+   
+   .button.active {
+     background-color: #007bff;
+     color: white;
+   }
+   
+   /* Update visualization container to handle the new box */
+   .visualization-container {
+     display: flex;
+     flex-direction: column;
+     gap: 1.5rem; /* Consistent spacing between boxes */
+     width: 800px;
+     margin: 0 auto;
+   }
+   
+   /* Ensure other boxes maintain consistent styling */
+   .map-box, .chart-box {
+     width: 100%;
+     background-color: white;
+     padding: 2rem;
+     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+   }
+   
+   /* Keep the map content centered */
+   .map-content {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 1.5rem;
+     width: 100%;
+   }
+   
+   /* Add these heading styles to your existing App.css */
+   
+   /* Main title in Header */
+   h1 {
+     font-size: 2.5rem;
+     font-weight: 700;
+     color: #ffffff; /* White color for header text */
+     margin: 0;
+     line-height: 1.2;
+   }
+   
+   /* Section titles (like "Colombia Map Visualization") */
+   h2 {
+     font-family: 'Montserrat', sans-serif;
+     font-size: 2rem;
+     font-weight: 600;
+     color: #2d3748;
+     margin-bottom: 1.5rem;
+     text-align: center;
+   }
+   
+   /* Component titles (like in Description and other sections) */
+   h3 {
+     font-size: 1.5rem;
+     font-weight: 600;
+     color: #2d3748;
+     margin-bottom: 1rem;
+   }
+   
+   /* Subsection titles */
+   h4 {
+     font-size: 1.25rem;
+     font-weight: 600;
+     color: #4a5568;
+     margin-bottom: 0.75rem;
+   }
+   
+   /* Small section titles */
+   h5 {
+     font-size: 1.1rem;
+     font-weight: 600;
+     color: #4a5568;
+     margin-bottom: 0.5rem;
+   }
+   
+   /* Smallest headings */
+   h6 {
+     font-size: 1rem;
+     font-weight: 600;
+     color: #4a5568;
+     margin-bottom: 0.5rem;
+   }
+   
+   /* Update the menu title to use h3 styling */
+   .menu-title {
+     font-size: 1.5rem;
+     font-weight: 600;
+     color: #2d3748;
+     margin-bottom: 1.5rem;
+     text-align: center;
+     width: 100%;
+   }
+   
+   /* Ensure consistent spacing between main components */
+   .content-container > * {
+     margin-bottom: 1.5rem;
+   }
+   
+   /* Remove margin from the last child to avoid extra space */
+   .content-container > *:last-child {
+     margin-bottom: 0;
+   }
+   
+   /* Year slider labels */
+   #year-slider .rc-slider-mark-text {
+     font-family: 'Poppins', sans-serif;
+   }
+   
+   /* Loading and error states */
+   .p-4 {
+     font-family: 'Poppins', sans-serif;
+   }
 
-#root {
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-/* Add new styles for the main content area */
-.app-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.main-content-area {
-  background-color: #f5f5f5; /* Light grey background */
-  flex: 1;
-  padding: 2rem;
-  width: 100%;
-}
-
-.content-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem
-}
-
-/* Add white background to components */
-.controls, 
-#legend,
-#my_dataviz,
-.choropleth,
-.collapsible-menu {
-  background-color: white;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
-}
-
-/* Update existing styles */
-.controls {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-}
-
-#button-container {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  width: 100%;
-}
-
-.button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f0f0f0;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-.button:hover {
-  background-color: #e0e0e0;
-}
-
-.button.active {
-  background-color: #007bff;
-  color: white;
-}
-
-.visualizations {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  width: 100%;
-}
-
-/* Update text colors for better contrast */
-h2 {
-  color: #333;
-  margin-bottom: 1.5rem;
-}
-
-p {
-  color: #333; /* Override the white color for paragraphs */
-}
-
-#legend {
-  width: 100%;
-}
-
-.legend-rect {
-  stroke: #333;
-  stroke-width: 0.1;
-}
-
-#my_dataviz {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.choropleth {
-  margin: 0 auto;
-  display: block;
-}
-
-.departments {
-  stroke: #fff;
-  stroke-width: 0.5px;
-}
-
-.departments:hover {
-  stroke: #bfc9ca;
-  stroke-width: 1.2px;
-  filter: drop-shadow(0 0 2px rgba(133, 146, 158, 0.5));
-}
-
-.departments.active {
-  stroke: #bfc9ca;
-  stroke-width: 1.2px;
-  filter: drop-shadow(0 0 2px rgba(133, 146, 158, 0.5));
-}
-
-.dept-borders {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 0.5px;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  pointer-events: none;
-}
-
-.axis text {
-  font-size: 12px;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.tooltip {
-  position: absolute;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  pointer-events: none;
-  font-size: 14px;
-  z-index: 1000;
-  line-height: 1.4;
-}
-
-.tooltip p {
-  margin: 0;
-  padding: 2px 0;
-}
-
-.value-label {
-  font-size: 12px;
-  font-weight: 500;
-}
-
-/* Header and Footer styles */
-header {
-  width: 100vw;
-  background-color: #f8f9fa;
-  padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 0;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-footer {
-  width: 100vw;
-  background-color: #f8f9fa;
-  padding: 1rem 0;
-  margin-top: auto;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-}
-
-/* Ensure content within header and footer is centered and has max-width */
-header .container,
-footer .container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 1rem;
-  width: 100%;
-}
-
-h1 {
-  color: #eaeded;
-}
-h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  color: #333;
-}
-
-p {
-  line-height: 1.5;
-  color: #fff;
-}
-
-/* Estilos específicos para el menú colapsable */
-.collapsible-menu [class*="ml-"] {
-  margin-left: inherit !important;
-}
-
-.collapsible-menu .border-b {
-  border-color: #d1d5db !important; /* border-gray-300 */
-}
-
-.collapsible-menu-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 800px; 
-  margin: 0 auto;
-  padding: 1.5rem;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.menu-title {
-  color: #333;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  width: 100%;
-}
-
-.collapsible-menu {
-  width: 100%;
-  padding: 0;
-  box-shadow: none;
-  margin-bottom: 0;
-}
-
-.visualization-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  width: 800px;
-}
-
-.map-box {
-  width: 100%;
-  background-color: white;
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.map-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-#year-slider {
-  width: 600px !important; /* Match D3Map width */
-  padding: 0 !important;
-  margin: 0 !important;
-  justify-content: center;
-  display: flex;
-}
-
-.choropleth {
-  width: 800px;
-  height: 600px;
-  margin: 0 !important;
-}
-
-#legend {
-  width: 600px !important; /* Reduced from 800px */
-  padding: 0 !important;
-  margin: 0 auto !important; /* Center the legend */
-  background: none;
-  box-shadow: none;
-}
-
-.chart-box {
-  width: 100%;
-  background-color: white;
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Update existing button container styles */
-#button-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 0;
-}
-
-/* Remove any conflicting styles */
-.controls {
-  background: none;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-}
-
-.visualizations {
-  gap: 0;
-}
-
-
-/* Add styles for the new button box */
-.button-box {
-  width: 800px;
-  background-color: white;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-}
-
-/* Update button container styles */
-#button-container {
-  width: fit-content; /* Allow the container to shrink to fit buttons */
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 0;
-}
-
-/* Update button styles for better visibility */
-.button {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f0f0f0;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.1s;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-.button:hover {
-  background-color: #e0e0e0;
-  transform: translateY(-1px);
-}
-
-.button.active {
-  background-color: #007bff;
-  color: white;
-}
-
-/* Update visualization container to handle the new box */
-.visualization-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* Consistent spacing between boxes */
-  width: 800px;
-  margin: 0 auto;
-}
-
-/* Ensure other boxes maintain consistent styling */
-.map-box, .chart-box {
-  width: 100%;
-  background-color: white;
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* Keep the map content centered */
-.map-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
-}
+   @media (max-width: 768px) {
+    .button-sidebar {
+      width: 100%;
+      max-width: 800px;
+      background-color: white; /* Fondo blanco en pantallas pequeñas */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra más ligera */
+      padding: 1rem;
+    }
+  
+    .menu-title {
+      color: #2d3748; /* Texto oscuro en pantallas pequeñas */
+    }
+  
+    #button-container {
+      flex-direction: row; /* Botones horizontalmente */
+      justify-content: center;
+      width: 100%;
+      gap: 10px;
+    }
+  
+    .button {
+      width: auto;
+      min-width: 120px;
+      background-color: #f0f0f0; /* Fondo gris claro como antes */
+      color: #333; /* Texto oscuro */
+    }
+  
+    .button:hover {
+      background-color: #e0e0e0;
+      transform: translateY(-1px);
+    }
+  
+    .button.active {
+      background-color: #007bff;
+      color: white;
+    }
+  }

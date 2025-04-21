@@ -1,0 +1,32 @@
+.description-container {
+  width: 800px;
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+}
+
+.description-title {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.description-content {
+  text-align: justify;
+}
+
+.description-content p {
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 1rem 0;
+  text-align: justify;
+}
+
+.description-content p:first-child {
+  margin-top: 0;
+}
+
+.description-content p:last-child {
+  margin-bottom: 0;
+} 

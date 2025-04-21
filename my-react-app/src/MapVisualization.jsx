@@ -42,7 +42,6 @@ const MapVisualization = () => {
 
   const handleDepartmentClick = (department, rates) => {
     if (department === null) {
-      // Reset to country view
       setSelectedDepartment(null);
       setSelectedData(countryData);
     } else {
@@ -51,23 +50,19 @@ const MapVisualization = () => {
     }
   };
 
-  // Format data for bar chart
   const barChartData = selectedData ? Object.entries(selectedData[selectedYear]).map(([group, value]) => ({
     group,
     value: parseFloat(value)
   })) : [];
 
-  // Update selected data when year or button index changes
   useEffect(() => {
     if (selectedDepartment) {
-      // If a department is selected, update its data
       const deptID = Number(selectedDepartment.properties.DPTO_CCDGO);
       const rates = dataIDE.get(deptID);
       if (rates) {
         setSelectedData(rates);
       }
     } else {
-      // If no department is selected, use country data
       setSelectedData(countryData);
     }
   }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData]);
@@ -75,7 +70,8 @@ const MapVisualization = () => {
   return (
     <div className="app">
       <div className="visualization-container">
-        <div className="button-box">
+        <div className="button-sidebar">
+          <h3 className="menu-title">Categorías</h3>
           <ButtonGroup
             selectedIndex={buttonIndex}
             onButtonClick={handleButtonClick}
