@@ -1,0 +1,32 @@
+.map-container {
+    position: relative;
+}
+
+.map-button {
+    position: absolute;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background-color: #34495e;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.reset-button {
+    top: 10px;
+}
+
+.zoom-in-button {
+    top: 80px; /* 10px (top) + 40px (height) + 10px (gap) */
+}
+
+.zoom-out-button {
+    top: 115px; /* 60px (top of Zoom In) + 40px (height) + 10px (gap) */
+}

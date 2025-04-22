@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import { MdMyLocation } from "react-icons/md";
+import { HiOutlineZoomOut, HiOutlineZoomIn  } from "react-icons/hi";
+import '../styles/D3Map.css';
 
 const D3Map = ({ 
     width = 800, 
@@ -17,6 +20,7 @@ const D3Map = ({
     const pathRef = useRef();
     const tooltipRef = useRef();
     const activeRef = useRef(null);
+    const zoomRef = useRef(null);
   
     // Define color schemes for different categories
     const mapColours = [
@@ -42,7 +46,6 @@ const D3Map = ({
         .style("padding", "10px")
         .style("background", "rgba(0, 0, 0, 0.8)")
         .style("color", "white")
-        .style("border-radius", "4px")
         .style("pointer-events", "none")
         .style("font-size", "14px")
         .style("z-index", "1000");
@@ -65,7 +68,7 @@ const D3Map = ({
           g.style("stroke-width", 1.5 / event.transform.k + "px");
           g.attr("transform", event.transform);
         });
-  
+      zoomRef.current = zoom;
       svg.call(zoom);
   
       // Function to reset zoom to country view
@@ -221,16 +224,76 @@ const D3Map = ({
           });
         });
     }, [selectedYear, buttonIndex, dataIDE]);
+    
+    const resetZoomExt = () => {
+      if (!svgRef.current || !zoomRef.current) return;
+      const svg = d3.select(svgRef.current);
+      const g = d3.select(gRef.current);
+
+      // Reset transform and stroke-width to initial state
+      svg.transition()
+          .duration(750)
+          .call(zoomRef.current.transform, d3.zoomIdentity);
+      
+      g.style("stroke-width", "1.5px"); // Reset stroke-width to initial value
+
+      activeRef.current = null;
+      onDepartmentClick(null, countryData);
+      d3.selectAll("path.departments").classed("active", false);
+    };
+
+    // Zoom In function
+    const zoomIn = () => {
+      if (!svgRef.current || !zoomRef.current) return;
+      const svg = d3.select(svgRef.current);
+      svg.transition()
+          .duration(750)
+          .call(zoomRef.current.scaleBy, 1.5); // Aumenta la escala en un factor de 1.5
+    };
+  
+    // Zoom Out function
+    const zoomOut = () => {
+        if (!svgRef.current || !zoomRef.current) return;
+        const svg = d3.select(svgRef.current);
+        svg.transition()
+            .duration(750)
+            .call(zoomRef.current.scaleBy, 0.67); // Reduce la escala en un factor de 0.67 (1/1.5)
+    };
   
     return (
-      <svg 
-        ref={svgRef}
-        width={width}
-        height={height}
-        className="choropleth"
-      >
-        <g ref={gRef} />
-      </svg>
+      <div style={{ position: 'relative' }}>
+            <svg 
+                ref={svgRef}
+                width={width}
+                height={height}
+                className="choropleth"
+            >
+                <g ref={gRef} />
+            </svg>
+            
+            <button
+                onClick={resetZoomExt}
+                className="map-button reset-button"
+                title="Reiniciar posición"
+            >
+                <MdMyLocation size={20} />
+            </button>
+            <button
+                onClick={zoomIn}
+                className="map-button zoom-in-button"
+                title="Zoom In"
+            >
+                <HiOutlineZoomIn size={20} />
+            </button>
+            <button
+                onClick={zoomOut}
+                className="map-button zoom-out-button"
+                title="Zoom Out"
+            >
+                <HiOutlineZoomOut size={20} />
+            </button>
+        </div>
+      
     );
   };  
 
