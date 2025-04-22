@@ -62,11 +62,16 @@ const Legend = ({
   }, [width, height, buttonIndex]);
 
   return (
-    <svg 
+    <div>
+      <p>IDE</p>
+      <svg 
       ref={svgRef}
       width={width}
       height={height}
-    />
+      />
+      
+    </div>
+    
   );
 };
 

@@ -12,7 +12,6 @@ const CollapsibleMenuContainer = () => {
         const response = await fetch('https://gist.githubusercontent.com/Ybaronac/994b9084c9ebb6d773658ef497dab034/raw/269e938c2c2a7f4aec72d8aa10829920766a8456/IDE_Test.json');
         if (!response.ok) throw new Error('Failed to fetch JSON data');
         const data = await response.json();
-        console.log('Datos cargados:', data);
         setMetrics(data);
         setLoading(false);
       } catch (err) {

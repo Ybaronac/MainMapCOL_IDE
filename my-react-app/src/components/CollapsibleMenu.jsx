@@ -43,9 +43,6 @@ const CollapsibleMenu = ({ data }) => {
       const isLeaf = typeof value === 'string' || (typeof value === 'object' && Object.keys(value).length === 0);
       const isOpen = openSections[currentPath] ?? false;
 
-      // Depuración: Imprimir el nivel y el nombre del ítem
-      console.log(`Rendering item: ${key}, Level: ${level}`);
-
       return (
         <div key={currentPath} style={{ marginLeft: `${level * 0.75}rem` }}>
           <div

@@ -53,7 +53,7 @@ const D3Map = ({
       tooltipRef.current = tooltip;
   
       const projection = d3.geoMercator()
-        .scale(2000)
+        .scale(1500)
         .center([-74, 4.5])
         .translate([width / 2, height / 2]);
   
@@ -89,10 +89,43 @@ const D3Map = ({
           resetZoom();
         }
       });
+      
+          // Define the diagonal line pattern
+    const defs = svg.append("defs");
+    defs.append("pattern")
+      .attr("id", "diagonal-hatch")
+      .attr("patternUnits", "userSpaceOnUse")
+      .attr("width", 4)
+      .attr("height", 8)
+      .attr("patternTransform", "rotate(45)")
+      .append("line")
+      .attr("x1", 0)
+      .attr("y1", 0)
+      .attr("x2", 0)
+      .attr("y2", 8)
+      .attr("stroke", "#bdc3c7") 
+      .attr("stroke-width", 1);
+
+      const backgroundMapGroup = g.append("g").attr("class", "background-map");
   
       // Load and render map data
-      d3.json("https://gist.githubusercontent.com/Ybaronac/e65e865cf1139b16ef6cd47d9f86346a/raw/Colombia_departamentos.json")
-        .then(data => {
+      Promise.all([
+        d3.json("https://gist.githubusercontent.com/Ybaronac/e65e865cf1139b16ef6cd47d9f86346a/raw/Colombia_departamentos.json"),
+        d3.json("https://gist.githubusercontent.com/Ybaronac/ce02fcf1cd6d455ef585e2946117363e/raw/8a30de4e4753bd1a701caa08870df42dfd1e9bcd/worldMapData.json")
+      ]).then(([data, worldData]) => {
+
+          const countries = backgroundMapGroup.selectAll("path.background-countries")
+          .data(worldData.features)
+          .enter()
+          .append("path")
+          .attr("class", "background-countries")
+          .attr("d", path)
+          .style("fill", "##d7dbdd")
+          .style("fill", "url(#diagonal-hatch)") // Light gray for background
+          .style("stroke", "#ffffff")
+          .style("stroke-width", 3)
+          .style("pointer-events", "none");
+
           g.selectAll("path.departments")
             .data(topojson.feature(data, data.objects.departamentos).features)
             .enter()
