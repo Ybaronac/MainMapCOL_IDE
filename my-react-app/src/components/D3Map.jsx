@@ -110,10 +110,10 @@ const D3Map = ({
   
       // Load and render map data
       Promise.all([
-        d3.json("https://gist.githubusercontent.com/Ybaronac/e65e865cf1139b16ef6cd47d9f86346a/raw/Colombia_departamentos.json"),
+        d3.json("https://gist.githubusercontent.com/Ybaronac/e65e865cf1139b16ef6cd47d9f86346a/raw/Colombia_departamentos.json    "),
         d3.json("https://gist.githubusercontent.com/Ybaronac/ce02fcf1cd6d455ef585e2946117363e/raw/8a30de4e4753bd1a701caa08870df42dfd1e9bcd/worldMapData.json")
       ]).then(([data, worldData]) => {
-
+          console.log(data);
           const countries = backgroundMapGroup.selectAll("path.background-countries")
           .data(worldData.features)
           .enter()
