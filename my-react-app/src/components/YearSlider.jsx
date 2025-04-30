@@ -4,7 +4,6 @@ import 'rc-slider/assets/index.css';
 
 const YearSlider = ({ 
   width = 500,
-  height = 100,
   years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
   selectedYear,
   onYearChange
@@ -19,7 +18,7 @@ const YearSlider = ({
   };
 
   return (
-    <div id="year-slider" style={{ width: width + 60, padding: '20px' }}>
+    <div id="year-slider" style={{ width: width + 60, padding: '5px' }}>
       <Slider
         min={Math.min(...years)}
         max={Math.max(...years)}

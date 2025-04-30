@@ -50,10 +50,12 @@ const MapVisualization = () => {
     }
   };
 
-  const barChartData = selectedData ? Object.entries(selectedData[selectedYear]).map(([group, value]) => ({
-    group,
-    value: parseFloat(value)
-  })) : [];
+  const barChartData = selectedData
+    ? Object.entries(selectedData[selectedYear]).map(([group, value]) => ({
+        group,
+        value: parseFloat(value),
+      }))
+    : [];
 
   useEffect(() => {
     if (selectedDepartment) {
@@ -68,44 +70,105 @@ const MapVisualization = () => {
   }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData]);
 
   return (
-    <div className="app">
-      <div className="visualization-container">
-        <div className="button-sidebar">
-          <h3 className="menu-title">Categorías</h3>
-          <ButtonGroup
-            selectedIndex={buttonIndex}
-            onButtonClick={handleButtonClick}
-          />
-        </div>
-        <div className="map-box">
-          <div className="map-content">
-            <YearSlider
-              selectedYear={selectedYear}
-              onYearChange={handleYearChange}
-              width={600}
-            />
-            <D3Map
-              selectedYear={selectedYear}
+    <div className="app" style={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
+      {/* Container: 800px wide, centered */}
+      <div
+        className="visualization-container"
+        style={{
+          width: '800px',
+          display: 'flex',
+          flexDirection: 'row', // Force row layout on desktop
+          boxSizing: 'border-box',
+        }}
+      >
+        {/* Left Column: 2/3 (~533px) */}
+        <div
+          style={{
+            width: '533px', // 2/3 of 800px
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <div
+            className="map-box"
+            style={{
+              backgroundColor: 'white',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+              width: '100%',
+            }}
+          >
+            <div
+              className="map-content"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              <YearSlider
+                selectedYear={selectedYear}
+                onYearChange={handleYearChange}
+                width={420} // 533px - 2*32px padding
+              />
+              <D3Map
+                selectedYear={selectedYear}
+                buttonIndex={buttonIndex}
+                dataIDE={dataIDE}
+                countryData={countryData}
+                onDepartmentClick={handleDepartmentClick}
+                selectedDepartment={selectedDepartment}
+                width={533} // 533px - 2*32px padding
+                height={430} // Reduced for better fit
+              />
+              <Legend
               buttonIndex={buttonIndex}
-              dataIDE={dataIDE}
-              countryData={countryData}
-              onDepartmentClick={handleDepartmentClick}
-              selectedDepartment={selectedDepartment}
-              width={800}
-              height={600}
-            />
-            <Legend
-              buttonIndex={buttonIndex}
-              width={750}
-            />
+              width={420} // 267px - 2*32px padding
+              />
+            </div>
           </div>
         </div>
-        <div className="chart-box">
-          <BarChart
-            data={barChartData}
-            selectedYear={selectedYear}
-            selectedDepartment={selectedDepartment}
-          />
+        {/* Right Column: 1/3 (~267px) */}
+        <div
+          style={{
+            width: '267px', // 1/3 of 800px
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '24px',
+          }}
+        >
+          <div
+            className="button-sidebar"
+            style={{
+              backgroundColor: 'white',
+              boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            <h3 className="menu-title">Categorías IDE</h3>
+            <ButtonGroup
+              selectedIndex={buttonIndex}
+              onButtonClick={handleButtonClick}
+            />
+          </div>
+          <div
+            className="chart-box"
+            style={{
+              backgroundColor: 'white',
+              boxShadow: '0 1px 5px rgba(0, 0, 0, 0.1)',
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            <BarChart
+              data={barChartData}
+              selectedYear={selectedYear}
+              selectedDepartment={selectedDepartment}
+              width={203} // 267px - 2*32px padding
+              height={215} // Reduced for better fit
+            />
+          </div>
         </div>
       </div>
     </div>

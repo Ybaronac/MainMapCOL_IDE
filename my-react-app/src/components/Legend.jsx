@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 
 const Legend = ({ 
   width = 700, 
-  height = 100,
+  height = 50,
   buttonIndex
 }) => {
   const svgRef = useRef();
