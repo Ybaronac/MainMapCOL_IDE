@@ -29,6 +29,8 @@ const MapVisualization = () => {
       setDataIDE(newDataIDE);
       setCountryData(countryIdeData[0].rates);
       setSelectedData(countryIdeData[0].rates);
+    }).catch(error => {
+      console.error('Error loading data:', error);
     });
   }, []);
 
@@ -50,9 +52,10 @@ const MapVisualization = () => {
     }
   };
 
+  const labels = ["General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"];
   const barChartData = selectedData
-    ? Object.entries(selectedData[selectedYear]).map(([group, value]) => ({
-        group,
+    ? Object.entries(selectedData[selectedYear]).map(([key, value], i) => ({
+        group: labels[i] || key, // Fallback to key if labels[i] is undefined
         value: parseFloat(value),
       }))
     : [];
@@ -70,21 +73,21 @@ const MapVisualization = () => {
   }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData]);
 
   return (
-    <div className="app" style={{ display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
-      {/* Container: 800px wide, centered */}
+    <div className="app" style={{ display: 'flex', justifyContent: 'center' }}>
+      {/* Container: 990px wide, centered */}
       <div
         className="visualization-container"
         style={{
-          width: '800px',
+          width: '990px',
           display: 'flex',
-          flexDirection: 'row', // Force row layout on desktop
+          flexDirection: 'row',
           boxSizing: 'border-box',
         }}
       >
-        {/* Left Column: 2/3 (~533px) */}
+        {/* Left Column: 2/3 (~660px) */}
         <div
           style={{
-            width: '533px', // 2/3 of 800px
+            width: '660px', // 2/3 of 990px
             display: 'flex',
             flexDirection: 'column',
           }}
@@ -95,8 +98,16 @@ const MapVisualization = () => {
               backgroundColor: 'white',
               boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
               width: '100%',
+              paddingTop: '10px'
+
             }}
           >
+          <YearSlider
+                selectedYear={selectedYear}
+                onYearChange={handleYearChange}
+                width={596} // 660px - 2*32px padding
+
+              />
             <div
               className="map-content"
               style={{
@@ -104,13 +115,10 @@ const MapVisualization = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 width: '100%',
+                paddingTop: '10px'
               }}
             >
-              <YearSlider
-                selectedYear={selectedYear}
-                onYearChange={handleYearChange}
-                width={420} // 533px - 2*32px padding
-              />
+              
               <D3Map
                 selectedYear={selectedYear}
                 buttonIndex={buttonIndex}
@@ -118,20 +126,20 @@ const MapVisualization = () => {
                 countryData={countryData}
                 onDepartmentClick={handleDepartmentClick}
                 selectedDepartment={selectedDepartment}
-                width={533} // 533px - 2*32px padding
-                height={430} // Reduced for better fit
+                width={660} // 660px - 2*32px padding
+                height={600} // Scaled from 430px (430 * 660/533 ≈ 530)
               />
               <Legend
-              buttonIndex={buttonIndex}
-              width={420} // 267px - 2*32px padding
+                buttonIndex={buttonIndex}
+                width={596} // 660px - 2*32px padding
               />
             </div>
           </div>
         </div>
-        {/* Right Column: 1/3 (~267px) */}
+        {/* Right Column: 1/3 (~330px) */}
         <div
           style={{
-            width: '267px', // 1/3 of 800px
+            width: '306px', // 1/3 of 990px
             display: 'flex',
             flexDirection: 'column',
             gap: '24px',
@@ -143,13 +151,14 @@ const MapVisualization = () => {
               backgroundColor: 'white',
               boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
               width: '100%',
-              boxSizing: 'border-box',
+              boxSizing: 'border-box'
             }}
           >
             <h3 className="menu-title">Categorías IDE</h3>
             <ButtonGroup
               selectedIndex={buttonIndex}
               onButtonClick={handleButtonClick}
+              labels={labels} // Pass labels for consistency
             />
           </div>
           <div
@@ -158,15 +167,16 @@ const MapVisualization = () => {
               backgroundColor: 'white',
               boxShadow: '0 1px 5px rgba(0, 0, 0, 0.1)',
               width: '100%',
-              boxSizing: 'border-box',
+              boxSizing: 'border-box'
             }}
           >
             <BarChart
               data={barChartData}
               selectedYear={selectedYear}
               selectedDepartment={selectedDepartment}
-              width={203} // 267px - 2*32px padding
-              height={215} // Reduced for better fit
+              width={310} // 330px - 2*32px padding
+              height={380} // Scaled from 215px (215 * 330/267 ≈ 265)
+              labels={labels} // Pass labels for x-axis
             />
           </div>
         </div>

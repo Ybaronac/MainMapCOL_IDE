@@ -1,9 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { MdMyLocation } from "react-icons/md";
 import { HiOutlineZoomOut, HiOutlineZoomIn  } from "react-icons/hi";
+import TransparentWindow from './TransparentWindow';
 import '../styles/D3Map.css';
+
+
+const labels = ["General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"];
 
 const D3Map = ({ 
     width = 800, 
@@ -21,7 +25,8 @@ const D3Map = ({
     const tooltipRef = useRef();
     const activeRef = useRef(null);
     const zoomRef = useRef(null);
-  
+    const [windowText, setWindowText] = useState('Ventana Transparente');
+ 
     // Define color schemes for different categories
     const mapColours = [
       d3.schemeBlues[9],
@@ -33,7 +38,6 @@ const D3Map = ({
   
     useEffect(() => {
       if (!svgRef.current) return;
-  
       const svg = d3.select(svgRef.current);
       const g = d3.select(gRef.current);
   
@@ -43,11 +47,7 @@ const D3Map = ({
         .attr("class", "tooltip")
         .style("opacity", 0)
         .style("position", "absolute")
-        .style("padding", "10px")
-        .style("background", "rgba(0, 0, 0, 0.8)")
-        .style("color", "white")
         .style("pointer-events", "none")
-        .style("font-size", "14px")
         .style("z-index", "1000");
   
       tooltipRef.current = tooltip;
@@ -78,8 +78,10 @@ const D3Map = ({
           .call(zoom.transform, d3.zoomIdentity);
         activeRef.current = null;
         onDepartmentClick(null, countryData);
+        setWindowText('Ventana Transparente');
         // Remove active class from all departments
         d3.selectAll("path.departments").classed("active", false);
+        tooltip.transition().duration(500).style("opacity", 0);
       };
   
       // Add click handler for the background
@@ -113,7 +115,7 @@ const D3Map = ({
         d3.json("https://gist.githubusercontent.com/Ybaronac/e65e865cf1139b16ef6cd47d9f86346a/raw/Colombia_departamentos.json    "),
         d3.json("https://gist.githubusercontent.com/Ybaronac/ce02fcf1cd6d455ef585e2946117363e/raw/8a30de4e4753bd1a701caa08870df42dfd1e9bcd/worldMapData.json")
       ]).then(([data, worldData]) => {
-          const countries = backgroundMapGroup.selectAll("path.background-countries")
+          backgroundMapGroup.selectAll("path.background-countries")
           .data(worldData.features)
           .enter()
           .append("path")
@@ -137,12 +139,24 @@ const D3Map = ({
                 .duration(200)
                 .style("opacity", 0.9);
               
-              const rates = dataIDE.get(Number(d.properties.DPTO_CCDGO));
+              const deptID = Number(d.properties.DPTO_CCDGO);
+              const rates = dataIDE.get(deptID);
               const value = rates ? rates[selectedYear][buttonIndex] : "No data";
-              const html = `<div>
-                <strong>${d.properties.DPTO_CNMBR}</strong><br/>
-                ${value}%
-              </div>`;
+              const html = `
+                  <table class="d3-tooltip-table">
+                    <thead>
+                      <tr>
+                        <th colspan="2">${d.properties.DPTO_CNMBR || 'Sin departamento'}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>${labels[buttonIndex] || 'Sin label'}</td>
+                        <td>${value}%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                `;
               
               tooltip
                 .html(html)
@@ -169,6 +183,7 @@ const D3Map = ({
               if (activeRef.current === this) {
                 resetZoom();
                 d3.select(this).classed("active", false);
+                setWindowText('Ventana Transparente');
                 return;
               }
 
@@ -196,12 +211,39 @@ const D3Map = ({
                 .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
 
               onDepartmentClick(d, rates);
+              setWindowText(`Departamento: ${d.properties.DPTO_CNMBR}`);
+
+              // Show tooltip on click
+              const value = rates ? rates[selectedYear][buttonIndex] : "No data";
+              const html = `
+              <table class="d3-tooltip-table">
+                <thead>
+                  <tr>
+                    <th colspan="2">${d.properties.DPTO_CNMBR || 'Sin departamento'}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>${labels[buttonIndex] || 'Sin label'}</td>
+                    <td>${value}%</td>
+                  </tr>
+                </tbody>
+              </table>
+            `;
+  
+            tooltip
+              .html(html)
+              .style("opacity", 0.9)
+              .style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 28) + "px");
             });
   
           g.append("path")
             .datum(topojson.mesh(data, data.objects.departamentos, (a, b) => a !== b))
             .attr("class", "dept-borders")
             .attr("d", path);
+        }).catch(error => {
+          console.error('Error al cargar los datos del mapa:', error);
         });
   
       return () => {
@@ -234,10 +276,21 @@ const D3Map = ({
               .style("opacity", 0.9);
             
             const value = rates ? rates[selectedYear][buttonIndex] : "No data";
-            const html = `<div>
-              <strong>${d.properties.DPTO_CNMBR}</strong><br/>
-              ${value}%
-            </div>`;
+            const html = `
+                <table class="d3-tooltip-table">
+                  <thead>
+                    <tr>
+                      <th colspan="2">${d.properties.DPTO_CNMBR || 'Sin departamento'}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>${labels[buttonIndex] || 'Sin label'}</td>
+                      <td>${value}%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              `;
             
             tooltipRef.current
               .html(html)
@@ -272,6 +325,7 @@ const D3Map = ({
       activeRef.current = null;
       onDepartmentClick(null, countryData);
       d3.selectAll("path.departments").classed("active", false);
+      tooltipRef.current.transition().duration(500).style("opacity", 0);
     };
 
     // Zoom In function
@@ -303,6 +357,15 @@ const D3Map = ({
                 <g ref={gRef} />
             </svg>
             
+            <TransparentWindow
+              top={20}
+              left={20}
+              width={200}
+              height={150}
+              isInteractive={false}
+              text={windowText} // Pasa el texto dinámico
+            />
+
             <button
                 onClick={resetZoomExt}
                 className="map-button reset-button"

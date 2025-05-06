@@ -5,14 +5,34 @@ const BarChart = ({
   data, 
   selectedYear,
   selectedDepartment,
-  width = 350, // Set to 350px as requested
-  height = 180, // Kept for vertical fit
+  width = 350,
+  height = 180,
   labels = ["General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"]
 }) => {
   const svgRef = useRef();
-  const margin = { top: 20, right: 20, bottom: 50, left: 40 };
+  const margin = { top: 50, right: 20, bottom: 50, left: 40 }; // Increased top margin for title
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
+
+  // Function to wrap text into multiple lines
+  const wrapText = (text, maxWidth, fontSize) => {
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+      const testLine = currentLine + ' ' + words[i];
+      const testWidth = testLine.length * fontSize * 0.6;
+      if (testWidth < maxWidth) {
+        currentLine = testLine;
+      } else {
+        lines.push(currentLine);
+        currentLine = words[i];
+      }
+    }
+    lines.push(currentLine);
+    return lines;
+  };
 
   useEffect(() => {
     if (!svgRef.current || !data.length) return;
@@ -26,7 +46,7 @@ const BarChart = ({
     // X axis
     const x = d3.scaleBand()
       .range([0, chartWidth])
-      .padding(0.4) // Increased padding to reduce bar width
+      .padding(0.4)
       .domain(labels);
 
     g.append("g")
@@ -37,25 +57,68 @@ const BarChart = ({
       .style("text-anchor", "end")
       .style("font-size", "8px");
 
-    // Y axis
+    // Y scale
     const y = d3.scaleLinear()
       .domain([0, 100])
       .range([chartHeight, 0]);
 
-    g.append("g")
-      .call(d3.axisLeft(y).ticks(5))
-      .selectAll("text")
-      .style("font-size", "8px");
+    // Horizontal grid lines
+    const yTicks = y.ticks(5);
+    g.selectAll(".grid-line")
+      .data(yTicks)
+      .enter()
+      .append("line")
+      .attr("class", "grid-line")
+      .attr("x1", 0)
+      .attr("x2", chartWidth)
+      .attr("y1", d => y(d))
+      .attr("y2", d => y(d))
+      .attr("stroke", "#d3d3d3")
+      .attr("stroke-width", 1);
 
-    // Title
-    g.append("text")
+    // Y-axis values
+    g.selectAll(".y-label")
+      .data(yTicks)
+      .enter()
+      .append("text")
+      .attr("class", "y-label")
+      .attr("x", -10)
+      .attr("y", d => y(d) + 3)
+      .attr("text-anchor", "end")
+      .style("font-size", "8px")
+      .style("font-family", "'Poppins', sans-serif")
+      .text(d => d);
+
+    // Title: Department name
+    const deptText = selectedDepartment 
+      ? selectedDepartment.properties.DPTO_CNMBR
+      : 'Colombia';
+    const deptFontSize = 14; // Larger for department
+    const maxTitleWidth = chartWidth - 20;
+    const deptLines = wrapText(deptText, maxTitleWidth, deptFontSize);
+
+    const title = g.append("text")
       .attr("x", chartWidth / 2)
-      .attr("y", -5)
+      .attr("y", -margin.top + 15) // Start 15px from top
       .attr("text-anchor", "middle")
-      .style("font-size", "10px")
-      .text(selectedDepartment 
-        ? `${selectedDepartment.properties.DPTO_CNMBR} - ${selectedYear}`
-        : `Colombia - ${selectedYear}`);
+      .style("font-family", "'Poppins', sans-serif");
+
+    deptLines.forEach((line, i) => {
+      title.append("tspan")
+        .attr("x", chartWidth / 2)
+        .attr("dy", i === 0 ? 0 : 12) // 12px between department lines
+        .style("font-size", `${deptFontSize}px`)
+        .style("font-weight", "600") // Bold department
+        .text(line);
+    });
+
+    // Title: Year
+    title.append("tspan")
+      .attr("x", chartWidth / 2)
+      .attr("dy", deptLines.length > 1 ? 14 : 12) // Extra space if multi-line
+      .style("font-size", "10px") // Smaller for year
+      .style("font-weight", "400") // Normal weight
+      .text(selectedYear);
 
     // Bars
     const bars = g.selectAll("rect")

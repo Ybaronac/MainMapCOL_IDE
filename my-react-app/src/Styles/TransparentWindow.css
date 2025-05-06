@@ -1,0 +1,25 @@
+.transparent-window {
+    position: absolute;
+    top: var(--top, 20px);
+    left: var(--left, 20px);
+    width: var(--width, 200px);
+    height: var(--height, 150px);
+    background-color: rgba(255, 255, 255, 0.6);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 16px;
+    pointer-events: none;
+  }
+  
+  .transparent-window.interactive {
+    pointer-events: auto;
+  }
+
+  .transparent-window p {
+    margin: 0;
+    font-weight: bold;
+    text-align: center;
+  }
