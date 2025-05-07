@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import {generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
 
 const Legend = ({ 
   width = 700, 
@@ -7,15 +8,15 @@ const Legend = ({
   buttonIndex
 }) => {
   const svgRef = useRef();
-
-  // Define color schemes for different categories
-  const mapColours = [
-    d3.schemeBlues[9],
-    d3.schemeGreens[9],
-    d3.schemeOranges[9],
-    d3.schemePurples[9],
-    d3.schemeReds[9]
+  const colorSchemes = [
+    generalIDEColours,
+    availabilityColours,
+    accessibilityColours,
+    acceptabilityColours,
+    adaptabilityColours
   ];
+
+  const selectedColours = colorSchemes[buttonIndex] || '#616a6b'; // Default to generalIDEColours if index is out of range
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -25,33 +26,31 @@ const Legend = ({
 
     const color = d3.scaleQuantize()
       .domain([0, 100])
-      .range(mapColours[buttonIndex]);
+      .range(selectedColours);
 
     const x = d3.scaleLinear()
-      .domain(d3.extent(color.domain()))
+      .domain([0,100])
       .rangeRound([0, width - 40]);
 
     const legend = svg.append("g")
       .attr("transform", "translate(20,20)");
 
-    const rects = legend
-      .selectAll("rect.legend-rect")
-      .data(color.range().map(d => color.invertExtent(d)));
-
-    rects.enter()
+    const intervals = color.range().map(d => color.invertExtent(d));
+    legend.selectAll("rect.legend-rect")
+      .data(intervals)
+      .enter()
       .append("rect")
       .attr("class", "legend-rect")
-      .attr("height", 8)
-      .merge(rects)
       .attr("x", d => x(d[0]))
-      .attr("width", width - 40)
+      .attr("width", d => x(d[1]) - x(d[0]))
+      .attr("height", 8)
       .attr("fill", d => color(d[0]));
 
     const axis = d3
       .axisBottom(x)
       .tickSize(13)
       .tickFormat(d => d3.format(".0f")(d) + "%")
-      .tickValues(color.range().slice(1).map(d => color.invertExtent(d)[0]));
+      .tickValues(d3.range(0, 101, 10));
 
     legend.append("g")
       .attr("class", "axis")
