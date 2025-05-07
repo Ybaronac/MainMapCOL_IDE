@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import { labels, generalColours } from '../config/config.js';
 
 const BarChart = ({ 
   data, 
@@ -7,7 +8,7 @@ const BarChart = ({
   selectedDepartment,
   width = 350,
   height = 180,
-  labels = ["General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"]
+  labels: propLabels = labels
 }) => {
   const svgRef = useRef();
   const margin = { top: 50, right: 20, bottom: 50, left: 40 }; // Increased top margin for title
@@ -47,7 +48,7 @@ const BarChart = ({
     const x = d3.scaleBand()
       .range([0, chartWidth])
       .padding(0.4)
-      .domain(labels);
+      .domain(propLabels);
 
     g.append("g")
       .attr("transform", `translate(0,${chartHeight})`)
@@ -64,6 +65,7 @@ const BarChart = ({
 
     // Horizontal grid lines
     const yTicks = y.ticks(5);
+    const yGridValues = [0, 20, 40, 60, 80, 100];
     g.selectAll(".grid-line")
       .data(yTicks)
       .enter()
@@ -74,11 +76,12 @@ const BarChart = ({
       .attr("y1", d => y(d))
       .attr("y2", d => y(d))
       .attr("stroke", "#d3d3d3")
-      .attr("stroke-width", 1);
+      .attr("stroke-width", 1)
+      .attr("stroke-dasharray", "4 4");
 
     // Y-axis values
     g.selectAll(".y-label")
-      .data(yTicks)
+      .data(yGridValues)
       .enter()
       .append("text")
       .attr("class", "y-label")
@@ -125,11 +128,11 @@ const BarChart = ({
       .data(data)
       .enter()
       .append("rect")
-      .attr("x", (d, i) => x(labels[i]))
+      .attr("x", (d, i) => x(propLabels[i]))
       .attr("y", chartHeight)
       .attr("width", x.bandwidth())
       .attr("height", 0)
-      .attr("fill", (d, i) => d3.schemeCategory10[i % 10]);
+      .attr("fill", (d, i) => generalColours[i % generalColours.length]);
 
     // Animate bars
     bars.transition()
@@ -143,7 +146,7 @@ const BarChart = ({
       .enter()
       .append("text")
       .attr("class", "value-label")
-      .attr("x", (d, i) => x(labels[i]) + x.bandwidth() / 2)
+      .attr("x", (d, i) => x(propLabels[i]) + x.bandwidth() / 2)
       .attr("y", d => y(d.value) - 3)
       .attr("text-anchor", "middle")
       .style("font-size", "8px")
@@ -153,7 +156,7 @@ const BarChart = ({
       .duration(1000)
       .style("opacity", 1);
 
-  }, [data, selectedYear, selectedDepartment, width, height, labels]);
+  }, [data, selectedYear, selectedDepartment, width, height, propLabels]);
 
   return (
     <svg

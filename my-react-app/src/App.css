@@ -154,7 +154,7 @@ p {
 }
 
 .button:hover {
-  background-color: #e0e0e0;
+  background-color: #aeb6bf;
   transform: translateY(-1px);
 }
 
@@ -164,7 +164,6 @@ p {
 }
 
 .two-button-sidebar {
-  margin-top: 16px; /* Space below ButtonGroup */
   width: 100%;
   display: flex;
   justify-content: center;
@@ -193,7 +192,6 @@ p {
 .collapsible-menu-container {
   width: 990px;
   margin: 0 auto;
-  padding: 1.5rem;
   background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -205,11 +203,11 @@ p {
   font-family: 'Poppins', sans-serif;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #2d3748;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  background-color: #2d3748;
+  color: #FFF;
   text-align: center;
   width: 100%;
+  padding: 20px;
 }
 
 .collapsible-menu {
@@ -335,14 +333,12 @@ header .container, footer .container {
     color: #333;
   }
   .button:hover {
-    background-color: #e0e0e0;
+    background-color: #aeb6bf;
     transform: translateY(-1px);
   }
   .button.active {
     background-color: #007bff;
     color: white;
   }
-  .two-button-sidebar {
-    margin-top: 12px;
-  }
+
 }

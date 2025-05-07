@@ -1,8 +1,10 @@
 import React from 'react';
 import '../App.css';
+import { labels, generalColours } from '../config/config.js';
+import '../styles/D3Map.css';
 
 const ButtonGroup = ({ 
-  labels = ["General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"],
+  labels: propLabels = labels,
   selectedIndex,
   onButtonClick
 }) => {
@@ -19,14 +21,14 @@ const ButtonGroup = ({
         listStyle: 'none',
       }}
     >
-      {labels.map((label, index) => (
+      {propLabels.map((label, index) => (
         <li
           key={label}
           className={`button ${index === selectedIndex ? 'active' : ''}`}
           onClick={() => onButtonClick(index)}
           style={{
             padding: '0 0 0 10px', // Padding only on left
-            backgroundColor: index === selectedIndex ? '#007bff' : '#fafafa',
+            backgroundColor: index === selectedIndex ? generalColours[index % generalColours.length] : '#fafafa',
             color: index === selectedIndex ? 'white' : '#333',
             cursor: 'pointer',
             transition: 'background-color 0.3s, transform 0.1s',
@@ -36,7 +38,7 @@ const ButtonGroup = ({
             textAlign: 'left',
             width: '100%',
             boxSizing: 'border-box',
-            borderBottom: index < labels.length - 1 ? '1px solid #e0e0e0' : 'none', // Light gray separator
+            borderBottom: index < propLabels.length - 1 ? '1px solid #e0e0e0' : 'none', // Light gray separator
             lineHeight: '35px', // Fixed height for consistency
           }}
         >
