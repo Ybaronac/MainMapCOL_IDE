@@ -5,9 +5,8 @@ import { MdMyLocation } from "react-icons/md";
 import { HiOutlineZoomOut, HiOutlineZoomIn  } from "react-icons/hi";
 import TransparentWindow from './TransparentWindow';
 import '../styles/D3Map.css';
+import {labels, generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
 
-
-const labels = ["General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"];
 
 const D3Map = ({ 
     width = 800, 
@@ -27,14 +26,15 @@ const D3Map = ({
     const zoomRef = useRef(null);
     const [windowText, setWindowText] = useState('Ventana Transparente');
  
-    // Define color schemes for different categories
-    const mapColours = [
-      d3.schemeBlues[9],
-      d3.schemeGreens[9],
-      d3.schemeOranges[9],
-      d3.schemePurples[9],
-      d3.schemeReds[9]
+    
+    const colorSchemes = [
+      generalIDEColours,
+      availabilityColours,
+      accessibilityColours,
+      acceptabilityColours,
+      adaptabilityColours
     ];
+    const selectedColours = colorSchemes[buttonIndex] || generalIDEColours;
   
     useEffect(() => {
       if (!svgRef.current) return;
@@ -121,7 +121,7 @@ const D3Map = ({
           .append("path")
           .attr("class", "background-countries")
           .attr("d", path)
-          .style("fill", "##d7dbdd")
+          .style("fill", "#d7dbdd")
           .style("fill", "url(#diagonal-hatch)") // Light gray for background
           .style("stroke", "#ffffff")
           .style("stroke-width", 3)
@@ -257,7 +257,7 @@ const D3Map = ({
       const g = d3.select(gRef.current);
       const color = d3.scaleQuantize()
         .domain([0, 100])
-        .range(mapColours[buttonIndex]);
+        .range(selectedColours);
   
       g.selectAll("path.departments")
         .each(function(d) {
