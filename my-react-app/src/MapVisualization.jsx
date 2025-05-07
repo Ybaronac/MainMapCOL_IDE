@@ -6,6 +6,7 @@ import Legend from './components/Legend';
 import YearSlider from './components/YearSlider';
 import ButtonGroup from './components/ButtonGroup';
 import './App.css';
+import {labels, generalColours, yearSliderGeneralColours } from './config/config.js';
 
 const MapVisualization = () => {
   const [dataIDE, setDataIDE] = useState(new Map());
@@ -52,7 +53,6 @@ const MapVisualization = () => {
     }
   };
 
-  const labels = ["General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"];
   const barChartData = selectedData
     ? Object.entries(selectedData[selectedYear]).map(([key, value], i) => ({
         group: labels[i] || key, // Fallback to key if labels[i] is undefined
@@ -106,7 +106,7 @@ const MapVisualization = () => {
                 selectedYear={selectedYear}
                 onYearChange={handleYearChange}
                 width={596} // 660px - 2*32px padding
-
+                buttonIndex={buttonIndex}
               />
             <div
               className="map-content"
