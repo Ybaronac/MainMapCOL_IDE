@@ -1,0 +1,4 @@
+.rc-slider-handle-dragging {
+    border-color: var(--halo-color) !important; /* Usa una variable CSS para el color dinámico */
+    box-shadow: 0 0 0 5px var(--halo-color) !important; /* Opcional: efecto de halo */
+  }

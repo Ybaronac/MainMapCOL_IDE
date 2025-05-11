@@ -95,7 +95,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
 
   return (
     <div className="collapsible-menu-container p-4">
-      <h1 className="menu-title text-2xl font-bold mb-4">Menú Colapsable</h1>
+      <h1 className="menu-title text-2xl font-bold mb-4">IDE: {departmentName} - {selectedYear} </h1>
       {filteredMetrics.length === 0 ? (
         <div className="p-4 text-center">
           No hay datos disponibles para el año {selectedYear} y el departamento {departmentName}.
