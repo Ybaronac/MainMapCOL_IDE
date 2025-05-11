@@ -21,7 +21,6 @@ const App = () => (
               <div className="content-container mx-auto my-8">
                 <Description />
                 <MapVisualization />
-                <CollapsibleMenuContainer />
               </div>
             </div>
           }

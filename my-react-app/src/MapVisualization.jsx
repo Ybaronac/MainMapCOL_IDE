@@ -5,6 +5,7 @@ import BarChart from './components/BarChart';
 import Legend from './components/Legend';
 import YearSlider from './components/YearSlider';
 import ButtonGroup from './components/ButtonGroup';
+import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
 import './App.css';
 import {labels, generalColours, yearSliderGeneralColours } from './config/config.js';
 
@@ -73,7 +74,7 @@ const MapVisualization = () => {
   }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData]);
 
   return (
-    <div className="app" style={{ display: 'flex', justifyContent: 'center' }}>
+    <div className="app" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Container: 990px wide, centered */}
       <div
         className="visualization-container"
@@ -82,6 +83,7 @@ const MapVisualization = () => {
           display: 'flex',
           flexDirection: 'row',
           boxSizing: 'border-box',
+          marginBottom: '24px',
         }}
       >
         {/* Left Column: 2/3 (~660px) */}
@@ -181,6 +183,20 @@ const MapVisualization = () => {
           </div>
         </div>
       </div>
+      <div
+      className="collapsible-menu-wrapper"
+      style={{
+        width: '990px',
+        backgroundColor: 'white',
+        boxShadow: '0 1px 5px rgba(0, 0, 0, 0.1)',
+        boxSizing: 'border-box',
+      }}
+    >
+      <CollapsibleMenuContainer
+        selectedYear={selectedYear}
+        selectedDepartment={selectedDepartment}
+      />
+    </div>
     </div>
   );
 };

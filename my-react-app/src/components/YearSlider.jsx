@@ -26,7 +26,7 @@ const YearSlider = ({
   const haloColor = yearSliderGeneralColours[buttonIndex % yearSliderGeneralColours.length] || '#e6f7ff';
 
   // Log para depurar (puedes eliminarlo después de verificar)
-  console.log(`buttonIndex: ${buttonIndex}, haloColor: ${haloColor}`);
+  //console.log(`buttonIndex: ${buttonIndex}, haloColor: ${haloColor}`);
 
   const handleStyle = {
     borderColor: isActive ? haloColor : normalBorderColor, // Usa haloColor cuando está activo

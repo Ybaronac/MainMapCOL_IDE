@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import CollapsibleMenu from './CollapsibleMenu';
+import PropTypes from 'prop-types';
 
-const CollapsibleMenuContainer = () => {
+const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
   const [filteredMetrics, setFilteredMetrics] = useState([]);
+  const [departmentName, setDepartmentName] = useState('COLOMBIA'); // Estado para el nombre del departamento
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://gist.githubusercontent.com/Ybaronac/26018c1622e630cd970043a5f664ff46/raw/5df603fb5239b91d8316b215c47e32ffd10d91cb/DepartmentsItemsIDEperYearTest.json'); 
+        const response = await fetch(
+          'https://gist.githubusercontent.com/Ybaronac/26018c1622e630cd970043a5f664ff46/raw/5df603fb5239b91d8316b215c47e32ffd10d91cb/DepartmentsItemsIDEperYearTest.json'
+        );
         if (!response.ok) {
           const text = await response.text();
-          throw new Error(`Failed to fetch JSON data: ${response.status} ${response.statusText} - ${text.slice(0, 100)}...`);
+          throw new Error(
+            `Failed to fetch JSON data: ${response.status} ${response.statusText} - ${text.slice(0, 100)}...`
+          );
         }
         const jsonData = await response.json();
+        console.log('Datos cargados:', jsonData);
         setData(jsonData);
         setLoading(false);
-        if (jsonData.length > 0) {
-          setSelectedDepartment(jsonData[0].departmentID.toString());
-          const years = Object.keys(jsonData[0].values);
-          setSelectedYear(years[0]);
-        }
       } catch (err) {
+        console.error('Error al cargar datos:', err);
         setError(err.message);
         setLoading(false);
       }
@@ -34,63 +35,73 @@ const CollapsibleMenuContainer = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedYear && selectedDepartment && data.length > 0) {
+    const yearAsString = String(selectedYear); // Convertir a cadena
+    // Determinar el departmentID
+    let deptID = '0'; // Valor por defecto: COLOMBIA
+    let tempDepartmentName = 'COLOMBIA';
+
+    if (selectedDepartment) {
+      if (typeof selectedDepartment === 'object' && selectedDepartment.properties && selectedDepartment.properties.DPTO_CCDGO) {
+        deptID = String(selectedDepartment.properties.DPTO_CCDGO); // Extraer ID del objeto
+        tempDepartmentName = selectedDepartment.properties.DPTO_CNMBR || 'Desconocido'; // Usar nombre del departamento
+      } else if (typeof selectedDepartment === 'string') {
+        deptID = selectedDepartment; // Usar directamente si es cadena
+      }
+    }
+
+    console.log('selectedYear:', yearAsString);
+    console.log('selectedDepartment:', deptID);
+    console.log('departmentName:', tempDepartmentName);
+
+    if (yearAsString && data.length > 0) {
       const departmentData = data.find(
-        (d) => d.departmentID.toString() === selectedDepartment
+        (d) => d.departmentID.toString() === deptID
       );
-      if (departmentData && departmentData.values[selectedYear]) {
-        setFilteredMetrics([departmentData.values[selectedYear]]);
+      console.log('departmentData:', departmentData);
+
+      if (departmentData && departmentData.values[yearAsString]) {
+        console.log('filteredMetrics:', [departmentData.values[yearAsString]]);
+        setFilteredMetrics([departmentData.values[yearAsString]]);
+        setDepartmentName(tempDepartmentName); // Actualizar nombre del departamento
       } else {
         setFilteredMetrics([]);
+        setDepartmentName(tempDepartmentName); // Mantener nombre incluso si no hay datos
+        console.log(`No hay datos para el año ${yearAsString} y el departamento ${deptID}`);
       }
+    } else {
+      setFilteredMetrics([]);
+      setDepartmentName(tempDepartmentName);
     }
   }, [selectedYear, selectedDepartment, data]);
 
   if (loading) return <div className="p-4 text-center">Loading...</div>;
   if (error) return <div className="p-4 text-red-500 text-center">Error: {error}</div>;
 
-  const departments = data.map((d) => ({
-    id: d.departmentID,
-    name: d.departmentName,
-  }));
-  const years = data.length > 0 ? Object.keys(data[0].values) : [];
-
   return (
     <div className="collapsible-menu-container p-4">
       <h1 className="menu-title text-2xl font-bold mb-4">Menú Colapsable</h1>
-      <div className="filters mb-4 flex gap-4">
-        <div>
-          <label className="block mb-1">Departamento:</label>
-          <select
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="border p-2 rounded"
-          >
-            {departments.map((dept) => (
-              <option key={dept.id} value={dept.id}>
-                {dept.name}
-              </option>
-            ))}
-          </select>
+      {filteredMetrics.length === 0 ? (
+        <div className="p-4 text-center">
+          No hay datos disponibles para el año {selectedYear} y el departamento {departmentName}.
         </div>
-        <div>
-          <label className="block mb-1">Año:</label>
-          <select
-            value={selectedYear}
-            onChange={(e) => setSelectedYear(e.target.value)}
-            className="border p-2 rounded"
-          >
-            {years.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <CollapsibleMenu data={filteredMetrics} />
+      ) : (
+        <CollapsibleMenu data={filteredMetrics} />
+      )}
     </div>
   );
+};
+
+CollapsibleMenuContainer.propTypes = {
+  selectedYear: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectedDepartment: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      properties: PropTypes.shape({
+        DPTO_CCDGO: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        DPTO_CNMBR: PropTypes.string,
+      }),
+    }),
+  ]),
 };
 
 export default CollapsibleMenuContainer;
