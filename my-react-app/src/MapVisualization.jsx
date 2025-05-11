@@ -195,6 +195,7 @@ const MapVisualization = () => {
       <CollapsibleMenuContainer
         selectedYear={selectedYear}
         selectedDepartment={selectedDepartment}
+        selectedIndex={buttonIndex}
       />
     </div>
     </div>

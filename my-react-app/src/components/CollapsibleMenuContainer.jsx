@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import CollapsibleMenu from './CollapsibleMenu';
 import PropTypes from 'prop-types';
+import { labels } from '../config/config.js';
 
-const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment }) => {
+const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIndex }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filteredMetrics, setFilteredMetrics] = useState([]);
-  const [departmentName, setDepartmentName] = useState('COLOMBIA'); // Estado para el nombre del departamento
+  const [departmentName, setDepartmentName] = useState('COLOMBIA');
+
+  // Mapeo tentativo de categorías a claves numéricas
+  const categoryKeysMap = {
+    Disponibilidad: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22'], // Ajustar según ItemsIDE.json
+    Accesibilidad: ['23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38'],
+    Adaptabilidad: ['39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54'],
+    Aceptabilidad: ['55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74']
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,11 +31,9 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment }) => {
           );
         }
         const jsonData = await response.json();
-        console.log('Datos cargados:', jsonData);
         setData(jsonData);
         setLoading(false);
       } catch (err) {
-        console.error('Error al cargar datos:', err);
         setError(err.message);
         setLoading(false);
       }
@@ -35,44 +42,53 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment }) => {
   }, []);
 
   useEffect(() => {
-    const yearAsString = String(selectedYear); // Convertir a cadena
-    // Determinar el departmentID
-    let deptID = '0'; // Valor por defecto: COLOMBIA
+    const yearAsString = String(selectedYear);
+    let deptID = '0';
     let tempDepartmentName = 'COLOMBIA';
 
     if (selectedDepartment) {
       if (typeof selectedDepartment === 'object' && selectedDepartment.properties && selectedDepartment.properties.DPTO_CCDGO) {
-        deptID = String(selectedDepartment.properties.DPTO_CCDGO); // Extraer ID del objeto
-        tempDepartmentName = selectedDepartment.properties.DPTO_CNMBR || 'Desconocido'; // Usar nombre del departamento
+        deptID = String(selectedDepartment.properties.DPTO_CCDGO);
+        tempDepartmentName = selectedDepartment.properties.DPTO_CNMBR || 'Desconocido';
       } else if (typeof selectedDepartment === 'string') {
-        deptID = selectedDepartment; // Usar directamente si es cadena
+        deptID = selectedDepartment;
       }
     }
-
-    console.log('selectedYear:', yearAsString);
-    console.log('selectedDepartment:', deptID);
-    console.log('departmentName:', tempDepartmentName);
 
     if (yearAsString && data.length > 0) {
       const departmentData = data.find(
         (d) => d.departmentID.toString() === deptID
       );
-      console.log('departmentData:', departmentData);
 
       if (departmentData && departmentData.values[yearAsString]) {
-        console.log('filteredMetrics:', [departmentData.values[yearAsString]]);
-        setFilteredMetrics([departmentData.values[yearAsString]]);
-        setDepartmentName(tempDepartmentName); // Actualizar nombre del departamento
+        let metrics = departmentData.values[yearAsString];
+
+        if (selectedIndex > 0) {
+          const categoryLabel = labels[selectedIndex]; // Ej. "Disponibilidad"
+          const categoryKeys = categoryKeysMap[categoryLabel] || [];
+          if (categoryKeys.length > 0) {
+            metrics = categoryKeys.reduce((acc, key) => {
+              if (metrics[key] !== undefined) {
+                acc[key] = metrics[key];
+              }
+              return acc;
+            }, {});
+          } else {
+            metrics = {};
+          }
+        }
+
+        setFilteredMetrics([metrics]);
+        setDepartmentName(tempDepartmentName);
       } else {
         setFilteredMetrics([]);
-        setDepartmentName(tempDepartmentName); // Mantener nombre incluso si no hay datos
-        console.log(`No hay datos para el año ${yearAsString} y el departamento ${deptID}`);
+        setDepartmentName(tempDepartmentName);
       }
     } else {
       setFilteredMetrics([]);
       setDepartmentName(tempDepartmentName);
     }
-  }, [selectedYear, selectedDepartment, data]);
+  }, [selectedYear, selectedDepartment, selectedIndex, data]);
 
   if (loading) return <div className="p-4 text-center">Loading...</div>;
   if (error) return <div className="p-4 text-red-500 text-center">Error: {error}</div>;
@@ -85,7 +101,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment }) => {
           No hay datos disponibles para el año {selectedYear} y el departamento {departmentName}.
         </div>
       ) : (
-        <CollapsibleMenu data={filteredMetrics} />
+        <CollapsibleMenu data={filteredMetrics} selectedIndex={selectedIndex} />
       )}
     </div>
   );
@@ -102,6 +118,7 @@ CollapsibleMenuContainer.propTypes = {
       }),
     }),
   ]),
+  selectedIndex: PropTypes.number.isRequired,
 };
 
 export default CollapsibleMenuContainer;

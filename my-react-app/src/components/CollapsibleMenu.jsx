@@ -1,128 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { labels } from '../config/config.js';
 
-// JSON de texto con IDs
-const TEXT_JSON = [
-  {
-    Disponibilidad: {
-      'Relación alumno-docente': {
-        'Relación alumno-docente - preescolar': '{1}',
-        'Relación alumno-docente - primaria': '{2}',
-        'Relación alumno-docente - secundaria': '{3}',
-        'Relación alumno-docente - media': '{4}',
-      },
-      'Docentes con formación mínima': {
-        'Porcentaje de docentes con pregrado - preescolar': '{5}',
-        'Porcentaje de docentes con pregrado - primaria': '{6}',
-        'Porcentaje de docentes con pregrado - secundaria': '{7}',
-        'Porcentaje de docentes con pregrado - media': '{8}',
-      },
-      'Relación alumno - aula': {
-        'Relación alumno - aula - preescolar': '{9}',
-        'Relación alumno - aula - primaria': '{10}',
-        'Relación alumno - aula - secundaria': '{11}',
-        'Relación alumno - aula - media': '{12}',
-      },
-      'Matrícula jornada única o completa': {
-        'Porcentaje de matrícula en jornada única o completa - preescolar': '{13}',
-        'Porcentaje de matrícula en jornada única o completa - primaria': '{14}',
-        'Porcentaje de matrícula en jornada única o completa - secundaria': '{15}',
-        'Porcentaje de matrícula en jornada única o completa - media': '{16}',
-      },
-      'Tecnología de la información': {
-        'Relación alumno-computador': '{17}',
-        'Porcentaje alumnos con acceso a internet en sedes educativas': '{18}',
-      },
-      Financiación: {
-        'Gasto por estudiantes - preescolar': '{19}',
-        'Gasto por estudiantes - primaria': '{20}',
-        'Gasto por estudiantes - secundaria': '{21}',
-        'Gasto por estudiantes - media': '{22}',
-      },
-    },
-    Accesibilidad: {
-      'Brecha sector oficial mujer-hombre': {
-        'Brecha tasa de deserción sector oficial mujer-hombre': '{23}',
-        'Brecha tasa de reprobación sector oficial mujer-hombre': '{24}',
-        'Brecha Saber 11 sector oficial mujer-hombre': '{25}',
-        'Brecha tasa de extraedad sector oficial mujer-hombre': '{26}',
-      },
-      'Brecha sector oficial zona rural-urbana': {
-        'Brecha tasa de deserción sector oficial zona rural-urbana': '{27}',
-        'Brecha tasa de reprobación sector oficial zona rural-urbana': '{28}',
-        'Brecha Saber 11 sector oficial zona rural-urbana': '{29}',
-        'Brecha jornada única sector oficial zona rural-urbana': '{30}',
-        'Brecha tasa de extraedad sector oficial zona rural-urbana': '{31}',
-        'Brecha docentes mínima formación sector oficial zona rural-urbana': '{32}',
-      },
-      'Brecha sector oficial-no oficial': {
-        'Brecha tasa de deserción sector oficial-no oficial': '{33}',
-        'Brecha tasa de reprobación sector oficial-no oficial': '{34}',
-        'Brecha Saber 11 sector oficial-no oficial': '{35}',
-        'Brecha jornada única sector oficial-no oficial': '{36}',
-        'Brecha tasa de extraedad sector oficial-no oficial': '{37}',
-        'Brecha docentes mínima formación sector oficial-no oficial': '{38}',
-      },
-    },
-    Adaptabilidad: {
-      Deserción: {
-        'Tasa de deserción intra-anual - Preescolar': '{39}',
-        'Tasa de deserción intra-anual - Primaria': '{40}',
-        'Tasa de deserción intra-anual - Secundaria': '{41}',
-        'Tasa de deserción intra-anual - Media': '{42}',
-        'Tasa de deserción interanual - Preescolar': '{43}',
-        'Tasa de deserción interanual - Primaria': '{44}',
-        'Tasa de deserción inter-anual - Secundaria': '{45}',
-        'Tasa de deserción inter-anual - Media': '{46}',
-      },
-      Extraedad: {
-        'Tasa de extraedad - Preescolar': '{47}',
-        'Tasa de extraedad - Primaria': '{48}',
-        'Tasa de extraedad - Secundaria': '{49}',
-        'Tasa de extraedad - Media': '{50}',
-      },
-      Aprobación: {
-        'Tasa de aprobación - Preescolar': '{51}',
-        'Tasa de aprobación - Primaria': '{52}',
-        'Tasa de aprobación - Secundaria': '{53}',
-        'Tasa de aprobación - Media': '{54}',
-      },
-    },
-    Aceptabilidad: {
-      'Formación docente de alto nivel': {
-        'Porcentaje de docentes con posgrado - Preescolar': '{55}',
-        'Porcentaje de docentes con posgrado - primaria': '{56}',
-        'Porcentaje de docentes con posgrado - secundaria': '{57}',
-        'Porcentaje de docentes con posgrado - media': '{58}',
-      },
-      'Desempeño en pruebas oficiales': {
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 3 - Matematicas': '{59}',
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 3 - Lenguaje': '{60}',
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 5 - Matematicas': '{61}',
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 5 - Lenguaje': '{62}',
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 9 - Matematicas': '{63}',
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 9 - Lenguaje': '{64}',
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 11 - Matematicas': '{65}',
-        'Porcentaje de estudiantes en desempeño esperado en pruebas Saber 11 - Lenguaje': '{66}',
-      },
-      'Docentes de carrera': {
-        'Porcentaje de docentes de carrera - Preescolar': '{67}',
-        'Porcentaje de docentes de carrera - Primaria': '{68}',
-        'Porcentaje de docentes de carrera - Secundaria': '{69}',
-        'Porcentaje de docentes de carrera - Media': '{70}',
-      },
-      'Infraestrutura adecuada': {
-        'Porcentaje de estudiantes matriculados en IE con infraestrutura adecuada - Preescolar': '{71}',
-        'Porcentaje de estudiantes matriculados en IE con infraestrutura adecuada - Primaria': '{72}',
-        'Porcentaje de estudiantes matriculados en IE con infraestrutura adecuada - Secundaria': '{73}',
-        'Porcentaje de estudiantes matriculados en IE con infraestrutura adecuada - Media': '{74}',
-      },
-    },
-  },
-];
-
-const CollapsibleMenu = ({ data }) => {
+const CollapsibleMenu = ({ data,selectedIndex }) => {
   const [openSections, setOpenSections] = useState({});
+  const [textJson, setTextJson] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Cargar el JSON de texto desde la URL
+  useEffect(() => {
+    const fetchTextJson = async () => {
+      try {
+        const response = await fetch('https://gist.githubusercontent.com/Ybaronac/13ade4e7376c56e3b5b9ae439cfa9439/raw/b775c91fbd47acc2a9c031b550cb05be2d643e8f/ItemsIDE.json');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch text JSON: ${response.status} ${response.statusText}`);
+        }
+        const jsonData = await response.json();
+        setTextJson(jsonData[0]); // El JSON es un array, tomamos el primer objeto
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+    fetchTextJson();
+  }, []);
 
   // Inicializar openSections recursivamente
   const initializeOpenSections = (obj, path = '') => {
@@ -139,11 +42,26 @@ const CollapsibleMenu = ({ data }) => {
     return sections;
   };
 
-  // Inicializar openSections al cargar los datos
+  // Filtrar textJson según selectedIndex
+  const filterTextJson = (textJson) => {
+    if (!textJson) return null;
+    if (selectedIndex === 0) return textJson; // Mostrar todo para "General"
+    const categoryLabel = labels[selectedIndex]; // Ej. "Disponibilidad"
+    if (textJson[categoryLabel]) {
+      return { [categoryLabel]: textJson[categoryLabel] }; // Mostrar solo la sección correspondiente
+    }
+    console.log(`Sección ${categoryLabel} no encontrada en textJson`);
+    return {};
+  };
+
+  // Inicializar openSections cuando textJson esté disponible
   useEffect(() => {
-    const initialSections = initializeOpenSections(TEXT_JSON[0]);
-    setOpenSections(initialSections);
-  }, []);
+    if (textJson) {
+      const filteredTextJson = filterTextJson(textJson);
+      const initialSections = initializeOpenSections(filteredTextJson);
+      setOpenSections(initialSections);
+    }
+  }, [textJson,selectedIndex]);
 
   // Manejar el toggle de una sección
   const toggleSection = (key) => {
@@ -223,7 +141,11 @@ const CollapsibleMenu = ({ data }) => {
   };
 
   // Combinar el JSON de texto con los valores
-  const combinedData = data[0] ? replaceValues(TEXT_JSON[0], data[0]) : null;
+  const filteredTextJson = filterTextJson(textJson);
+  const combinedData = filteredTextJson && data[0] ? replaceValues(filteredTextJson, data[0]) : null;
+
+  if (loading) return <div className="p-2 text-center">Loading text JSON...</div>;
+  if (error) return <div className="p-2 text-red-500 text-center">Error: {error}</div>;
 
   return (
     <div className="collapsible-menu p-2">
@@ -238,6 +160,7 @@ const CollapsibleMenu = ({ data }) => {
 
 CollapsibleMenu.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedIndex: PropTypes.number.isRequired,
 };
 
 export default CollapsibleMenu;
