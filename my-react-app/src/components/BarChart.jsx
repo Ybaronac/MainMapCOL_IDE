@@ -11,7 +11,7 @@ const BarChart = ({
   labels: propLabels = labels
 }) => {
   const svgRef = useRef();
-  const margin = { top: 50, right: 20, bottom: 50, left: 40 }; // Increased top margin for title
+  const margin = { top: 50, right: 20, bottom: 50, left: 40 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
@@ -96,31 +96,31 @@ const BarChart = ({
     const deptText = selectedDepartment 
       ? selectedDepartment.properties.DPTO_CNMBR
       : 'Colombia';
-    const deptFontSize = 14; // Larger for department
+    const deptFontSize = 14;
     const maxTitleWidth = chartWidth - 20;
     const deptLines = wrapText(deptText, maxTitleWidth, deptFontSize);
 
     const title = g.append("text")
       .attr("x", chartWidth / 2)
-      .attr("y", -margin.top + 15) // Start 15px from top
+      .attr("y", -margin.top + 15)
       .attr("text-anchor", "middle")
       .style("font-family", "'Poppins', sans-serif");
 
     deptLines.forEach((line, i) => {
       title.append("tspan")
         .attr("x", chartWidth / 2)
-        .attr("dy", i === 0 ? 0 : 12) // 12px between department lines
+        .attr("dy", i === 0 ? 0 : 12)
         .style("font-size", `${deptFontSize}px`)
-        .style("font-weight", "600") // Bold department
+        .style("font-weight", "600")
         .text(line);
     });
 
     // Title: Year
     title.append("tspan")
       .attr("x", chartWidth / 2)
-      .attr("dy", deptLines.length > 1 ? 14 : 12) // Extra space if multi-line
-      .style("font-size", "10px") // Smaller for year
-      .style("font-weight", "400") // Normal weight
+      .attr("dy", deptLines.length > 1 ? 14 : 12)
+      .style("font-size", "10px")
+      .style("font-weight", "400")
       .text(selectedYear);
 
     // Bars

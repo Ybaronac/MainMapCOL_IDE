@@ -16,7 +16,7 @@ const Legend = ({
     adaptabilityColours
   ];
 
-  const selectedColours = colorSchemes[buttonIndex] || '#616a6b'; // Default to generalIDEColours if index is out of range
+  const selectedColours = colorSchemes[buttonIndex] || '#616a6b'; 
 
   useEffect(() => {
     if (!svgRef.current) return;

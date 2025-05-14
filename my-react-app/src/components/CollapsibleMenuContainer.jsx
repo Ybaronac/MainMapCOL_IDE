@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CollapsibleMenu from './CollapsibleMenu';
 import PropTypes from 'prop-types';
 import { labels } from '../config/config.js';
+import { DEPARTMENTS_ITEMS } from '../config/configURLDataSource.js';
 
 const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIndex }) => {
   const [data, setData] = useState([]);
@@ -10,9 +11,9 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
   const [filteredMetrics, setFilteredMetrics] = useState([]);
   const [departmentName, setDepartmentName] = useState('COLOMBIA');
 
-  // Mapeo tentativo de categorías a claves numéricas
+
   const categoryKeysMap = {
-    Disponibilidad: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22'], // Ajustar según ItemsIDE.json
+    Disponibilidad: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22'],
     Accesibilidad: ['23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38'],
     Adaptabilidad: ['39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54'],
     Aceptabilidad: ['55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74']
@@ -21,9 +22,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          'https://gist.githubusercontent.com/Ybaronac/26018c1622e630cd970043a5f664ff46/raw/5df603fb5239b91d8316b215c47e32ffd10d91cb/DepartmentsItemsIDEperYearTest.json'
-        );
+        const response = await fetch(DEPARTMENTS_ITEMS);
         if (!response.ok) {
           const text = await response.text();
           throw new Error(
@@ -54,18 +53,21 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
         deptID = selectedDepartment;
       }
     }
+    console.log('deptID:', deptID, 'tempDepartmentName:', tempDepartmentName);
 
     if (yearAsString && data.length > 0) {
       const departmentData = data.find(
-        (d) => d.departmentID.toString() === deptID
+        (d) => String(d.departmentID).padStart(2, '0') === deptID || 
+        String(d.departmentID) === deptID
       );
 
       if (departmentData && departmentData.values[yearAsString]) {
         let metrics = departmentData.values[yearAsString];
 
         if (selectedIndex > 0) {
-          const categoryLabel = labels[selectedIndex]; // Ej. "Disponibilidad"
+          const categoryLabel = labels[selectedIndex];
           const categoryKeys = categoryKeysMap[categoryLabel] || [];
+          console.log('categoryLabel:', categoryLabel, 'categoryKeys:', categoryKeys, 'metrics antes:', metrics);
           if (categoryKeys.length > 0) {
             metrics = categoryKeys.reduce((acc, key) => {
               if (metrics[key] !== undefined) {
@@ -77,14 +79,15 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
             metrics = {};
           }
         }
-
         setFilteredMetrics([metrics]);
         setDepartmentName(tempDepartmentName);
       } else {
+        console.log('No se encontraron datos para deptID:', deptID, 'año:', yearAsString);
         setFilteredMetrics([]);
         setDepartmentName(tempDepartmentName);
       }
     } else {
+      console.log('Datos no disponibles o año inválido:', yearAsString, data.length);
       setFilteredMetrics([]);
       setDepartmentName(tempDepartmentName);
     }
@@ -92,7 +95,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
 
   if (loading) return <div className="p-4 text-center">Loading...</div>;
   if (error) return <div className="p-4 text-red-500 text-center">Error: {error}</div>;
-
+  console.log(filteredMetrics);
   return (
     <div className="collapsible-menu-container p-4">
       <h1 className="menu-title text-2xl font-bold mb-4">IDE: {departmentName} - {selectedYear} </h1>

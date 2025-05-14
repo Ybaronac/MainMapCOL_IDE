@@ -171,7 +171,7 @@ p {
 
 #year-slider {
   width: 100%;
-  max-width: 37.25rem; /* ~596px */
+  max-width: 37.25rem;
   padding-bottom: 2rem;
   margin: 0 auto;
   display: flex;
@@ -181,7 +181,7 @@ p {
 /* Visualization Elements */
 #legend {
   width: 100%;
-  max-width: 37.25rem; /* ~596px */
+  max-width: 37.25rem;
   padding: 0;
   margin: 0 auto;
   background: none;
@@ -213,9 +213,14 @@ p {
 .collapsible-menu {
   font-family: 'Poppins', sans-serif;
   width: 100%;
-  padding: 0;
+  padding: 1rem;
   box-shadow: none;
   margin-bottom: 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.collapsible-menu .menu-node {
+  border-bottom: 1px solid #e5e7eb !important;
 }
 
 /* Header and Footer */
@@ -308,7 +313,7 @@ header .container, footer .container {
   .visualization-container {
     width: 100%;
     max-width: 990px;
-    flex-direction: column; /* Stack columns on mobile */
+    flex-direction: column;
   }
   .button-sidebar {
     width: 100%;

@@ -8,6 +8,7 @@ import ButtonGroup from './components/ButtonGroup';
 import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
 import './App.css';
 import {labels, generalColours, yearSliderGeneralColours } from './config/config.js';
+import { IDE_DEPARTMENTS_CHOROPLETH, IDE_COLOMBIA_CHOROPLETH } from './config/configURLDataSource.js';
 
 const MapVisualization = () => {
   const [dataIDE, setDataIDE] = useState(new Map());
@@ -17,10 +18,11 @@ const MapVisualization = () => {
   const [selectedData, setSelectedData] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
 
+
   useEffect(() => {
     const mapPromises = [
-      d3.json("https://gist.githubusercontent.com/Ybaronac/ea35627ef169446ee9624421eef8e4fd/raw/544b2eb70a1904f9952f8e3ed651a0e3272f0e82/IDE_ColTest.json"),
-      d3.json("https://gist.githubusercontent.com/Ybaronac/df3edd8c29daa4855a6617b81f52a1cf/raw/c8d9cba48532150223764f23cb125874fcb350ee/IDE_ColGeneralTest.json")
+      d3.json(IDE_DEPARTMENTS_CHOROPLETH),
+      d3.json(IDE_COLOMBIA_CHOROPLETH)
     ];
 
     Promise.all(mapPromises).then(([ideData, countryIdeData]) => {
@@ -56,7 +58,7 @@ const MapVisualization = () => {
 
   const barChartData = selectedData
     ? Object.entries(selectedData[selectedYear]).map(([key, value], i) => ({
-        group: labels[i] || key, // Fallback to key if labels[i] is undefined
+        group: labels[i] || key,
         value: parseFloat(value),
       }))
     : [];
@@ -89,7 +91,7 @@ const MapVisualization = () => {
         {/* Left Column: 2/3 (~660px) */}
         <div
           style={{
-            width: '660px', // 2/3 of 990px
+            width: '660px', 
             display: 'flex',
             flexDirection: 'column',
           }}
@@ -107,7 +109,7 @@ const MapVisualization = () => {
           <YearSlider
                 selectedYear={selectedYear}
                 onYearChange={handleYearChange}
-                width={596} // 660px - 2*32px padding
+                width={596} 
                 buttonIndex={buttonIndex}
               />
             <div
@@ -128,20 +130,19 @@ const MapVisualization = () => {
                 countryData={countryData}
                 onDepartmentClick={handleDepartmentClick}
                 selectedDepartment={selectedDepartment}
-                width={660} // 660px - 2*32px padding
-                height={600} // Scaled from 430px (430 * 660/533 ≈ 530)
+                width={660} 
+                height={600} 
               />
               <Legend
                 buttonIndex={buttonIndex}
-                width={596} // 660px - 2*32px padding
+                width={596}
               />
             </div>
           </div>
         </div>
-        {/* Right Column: 1/3 (~330px) */}
         <div
           style={{
-            width: '306px', // 1/3 of 990px
+            width: '306px',
             display: 'flex',
             flexDirection: 'column',
             gap: '24px',
@@ -160,7 +161,7 @@ const MapVisualization = () => {
             <ButtonGroup
               selectedIndex={buttonIndex}
               onButtonClick={handleButtonClick}
-              labels={labels} // Pass labels for consistency
+              labels={labels} 
             />
           </div>
           <div
@@ -176,9 +177,9 @@ const MapVisualization = () => {
               data={barChartData}
               selectedYear={selectedYear}
               selectedDepartment={selectedDepartment}
-              width={310} // 330px - 2*32px padding
-              height={380} // Scaled from 215px (215 * 330/267 ≈ 265)
-              labels={labels} // Pass labels for x-axis
+              width={310} 
+              height={380}
+              labels={labels}
             />
           </div>
         </div>

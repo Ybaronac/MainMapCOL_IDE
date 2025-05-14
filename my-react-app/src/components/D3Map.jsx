@@ -5,8 +5,8 @@ import { MdMyLocation } from "react-icons/md";
 import { HiOutlineZoomOut, HiOutlineZoomIn  } from "react-icons/hi";
 import TransparentWindow from './TransparentWindow';
 import '../styles/D3Map.css';
-import {labels, generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
-
+import {labels, generalColours, generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
+import { COLOMBIA_DEPARTMENTS_MAP_JSON_DATA, WORLD_MAP_JSON_DATA} from '../config/configURLDataSource.js';
 
 const D3Map = ({ 
     width = 800, 
@@ -112,8 +112,8 @@ const D3Map = ({
   
       // Load and render map data
       Promise.all([
-        d3.json("https://gist.githubusercontent.com/Ybaronac/e65e865cf1139b16ef6cd47d9f86346a/raw/Colombia_departamentos.json    "),
-        d3.json("https://gist.githubusercontent.com/Ybaronac/ce02fcf1cd6d455ef585e2946117363e/raw/8a30de4e4753bd1a701caa08870df42dfd1e9bcd/worldMapData.json")
+        d3.json(COLOMBIA_DEPARTMENTS_MAP_JSON_DATA),
+        d3.json(WORLD_MAP_JSON_DATA)
       ]).then(([data, worldData]) => {
           backgroundMapGroup.selectAll("path.background-countries")
           .data(worldData.features)
@@ -122,7 +122,7 @@ const D3Map = ({
           .attr("class", "background-countries")
           .attr("d", path)
           .style("fill", "#d7dbdd")
-          .style("fill", "url(#diagonal-hatch)") // Light gray for background
+          .style("fill", "url(#diagonal-hatch)")
           .style("stroke", "#ffffff")
           .style("stroke-width", 3)
           .style("pointer-events", "none");
@@ -151,7 +151,12 @@ const D3Map = ({
                     </thead>
                     <tbody>
                       <tr>
-                        <td>${labels[buttonIndex] || 'Sin label'}</td>
+                        <td>
+                          <svg width="16" height="16" viewBox="0 0 512 512" style="vertical-align: middle; margin-right: 5px;">
+                            <rect x="48" y="48" width="416" height="416" rx="48" ry="48" fill="${generalColours[buttonIndex] || '#000'}" />
+                          </svg>
+                          ${labels[buttonIndex] || 'Sin label'}
+                        </td>
                         <td>${value}%</td>
                       </tr>
                     </tbody>
@@ -224,7 +229,12 @@ const D3Map = ({
                 </thead>
                 <tbody>
                   <tr>
-                    <td>${labels[buttonIndex] || 'Sin label'}</td>
+                    <td>
+                      <svg width="16" height="16" viewBox="0 0 512 512" style="vertical-align: middle; margin-right: 5px;">
+                        <rect x="48" y="48" width="416" height="416" rx="48" ry="48" fill="${generalColours[buttonIndex] || '#000'}" />
+                      </svg>
+                      ${labels[buttonIndex] || 'Sin label'}
+                    </td>
                     <td>${value}%</td>
                   </tr>
                 </tbody>
@@ -285,7 +295,12 @@ const D3Map = ({
                   </thead>
                   <tbody>
                     <tr>
-                      <td>${labels[buttonIndex] || 'Sin label'}</td>
+                      <td>
+                        <svg width="16" height="16" viewBox="0 0 512 512" style="vertical-align: middle; margin-right: 5px;">
+                          <rect x="48" y="48" width="416" height="416" rx="48" ry="48" fill="${generalColours[buttonIndex] || '#000'}" />
+                        </svg>
+                        ${labels[buttonIndex] || 'Sin label'}
+                      </td>
                       <td>${value}%</td>
                     </tr>
                   </tbody>
@@ -320,7 +335,7 @@ const D3Map = ({
           .duration(750)
           .call(zoomRef.current.transform, d3.zoomIdentity);
       
-      g.style("stroke-width", "1.5px"); // Reset stroke-width to initial value
+      g.style("stroke-width", "1.5px");
 
       activeRef.current = null;
       onDepartmentClick(null, countryData);
@@ -334,7 +349,7 @@ const D3Map = ({
       const svg = d3.select(svgRef.current);
       svg.transition()
           .duration(750)
-          .call(zoomRef.current.scaleBy, 1.5); // Aumenta la escala en un factor de 1.5
+          .call(zoomRef.current.scaleBy, 1.5);
     };
   
     // Zoom Out function
@@ -343,7 +358,7 @@ const D3Map = ({
         const svg = d3.select(svgRef.current);
         svg.transition()
             .duration(750)
-            .call(zoomRef.current.scaleBy, 0.67); // Reduce la escala en un factor de 0.67 (1/1.5)
+            .call(zoomRef.current.scaleBy, 0.67);
     };
   
     return (
@@ -363,7 +378,7 @@ const D3Map = ({
               width={200}
               height={150}
               isInteractive={false}
-              text={windowText} // Pasa el texto dinámico
+              text={windowText}
             />
 
             <button

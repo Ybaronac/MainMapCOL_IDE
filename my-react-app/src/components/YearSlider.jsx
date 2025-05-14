@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import '../styles/YearSlider.css';
-import { generalColours, yearSliderGeneralColours } from '../config/config.js';
+import { generalColours, yearSliderGeneralColours, years} from '../config/config.js';
 
 const YearSlider = ({
   width = 500,
-  years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
   selectedYear,
   onYearChange,
   buttonIndex = 0,
@@ -25,9 +24,8 @@ const YearSlider = ({
   const normalBorderColor = generalColours[buttonIndex % generalColours.length] || '#1890ff';
   const haloColor = yearSliderGeneralColours[buttonIndex % yearSliderGeneralColours.length] || '#e6f7ff';
 
-  // Define la variable CSS para el color dinámico
   const sliderStyle = {
-    '--halo-color': haloColor, // Pasa haloColor como variable CSS
+    '--halo-color': haloColor,
   };
 
   const handleStyle = {
