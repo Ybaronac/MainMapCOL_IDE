@@ -2,6 +2,7 @@
 
 export const labels = ["IDE General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"];
 export const years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016];
+export const traficLightColours = ['#a52019','#e5be01','#317f43'];
 export const generalColours = ['#0fe397', '#ff4a35', '#28d4ff', '#fded20', '#7c16fa'];
 export const yearSliderGeneralColours = ['#84f8ce', '#ffa297', '#8ae8ff', '#fef695', '#c89cfd'];
 export const generalIDEColours = ['#cffceb', '#a9fadd', '#84f8ce', '#4df4b7', '#15f1a1','#0dd38a', '#0aae72', '#08895a', '#066441', '#043f29'];

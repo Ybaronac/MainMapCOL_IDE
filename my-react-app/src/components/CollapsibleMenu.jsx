@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { IoIosSquare } from 'react-icons/io';
-import { labels, generalColours } from '../config/config.js';
+import { IoIosSquare, IoIosRadioButtonOn } from 'react-icons/io';
+import { labels, generalColours, traficLightColours } from '../config/config.js';
 import { ITEMS_IDE } from '../config/configURLDataSource.js';
 
 const CollapsibleMenu = ({ data,selectedIndex }) => {
@@ -10,7 +10,6 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Cargar el JSON de texto desde la URL
   useEffect(() => {
     const fetchTextJson = async () => {
       try {
@@ -34,7 +33,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     const sections = {};
     Object.entries(obj).forEach(([key, value]) => {
       const currentPath = path ? `${path}.${key}` : key;
-      sections[currentPath] = false; // Inicializar como cerrado
+      sections[currentPath] = false; 
       if (typeof value !== 'string') {
         const childSections = initializeOpenSections(value, currentPath);
         Object.assign(sections, childSections);
@@ -54,7 +53,6 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     return {};
   };
 
-
   useEffect(() => {
     if (textJson) {
       const filteredTextJson = filterTextJson(textJson);
@@ -63,14 +61,12 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     }
   }, [textJson,selectedIndex]);
 
-
   const toggleSection = (key) => {
     setOpenSections((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
   };
-
 
   const replaceValues = (textObj, values) => {
     if (!values || !textObj) return textObj;
@@ -93,6 +89,20 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     return result;
   };
 
+  const getValueColor = (value) => {
+    // Extract numeric value (e.g., "75%" -> 75)
+    const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
+    if (isNaN(numericValue)) return { red: false, yellow: false, green: false };
+
+    if (numericValue >= 0 && numericValue <= 50) {
+      return { red: true, yellow: false, green: false };
+    } else if (numericValue >= 51 && numericValue <= 75) {
+      return { red: false, yellow: true, green: false };
+    } else if (numericValue >= 76 && numericValue <= 100) {
+      return { red: false, yellow: false, green: true };
+    }
+    return { red: false, yellow: false, green: false };
+  };
 
   const renderNode = (obj, path = '', level = 0) => {
     if (!obj) return null;
@@ -111,6 +121,8 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
         }
       }
 
+      const iconStates = isLeaf ? getValueColor(value) : { red: false, yellow: false, green: false };
+
       return (
         <div key={currentPath} className="mx-2" style={{ marginLeft: `${level * 0.75}rem` }}>
           <div
@@ -124,7 +136,41 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
                   style={{ color: iconColor }}
                 />
               ) : null}
-																				 
+
+            {isLeaf && (
+                <div className="flex space-x-1">
+                <IoIosRadioButtonOn
+                  className="text-sm"
+                  style={{
+                    color: traficLightColours[0],
+                    opacity: iconStates.red ? 1 : 0.1,
+                    border: '1px solid black',
+                    borderColor: '#e5e7eb',
+                    borderRadius: '50%',
+                  }}
+                />
+                <IoIosRadioButtonOn
+                  className="text-sm"
+                  style={{
+                    color: traficLightColours[1],
+                    opacity: iconStates.yellow ? 1 : 0.1,
+                    border: '1px solid black',
+                    borderColor: '#e5e7eb',
+                    borderRadius: '50%',
+                  }}
+                />
+                <IoIosRadioButtonOn
+                  className="text-sm"
+                  style={{
+                    color: traficLightColours[2],
+                    opacity: iconStates.green ? 1 : 0.1,
+                    border: '1px solid black',
+                    borderColor: '#e5e7eb',
+                    borderRadius: '50%',
+                  }}
+                />
+                </div>
+              )}														 
 				
             </div>
             <div className="flex justify-between items-center w-full">

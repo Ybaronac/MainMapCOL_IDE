@@ -53,7 +53,6 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
         deptID = selectedDepartment;
       }
     }
-    console.log('deptID:', deptID, 'tempDepartmentName:', tempDepartmentName);
 
     if (yearAsString && data.length > 0) {
       const departmentData = data.find(
@@ -67,7 +66,6 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
         if (selectedIndex > 0) {
           const categoryLabel = labels[selectedIndex];
           const categoryKeys = categoryKeysMap[categoryLabel] || [];
-          console.log('categoryLabel:', categoryLabel, 'categoryKeys:', categoryKeys, 'metrics antes:', metrics);
           if (categoryKeys.length > 0) {
             metrics = categoryKeys.reduce((acc, key) => {
               if (metrics[key] !== undefined) {
@@ -82,12 +80,10 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
         setFilteredMetrics([metrics]);
         setDepartmentName(tempDepartmentName);
       } else {
-        console.log('No se encontraron datos para deptID:', deptID, 'año:', yearAsString);
         setFilteredMetrics([]);
         setDepartmentName(tempDepartmentName);
       }
     } else {
-      console.log('Datos no disponibles o año inválido:', yearAsString, data.length);
       setFilteredMetrics([]);
       setDepartmentName(tempDepartmentName);
     }
@@ -95,7 +91,6 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
 
   if (loading) return <div className="p-4 text-center">Loading...</div>;
   if (error) return <div className="p-4 text-red-500 text-center">Error: {error}</div>;
-  console.log(filteredMetrics);
   return (
     <div className="collapsible-menu-container p-4">
       <h1 className="menu-title text-2xl font-bold mb-4">IDE: {departmentName} - {selectedYear} </h1>
