@@ -13,10 +13,10 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
 
 
   const categoryKeysMap = {
-    Disponibilidad: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22'],
-    Accesibilidad: ['23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38'],
-    Adaptabilidad: ['39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54'],
-    Aceptabilidad: ['55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74']
+    Disponibilidad: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29'],
+    Accesibilidad: ['30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49'],
+    Adaptabilidad: ['50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69'],
+    Aceptabilidad: ['70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94']
   };
 
   useEffect(() => {
@@ -30,6 +30,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
           );
         }
         const jsonData = await response.json();
+        console.log('Fetched DepartmentsItemsIDE:', jsonData);
         setData(jsonData);
         setLoading(false);
       } catch (err) {
@@ -54,18 +55,21 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
       }
     }
 
+    console.log('Selected Year:', yearAsString, 'DeptID:', deptID, 'SelectedIndex:', selectedIndex);
+
     if (yearAsString && data.length > 0) {
       const departmentData = data.find(
-        (d) => String(d.departmentID).padStart(2, '0') === deptID || 
-        String(d.departmentID) === deptID
+        (d) => String(d.departmentID).padStart(2, '0') === deptID || String(d.departmentID) === deptID
       );
 
       if (departmentData && departmentData.values[yearAsString]) {
         let metrics = departmentData.values[yearAsString];
+        console.log('Raw Metrics:', metrics);
 
         if (selectedIndex > 0) {
           const categoryLabel = labels[selectedIndex];
           const categoryKeys = categoryKeysMap[categoryLabel] || [];
+          console.log('Filtering for Category:', categoryLabel, 'Keys:', categoryKeys);
           if (categoryKeys.length > 0) {
             metrics = categoryKeys.reduce((acc, key) => {
               if (metrics[key] !== undefined) {
@@ -77,13 +81,16 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
             metrics = {};
           }
         }
+        console.log('Filtered Metrics:', metrics);
         setFilteredMetrics([metrics]);
         setDepartmentName(tempDepartmentName);
       } else {
+        console.log('No data for year or department');
         setFilteredMetrics([]);
         setDepartmentName(tempDepartmentName);
       }
     } else {
+      console.log('No data or year not set');
       setFilteredMetrics([]);
       setDepartmentName(tempDepartmentName);
     }

@@ -9,5 +9,8 @@ export const IDE_COLOMBIA_CHOROPLETH = 'https://gist.githubusercontent.com/Ybaro
 
 
 //Configuracion de URL - Sub indices Data
-export const ITEMS_IDE = 'https://gist.githubusercontent.com/Ybaronac/13ade4e7376c56e3b5b9ae439cfa9439/raw/b775c91fbd47acc2a9c031b550cb05be2d643e8f/ItemsIDE.json';
-export const DEPARTMENTS_ITEMS = 'https://gist.githubusercontent.com/Ybaronac/26018c1622e630cd970043a5f664ff46/raw/5df603fb5239b91d8316b215c47e32ffd10d91cb/DepartmentsItemsIDEperYearTest.json';
+//export const ITEMS_IDE = 'https://gist.githubusercontent.com/Ybaronac/13ade4e7376c56e3b5b9ae439cfa9439/raw/b775c91fbd47acc2a9c031b550cb05be2d643e8f/ItemsIDE.json';
+export const ITEMS_IDE = 'https://gist.githubusercontent.com/Ybaronac/26c41cb8e51e0f4c7c7abddfb8905ca4/raw/3430bd7cbbaba5eb4fb96d4cbe1cb09addba423c/ItemsIDEV2.json';
+
+//export const DEPARTMENTS_ITEMS = 'https://gist.githubusercontent.com/Ybaronac/26018c1622e630cd970043a5f664ff46/raw/5df603fb5239b91d8316b215c47e32ffd10d91cb/DepartmentsItemsIDEperYearTest.json';
+export const DEPARTMENTS_ITEMS = 'https://gist.githubusercontent.com/Ybaronac/10783204ae6c4313b858588e5bdd9fbc/raw/e5547853e79daaba0777bb6326b28304aa27db04/DepartmentsItemsIDEperYearTestV2.json';

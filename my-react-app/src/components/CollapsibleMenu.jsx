@@ -18,6 +18,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
           throw new Error(`Failed to fetch text JSON: ${response.status} ${response.statusText}`);
         }
         const jsonData = await response.json();
+        console.log('Fetched ItemsIDE:', jsonData);
         setTextJson(jsonData[0]);
         setLoading(false);
       } catch (err) {
@@ -32,9 +33,10 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     if (!obj) return {};
     const sections = {};
     Object.entries(obj).forEach(([key, value]) => {
+      if (key === 'score') return;
       const currentPath = path ? `${path}.${key}` : key;
       sections[currentPath] = false; 
-      if (typeof value !== 'string') {
+      if (typeof value === 'object' && value !== null)  {
         const childSections = initializeOpenSections(value, currentPath);
         Object.assign(sections, childSections);
       }
@@ -56,6 +58,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
   useEffect(() => {
     if (textJson) {
       const filteredTextJson = filterTextJson(textJson);
+      console.log('Filtered TextJson:', filteredTextJson);
       const initialSections = initializeOpenSections(filteredTextJson);
       setOpenSections(initialSections);
     }
@@ -73,24 +76,33 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     const result = JSON.parse(JSON.stringify(textObj)); 
     const replaceInObject = (obj) => {
       Object.keys(obj).forEach((key) => {
-        if (typeof obj[key] === 'string') {
+        if (key === 'score' && typeof obj[key] === 'string') {
+          obj[key] = obj[key].replace(/{(\d+)}/g, (match, id) => values[id] || match);
+        } else if (typeof obj[key] === 'string') {
           obj[key] = obj[key].replace(/{(\d+)}/g, (match, id) => values[id] || match);
           obj[key] = obj[key].replace(/{info}/g, (match) => {
             if (obj[key].includes('Saber 5')) return '5';
             if (obj[key].includes('Saber 11')) return '11';
             return 'Unknown';
           });
-        } else if (typeof obj[key] === 'object') {
+        } else if (typeof obj[key] === 'object' && obj[key] !== null) {
           replaceInObject(obj[key]);
         }
       });
     };
     replaceInObject(result);
+    console.log('Replaced Values:', result);
     return result;
   };
 
   const getValueColor = (value) => {
-    // Extract numeric value (e.g., "75%" -> 75)
+    if (typeof value === 'string' && !/^[0-9.]/.test(value)) {
+      return {
+        red: value === 'No',
+        yellow: false,
+        green: value === 'Si',
+      };
+    }
     const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
     if (isNaN(numericValue)) return { red: false, yellow: false, green: false };
 
@@ -107,9 +119,11 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
   const renderNode = (obj, path = '', level = 0) => {
     if (!obj) return null;
     return Object.entries(obj).map(([key, value]) => {
+      if (key === 'score') return null;
       const currentPath = path ? `${path}.${key}` : key;
       const isLeaf = typeof value === 'string';
       const isOpen = openSections[currentPath] ?? false;
+      const isMainLabel = level === 0 && labels.includes(key);
 
       let iconColor = '#000'; 
       if (level === 0 && !isLeaf) {
@@ -121,7 +135,9 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
         }
       }
 
-      const iconStates = isLeaf ? getValueColor(value) : { red: false, yellow: false, green: false };
+      // Use score for non-leaf nodes, value for leaf nodes
+      const displayValue = isLeaf ? value : (value.score || '');
+      const iconStates = displayValue ? getValueColor(displayValue) : { red: false, yellow: false, green: false };
 
       return (
         <div key={currentPath} className="mx-2" style={{ marginLeft: `${level * 0.75}rem` }}>
@@ -137,7 +153,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
                 />
               ) : null}
 
-            {isLeaf && (
+            {!isMainLabel && displayValue && (
                 <div className="flex space-x-1">
                 <IoIosRadioButtonOn
                   className="text-sm"
@@ -173,18 +189,58 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
               )}														 
 				
             </div>
-            <div className="flex justify-between items-center w-full">
+            <div className="flex items-center w-full">
+              <div className="flex items-center flex-1">
               <span
-                className={level === 0 ? 'font-bold' : 'font-medium'}
+                className={level === 0 ? 'font-bold max-w-[150px]' : 'font-medium'}
                 style={level === 0 ? { fontWeight: 'bold' } : {}}
               >
                 {key}
               </span>
-              {isLeaf ? (
-                <span className="text-gray-600 mr-[10px]">{value}</span>
-              ) : level <= 1 ? (
-                <span className="ml-auto text-sm">{isOpen ? '⏷' : '⏵'}</span>
-              ) : null}
+              {isMainLabel && displayValue && (
+                  <div className="flex space-x-1 ml-2">
+                    <IoIosRadioButtonOn
+                      className="text-sm"
+                      style={{
+                        color: traficLightColours[0],
+                        opacity: iconStates.red ? 1 : 0.1,
+                        border: '1px solid black',
+                        borderColor: '#e5e7eb',
+                        borderRadius: '50%',
+                      }}
+                    />
+                    <IoIosRadioButtonOn
+                      className="text-sm"
+                      style={{
+                        color: traficLightColours[1],
+                        opacity: iconStates.yellow ? 1 : 0.1,
+                        border: '1px solid black',
+                        borderColor: '#e5e7eb',
+                        borderRadius: '50%',
+                      }}
+                    />
+                    <IoIosRadioButtonOn
+                      className="text-sm"
+                      style={{
+                        color: traficLightColours[2],
+                        opacity: iconStates.green ? 1 : 0.1,
+                        border: '1px solid black',
+                        borderColor: '#e5e7eb',
+                        borderRadius: '50%',
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center">
+                {displayValue && (
+                  <span className="text-gray-600 mr-2">{displayValue}</span>
+                )}
+                {!isLeaf && level <= 1 ? (
+                  <span className="text-sm">{isOpen ? '⏷' : '⏵'}</span>
+                ) : null}
+              </div>
             </div>
           </div>
           {!isLeaf && (
@@ -207,6 +263,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
 
   const filteredTextJson = filterTextJson(textJson);
   const combinedData = filteredTextJson && data[0] ? replaceValues(filteredTextJson, data[0]) : null;
+  console.log('Combined Data:', combinedData);
 
   if (loading) return <div className="p-2 text-center">Loading text JSON...</div>;
   if (error) return <div className="p-2 text-red-500 text-center">Error: {error}</div>;
