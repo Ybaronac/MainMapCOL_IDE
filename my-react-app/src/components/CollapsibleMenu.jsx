@@ -145,16 +145,16 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
             className="flex items-center p-2 hover:bg-gray-100 cursor-pointer menu-node"
             onClick={() => !isLeaf && toggleSection(currentPath)}
           >
-            <div className="flex items-center w-8 flex-shrink-0">
+            <div className="flex items-center flex-shrink-0">
               {level === 0 && !isLeaf ? (
-                <IoIosSquare
-                  className="text-sm"
-                  style={{ color: iconColor }}
-                />
-              ) : null}
-
-            {!isMainLabel && displayValue && (
-                <div className="flex space-x-1">
+                <div className="w-8 flex items-center">
+                  <IoIosSquare
+                    className="text-sm"
+                    style={{ color: iconColor }}
+                  />
+                </div>
+              ) : !isMainLabel && displayValue ? (
+                <div className="w-12 flex items-center space-x-1">
                 <IoIosRadioButtonOn
                   className="text-sm"
                   style={{
@@ -186,19 +186,24 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
                   }}
                 />
                 </div>
-              )}														 
-				
+              ) : null}														 
             </div>
             <div className="flex items-center w-full">
-              <div className="flex items-center flex-1">
-              <span
-                className={level === 0 ? 'font-bold max-w-[150px]' : 'font-medium'}
-                style={level === 0 ? { fontWeight: 'bold' } : {}}
-              >
-                {key}
-              </span>
+              <div className="flex items-center">
+              {level === 0 ? (
+                  <div style={{ width: '120px' }}>
+                    <span
+                      className="font-bold debug-first-level"
+                      style={{ fontWeight: 'bold' }}
+                    >
+                      {key}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="font-medium">{key}</span>
+                )}
               {isMainLabel && displayValue && (
-                  <div className="flex space-x-1 ml-2">
+                  <div className="w-12 flex items-center space-x-1">
                     <IoIosRadioButtonOn
                       className="text-sm"
                       style={{
@@ -232,8 +237,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
                   </div>
                 )}
               </div>
-
-              <div className="flex items-center">
+              <div className="flex items-center ml-auto">
                 {displayValue && (
                   <span className="text-gray-600 mr-2">{displayValue}</span>
                 )}
