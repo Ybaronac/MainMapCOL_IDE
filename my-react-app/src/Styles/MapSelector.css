@@ -1,0 +1,28 @@
+.map-selector {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.map-selector-button {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.map-selector-button.active {
+  background-color: #007bff;
+  color: rgb(255, 255, 255);
+  border-color: #007bff;
+}
+
+.map-selector-button:hover {
+  background-color: #1a3755;
+}

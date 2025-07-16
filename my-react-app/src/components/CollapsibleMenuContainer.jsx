@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CollapsibleMenu from './CollapsibleMenu';
 import PropTypes from 'prop-types';
 import { labels } from '../config/config.js';
-import { DEPARTMENTS_ITEMS } from '../config/configURLDataSource.js';
+import { DEPARTMENTS_ITEMS, ETC_ITEMS } from '../config/configURLDataSource.js';
 
 const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIndex }) => {
   const [data, setData] = useState([]);

@@ -8,7 +8,7 @@ import ButtonGroup from './components/ButtonGroup';
 import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
 import './App.css';
 import {labels, generalColours, yearSliderGeneralColours } from './config/config.js';
-import { IDE_DEPARTMENTS_CHOROPLETH, IDE_COLOMBIA_CHOROPLETH } from './config/configURLDataSource.js';
+import { IDE_DEPARTMENTS_CHOROPLETH, IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
 
 const MapVisualization = () => {
   const [dataIDE, setDataIDE] = useState(new Map());
