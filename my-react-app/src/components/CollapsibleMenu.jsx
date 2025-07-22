@@ -18,7 +18,6 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
           throw new Error(`Failed to fetch text JSON: ${response.status} ${response.statusText}`);
         }
         const jsonData = await response.json();
-        console.log('Fetched ItemsIDE:', jsonData);
         setTextJson(jsonData[0]);
         setLoading(false);
       } catch (err) {
@@ -51,14 +50,13 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     if (textJson[categoryLabel]) {
       return { [categoryLabel]: textJson[categoryLabel] };
     }
-    console.log(`Sección ${categoryLabel} no encontrada en textJson`);
+
     return {};
   };
 
   useEffect(() => {
     if (textJson) {
       const filteredTextJson = filterTextJson(textJson);
-      console.log('Filtered TextJson:', filteredTextJson);
       const initialSections = initializeOpenSections(filteredTextJson);
       setOpenSections(initialSections);
     }
@@ -91,7 +89,6 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
       });
     };
     replaceInObject(result);
-    console.log('Replaced Values:', result);
     return result;
   };
 
@@ -267,7 +264,6 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
 
   const filteredTextJson = filterTextJson(textJson);
   const combinedData = filteredTextJson && data[0] ? replaceValues(filteredTextJson, data[0]) : null;
-  console.log('Combined Data:', combinedData);
 
   if (loading) return <div className="p-2 text-center">Loading text JSON...</div>;
   if (error) return <div className="p-2 text-red-500 text-center">Error: {error}</div>;
