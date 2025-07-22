@@ -94,7 +94,7 @@ const BarChart = ({
 
     // Title: Department name
     const deptText = selectedDepartment 
-      ? selectedDepartment.properties.DPTO_CNMBR
+      ? selectedDepartment.properties.ETC
       : 'Colombia';
     const deptFontSize = 14;
     const maxTitleWidth = chartWidth - 20;

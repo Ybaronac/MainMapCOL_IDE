@@ -112,7 +112,7 @@ const D3Map = ({
   
       // Load and render map data
       Promise.all([
-        d3.json(COLOMBIA_DEPARTMENTS_MAP_JSON_DATA),
+        d3.json(ETC_MAP_2025_JSON_DATA),
         d3.json(WORLD_MAP_JSON_DATA)
       ]).then(([data, worldData]) => {
           backgroundMapGroup.selectAll("path.background-countries")
@@ -128,25 +128,25 @@ const D3Map = ({
           .style("pointer-events", "none");
 
           g.selectAll("path.departments")
-            .data(topojson.feature(data, data.objects.departamentos).features)
+            .data(topojson.feature(data, data.objects.ETCS).features)
             .enter()
             .append("path")
             .attr("class", "departments")
-            .attr("data-dept-id", d => d.properties.DPTO_CCDGO)
+            .attr("data-dept-id", d => d.properties.CODIGO_ETC)
             .attr("d", path)
             .on("mouseover", function(event, d) {
               tooltip.transition()
                 .duration(200)
                 .style("opacity", 0.9);
               
-              const deptID = Number(d.properties.DPTO_CCDGO);
+              const deptID = Number(d.properties.CODIGO_ETC);
               const rates = dataIDE.get(deptID);
               const value = rates ? rates[selectedYear][buttonIndex] : "No data";
               const html = `
                   <table class="d3-tooltip-table">
                     <thead>
                       <tr>
-                        <th colspan="2">${d.properties.DPTO_CNMBR || 'Sin departamento'}</th>
+                        <th colspan="2">${d.properties.ETC || 'Sin departamento'}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -181,7 +181,7 @@ const D3Map = ({
             .on("click", function(event, d) {
               event.stopPropagation();
               
-              const deptID = Number(d.properties.DPTO_CCDGO);
+              const deptID = Number(d.properties.CODIGO_ETC);
               const rates = dataIDE.get(deptID) || countryData;
 
               // If clicking the same department, reset zoom and remove active state
@@ -216,7 +216,7 @@ const D3Map = ({
                 .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
 
               onDepartmentClick(d, rates);
-              setWindowText(`Departamento: ${d.properties.DPTO_CNMBR}`);
+              setWindowText(`Departamento: ${d.properties.ETC}`);
 
               // Show tooltip on click
               const value = rates ? rates[selectedYear][buttonIndex] : "No data";
@@ -224,7 +224,7 @@ const D3Map = ({
               <table class="d3-tooltip-table">
                 <thead>
                   <tr>
-                    <th colspan="2">${d.properties.DPTO_CNMBR || 'Sin departamento'}</th>
+                    <th colspan="2">${d.properties.ETC || 'Sin departamento'}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -249,7 +249,7 @@ const D3Map = ({
             });
   
           g.append("path")
-            .datum(topojson.mesh(data, data.objects.departamentos, (a, b) => a !== b))
+            .datum(topojson.mesh(data, data.objects.ETCS, (a, b) => a !== b))
             .attr("class", "dept-borders")
             .attr("d", path);
         }).catch(error => {
@@ -271,7 +271,7 @@ const D3Map = ({
   
       g.selectAll("path.departments")
         .each(function(d) {
-          const rates = dataIDE.get(Number(d.properties.DPTO_CCDGO));
+          const rates = dataIDE.get(Number(d.properties.CODIGO_ETC));
           const path = d3.select(this);
           
           // Update fill color
@@ -290,7 +290,7 @@ const D3Map = ({
                 <table class="d3-tooltip-table">
                   <thead>
                     <tr>
-                      <th colspan="2">${d.properties.DPTO_CNMBR || 'Sin departamento'}</th>
+                      <th colspan="2">${d.properties.ETC || 'Sin departamento'}</th>
                     </tr>
                   </thead>
                   <tbody>

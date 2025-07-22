@@ -22,7 +22,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(DEPARTMENTS_ITEMS);
+        const response = await fetch(ETC_ITEMS);
         if (!response.ok) {
           const text = await response.text();
           throw new Error(
@@ -30,7 +30,6 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
           );
         }
         const jsonData = await response.json();
-        console.log('Fetched DepartmentsItemsIDE:', jsonData);
         setData(jsonData);
         setLoading(false);
       } catch (err) {
@@ -47,29 +46,26 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
     let tempDepartmentName = 'COLOMBIA';
 
     if (selectedDepartment) {
-      if (typeof selectedDepartment === 'object' && selectedDepartment.properties && selectedDepartment.properties.DPTO_CCDGO) {
-        deptID = String(selectedDepartment.properties.DPTO_CCDGO);
-        tempDepartmentName = selectedDepartment.properties.DPTO_CNMBR || 'Desconocido';
+      if (typeof selectedDepartment === 'object' && selectedDepartment.properties && selectedDepartment.properties.CODIGO_ETC) {
+        deptID = String(selectedDepartment.properties.CODIGO_ETC);
+        tempDepartmentName = selectedDepartment.properties.ETC || 'Desconocido';
       } else if (typeof selectedDepartment === 'string') {
         deptID = selectedDepartment;
       }
     }
 
-    console.log('Selected Year:', yearAsString, 'DeptID:', deptID, 'SelectedIndex:', selectedIndex);
-
     if (yearAsString && data.length > 0) {
       const departmentData = data.find(
-        (d) => String(d.departmentID).padStart(2, '0') === deptID || String(d.departmentID) === deptID
+        (d) => String(d.CODIGO_ETC).padStart(2, '0') === deptID || String(d.CODIGO_ETC) === deptID,
       );
+      console.log(departmentData);
 
       if (departmentData && departmentData.values[yearAsString]) {
         let metrics = departmentData.values[yearAsString];
-        console.log('Raw Metrics:', metrics);
 
         if (selectedIndex > 0) {
           const categoryLabel = labels[selectedIndex];
           const categoryKeys = categoryKeysMap[categoryLabel] || [];
-          console.log('Filtering for Category:', categoryLabel, 'Keys:', categoryKeys);
           if (categoryKeys.length > 0) {
             metrics = categoryKeys.reduce((acc, key) => {
               if (metrics[key] !== undefined) {
@@ -81,7 +77,6 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
             metrics = {};
           }
         }
-        console.log('Filtered Metrics:', metrics);
         setFilteredMetrics([metrics]);
         setDepartmentName(tempDepartmentName);
       } else {

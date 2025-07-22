@@ -6,6 +6,7 @@ import Legend from './components/Legend';
 import YearSlider from './components/YearSlider';
 import ButtonGroup from './components/ButtonGroup';
 import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
+import MapSelector from './components/MapSelector';
 import './App.css';
 import {labels, generalColours, yearSliderGeneralColours } from './config/config.js';
 import { IDE_DEPARTMENTS_CHOROPLETH, IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
@@ -21,14 +22,14 @@ const MapVisualization = () => {
 
   useEffect(() => {
     const mapPromises = [
-      d3.json(IDE_DEPARTMENTS_CHOROPLETH),
+      d3.json(IDE_ETC_CHOROPLETH),
       d3.json(IDE_COLOMBIA_CHOROPLETH)
     ];
 
     Promise.all(mapPromises).then(([ideData, countryIdeData]) => {
       const newDataIDE = new Map();
       ideData.forEach(d => {
-        newDataIDE.set(Number(d.departmentID), d.rates);
+        newDataIDE.set(Number(d.CODIGO_ETC), d.rates);
       });
       setDataIDE(newDataIDE);
       setCountryData(countryIdeData[0].rates);
@@ -65,7 +66,7 @@ const MapVisualization = () => {
 
   useEffect(() => {
     if (selectedDepartment) {
-      const deptID = Number(selectedDepartment.properties.DPTO_CCDGO);
+      const deptID = Number(selectedDepartment.properties.CODIGO_ETC);
       const rates = dataIDE.get(deptID);
       if (rates) {
         setSelectedData(rates);
@@ -76,8 +77,10 @@ const MapVisualization = () => {
   }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData]);
 
   return (
+    
     <div className="app" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Container: 990px wide, centered */}
+      <MapSelector/>
       <div
         className="visualization-container"
         style={{
