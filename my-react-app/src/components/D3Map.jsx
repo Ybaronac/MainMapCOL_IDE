@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import PropTypes from 'prop-types';
 import { MdMyLocation } from "react-icons/md";
 import { HiOutlineZoomOut, HiOutlineZoomIn  } from "react-icons/hi";
 import TransparentWindow from './TransparentWindow';
@@ -15,7 +16,8 @@ const D3Map = ({
     buttonIndex, 
     dataIDE, 
     countryData, 
-    onDepartmentClick 
+    onDepartmentClick,
+    dataType
   }) => {
     const svgRef = useRef();
     const gRef = useRef();
@@ -25,7 +27,21 @@ const D3Map = ({
     const activeRef = useRef(null);
     const zoomRef = useRef(null);
     const [windowText, setWindowText] = useState('Ventana Transparente');
- 
+    
+    const config = {
+      ETC: {
+        url: ETC_MAP_2025_JSON_DATA,
+        idProperty: 'CODIGO_ETC',
+        nameProperty: 'ETC',
+        topojsonObject: 'ETCS',
+      },
+      DEPARTMENTS: {
+        url: COLOMBIA_DEPARTMENTS_MAP_JSON_DATA,
+        idProperty: 'DPTO_CCDGO',
+        nameProperty: 'DPTO_CNMBR',
+        topojsonObject: 'departamentos',
+      },
+    };
     
     const colorSchemes = [
       generalIDEColours,
@@ -112,7 +128,7 @@ const D3Map = ({
   
       // Load and render map data
       Promise.all([
-        d3.json(ETC_MAP_2025_JSON_DATA),
+        d3.json(config[dataType].url),
         d3.json(WORLD_MAP_JSON_DATA)
       ]).then(([data, worldData]) => {
           backgroundMapGroup.selectAll("path.background-countries")
@@ -128,25 +144,25 @@ const D3Map = ({
           .style("pointer-events", "none");
 
           g.selectAll("path.departments")
-            .data(topojson.feature(data, data.objects.ETCS).features)
+            .data(topojson.feature(data, data.objects[config[dataType].topojsonObject]).features)
             .enter()
             .append("path")
             .attr("class", "departments")
-            .attr("data-dept-id", d => d.properties.CODIGO_ETC)
+            .attr("data-dept-id", d => d.properties[config[dataType].idProperty])
             .attr("d", path)
             .on("mouseover", function(event, d) {
               tooltip.transition()
                 .duration(200)
                 .style("opacity", 0.9);
               
-              const deptID = Number(d.properties.CODIGO_ETC);
+              const deptID = Number(d.properties[config[dataType].idProperty]);
               const rates = dataIDE.get(deptID);
               const value = rates ? rates[selectedYear][buttonIndex] : "No data";
               const html = `
                   <table class="d3-tooltip-table">
                     <thead>
                       <tr>
-                        <th colspan="2">${d.properties.ETC || 'Sin departamento'}</th>
+                        <th colspan="2">${d.properties[config[dataType].nameProperty] || 'Sin departamento'}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -181,7 +197,7 @@ const D3Map = ({
             .on("click", function(event, d) {
               event.stopPropagation();
               
-              const deptID = Number(d.properties.CODIGO_ETC);
+              const deptID = Number(d.properties[config[dataType].idProperty]);
               const rates = dataIDE.get(deptID) || countryData;
 
               // If clicking the same department, reset zoom and remove active state
@@ -216,7 +232,7 @@ const D3Map = ({
                 .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
 
               onDepartmentClick(d, rates);
-              setWindowText(`Departamento: ${d.properties.ETC}`);
+              setWindowText(`Departamento: ${d.properties[config[dataType].nameProperty]}`);
 
               // Show tooltip on click
               const value = rates ? rates[selectedYear][buttonIndex] : "No data";
@@ -224,7 +240,7 @@ const D3Map = ({
               <table class="d3-tooltip-table">
                 <thead>
                   <tr>
-                    <th colspan="2">${d.properties.ETC || 'Sin departamento'}</th>
+                    <th colspan="2">${d.properties[config[dataType].nameProperty] || 'Sin departamento'}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -249,7 +265,7 @@ const D3Map = ({
             });
   
           g.append("path")
-            .datum(topojson.mesh(data, data.objects.ETCS, (a, b) => a !== b))
+            .datum(topojson.mesh(data, data.objects[config[dataType].topojsonObject], (a, b) => a !== b))
             .attr("class", "dept-borders")
             .attr("d", path);
         }).catch(error => {
@@ -259,7 +275,7 @@ const D3Map = ({
       return () => {
         tooltip.remove();
       };
-    }, [width, height]);
+    }, [width, height, dataType]);
   
     useEffect(() => {
       if (!gRef.current) return;
@@ -271,7 +287,8 @@ const D3Map = ({
   
       g.selectAll("path.departments")
         .each(function(d) {
-          const rates = dataIDE.get(Number(d.properties.CODIGO_ETC));
+          const deptID = Number(d.properties[config[dataType].idProperty]);
+          const rates = dataIDE.get(deptID);
           const path = d3.select(this);
           
           // Update fill color
@@ -290,7 +307,7 @@ const D3Map = ({
                 <table class="d3-tooltip-table">
                   <thead>
                     <tr>
-                      <th colspan="2">${d.properties.ETC || 'Sin departamento'}</th>
+                      <th colspan="2">${d.properties[config[dataType].nameProperty] || 'Sin departamento'}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -323,7 +340,7 @@ const D3Map = ({
               .style("opacity", 0);
           });
         });
-    }, [selectedYear, buttonIndex, dataIDE]);
+    }, [selectedYear, buttonIndex, dataIDE, dataType]);
     
     const resetZoomExt = () => {
       if (!svgRef.current || !zoomRef.current) return;
@@ -406,6 +423,18 @@ const D3Map = ({
       
     );
   };  
+
+
+D3Map.propTypes = {
+width: PropTypes.number,
+height: PropTypes.number,
+selectedYear: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+buttonIndex: PropTypes.number.isRequired,
+dataIDE: PropTypes.instanceOf(Map).isRequired,
+countryData: PropTypes.object.isRequired,
+onDepartmentClick: PropTypes.func.isRequired,
+dataType: PropTypes.oneOf(['ETC', 'DEPARTMENTS']).isRequired,
+};
 
 export default D3Map;
 

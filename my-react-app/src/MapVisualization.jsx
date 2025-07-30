@@ -11,6 +11,7 @@ import './App.css';
 import {labels, generalColours, yearSliderGeneralColours } from './config/config.js';
 import { IDE_DEPARTMENTS_CHOROPLETH, IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
 
+
 const MapVisualization = () => {
   const [dataIDE, setDataIDE] = useState(new Map());
   const [countryData, setCountryData] = useState(null);
@@ -18,18 +19,31 @@ const MapVisualization = () => {
   const [buttonIndex, setButtonIndex] = useState(0);
   const [selectedData, setSelectedData] = useState(null);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [dataType, setDataType] = useState('ETC');
+
+  const config = {
+    ETC: {
+      url: IDE_ETC_CHOROPLETH,
+      idProperty: 'CODIGO_ETC',
+    },
+    DEPARTMENTS: {
+      url: IDE_DEPARTMENTS_CHOROPLETH,
+      idProperty: 'departmentID',
+    },
+  };
 
 
   useEffect(() => {
     const mapPromises = [
-      d3.json(IDE_ETC_CHOROPLETH),
+      d3.json(config[dataType].url),
       d3.json(IDE_COLOMBIA_CHOROPLETH)
     ];
 
     Promise.all(mapPromises).then(([ideData, countryIdeData]) => {
       const newDataIDE = new Map();
       ideData.forEach(d => {
-        newDataIDE.set(Number(d.CODIGO_ETC), d.rates);
+        const id = Number(d[config[dataType].idProperty]);
+        newDataIDE.set(id, d.rates);
       });
       setDataIDE(newDataIDE);
       setCountryData(countryIdeData[0].rates);
@@ -37,7 +51,7 @@ const MapVisualization = () => {
     }).catch(error => {
       console.error('Error loading data:', error);
     });
-  }, []);
+  }, [dataType]);
 
   const handleYearChange = (year) => {
     setSelectedYear(year);
@@ -57,6 +71,11 @@ const MapVisualization = () => {
     }
   };
 
+  const handleDataTypeChange = (type) => {
+    setDataType(type);
+    //setSelectedDepartment(null);
+  };
+
   const barChartData = selectedData
     ? Object.entries(selectedData[selectedYear]).map(([key, value], i) => ({
         group: labels[i] || key,
@@ -66,7 +85,7 @@ const MapVisualization = () => {
 
   useEffect(() => {
     if (selectedDepartment) {
-      const deptID = Number(selectedDepartment.properties.CODIGO_ETC);
+      const deptID = Number(selectedDepartment.properties[config[dataType].idProperty]);
       const rates = dataIDE.get(deptID);
       if (rates) {
         setSelectedData(rates);
@@ -74,13 +93,13 @@ const MapVisualization = () => {
     } else {
       setSelectedData(countryData);
     }
-  }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData]);
+  }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData, dataType]);
 
   return (
     
     <div className="app" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Container: 990px wide, centered */}
-      <MapSelector/>
+      <MapSelector onDataTypeChange={handleDataTypeChange} selectedDataType={dataType} />
       <div
         className="visualization-container"
         style={{
@@ -126,16 +145,35 @@ const MapVisualization = () => {
               }}
             >
               
-              <D3Map
-                selectedYear={selectedYear}
-                buttonIndex={buttonIndex}
-                dataIDE={dataIDE}
-                countryData={countryData}
-                onDepartmentClick={handleDepartmentClick}
-                selectedDepartment={selectedDepartment}
-                width={660} 
-                height={600} 
-              />
+              {/* D3Map para DEPARTMENTS */}
+              {dataType === 'DEPARTMENTS' && (
+                <D3Map
+                  selectedYear={selectedYear}
+                  buttonIndex={buttonIndex}
+                  dataIDE={dataIDE}
+                  countryData={countryData}
+                  onDepartmentClick={handleDepartmentClick}
+                  selectedDepartment={selectedDepartment}
+                  width={660} 
+                  height={600} 
+                  dataType="DEPARTMENTS"
+                />
+              )}
+
+              {/* D3Map para ETC */}
+              {dataType === 'ETC' && (
+                <D3Map
+                  selectedYear={selectedYear}
+                  buttonIndex={buttonIndex}
+                  dataIDE={dataIDE}
+                  countryData={countryData}
+                  onDepartmentClick={handleDepartmentClick}
+                  selectedDepartment={selectedDepartment}
+                  width={660} 
+                  height={600} 
+                  dataType="ETC"
+                />
+              )}
               <Legend
                 buttonIndex={buttonIndex}
                 width={596}
@@ -183,6 +221,7 @@ const MapVisualization = () => {
               width={310} 
               height={380}
               labels={labels}
+              dataType={dataType}
             />
           </div>
         </div>
@@ -201,6 +240,7 @@ const MapVisualization = () => {
         selectedYear={selectedYear}
         selectedDepartment={selectedDepartment}
         selectedIndex={buttonIndex}
+        dataType={dataType}
       />
     </div>
     </div>
