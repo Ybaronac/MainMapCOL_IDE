@@ -1,7 +1,8 @@
 //Configuracion de colores de las graficas, yearSlider, legend y mapa
 
 export const labels = ["IDE General", "Disponibilidad", "Accesibilidad", "Adaptabilidad", "Aceptabilidad"];
-export const years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016];
+//export const years = [2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016];
+export const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
 export const traficLightColours = ['#cc3232','#fcc000','#2dc937'];
 
 //Colores Prod  
@@ -13,6 +14,12 @@ export const accessibilityColours = ['#f5eefa', '#e3d0f1', '#d0b2e7', '#be94de',
 export const acceptabilityColours = ['#fffae9', '#fff0c2', '#ffe79a', '#ffdd73', '#ffd44c','#ffcb25', '#ffc611', '#fcc000', '#d5a200', '#ae8400'];
 export const adaptabilityColours = ['#e3f8ff', '#bcedff', '#94e3ff', '#6dd9ff', '#46cfff','#1fc4ff', '#00b6f6', '#0099cf', '#007ca8', '#005f81'];
 
+// Límites de rangos para los colores del semáforo
+export const colorRangeLimits = {
+  red: { min: 0, max: 50 },
+  yellow: { min: 51, max: 75 },
+  green: { min: 76, max: 100 }
+};
 
 //Colores Test
 /*

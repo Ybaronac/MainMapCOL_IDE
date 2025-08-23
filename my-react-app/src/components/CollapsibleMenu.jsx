@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { IoIosSquare, IoIosRadioButtonOn } from 'react-icons/io';
-import { labels, generalColours, traficLightColours } from '../config/config.js';
+import { labels, generalColours, traficLightColours, colorRangeLimits } from '../config/config.js';
 import { ITEMS_IDE } from '../config/configURLDataSource.js';
 
 const CollapsibleMenu = ({ data,selectedIndex }) => {
@@ -103,11 +103,11 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
     if (isNaN(numericValue)) return { red: false, yellow: false, green: false };
 
-    if (numericValue >= 0 && numericValue <= 50) {
+    if (numericValue >= colorRangeLimits.red.min && numericValue <= colorRangeLimits.red.max) {
       return { red: true, yellow: false, green: false };
-    } else if (numericValue >= 51 && numericValue <= 75) {
+    } else if (numericValue >= colorRangeLimits.yellow.min && numericValue <= colorRangeLimits.yellow.max) {
       return { red: false, yellow: true, green: false };
-    } else if (numericValue >= 76 && numericValue <= 100) {
+    } else if (numericValue >= colorRangeLimits.green.min && numericValue <= colorRangeLimits.green.max) {
       return { red: false, yellow: false, green: true };
     }
     return { red: false, yellow: false, green: false };

@@ -4,12 +4,25 @@ import PropTypes from 'prop-types';
 import { labels } from '../config/config.js';
 import { DEPARTMENTS_ITEMS, ETC_ITEMS } from '../config/configURLDataSource.js';
 
-const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIndex }) => {
+const CollapsibleMenuContainer = ({ selectedYear, selectedRegion, selectedIndex, dataType }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filteredMetrics, setFilteredMetrics] = useState([]);
   const [departmentName, setDepartmentName] = useState('COLOMBIA');
+
+  const config = {
+    ETC: {
+      url: ETC_ITEMS,
+      idProperty: 'CODIGO_ETC',
+      nameProperty: 'ETC',
+    },
+    DEPARTMENTS: {
+      url: DEPARTMENTS_ITEMS,
+      idProperty: 'departmentID',
+      nameProperty: 'DPTO_CNMBR',
+    },
+  };
 
 
   const categoryKeysMap = {
@@ -22,7 +35,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(ETC_ITEMS);
+        const response = await fetch(config[dataType].url);
         if (!response.ok) {
           const text = await response.text();
           throw new Error(
@@ -38,30 +51,29 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
       }
     };
     fetchData();
-  }, []);
+  }, [dataType]);
 
   useEffect(() => {
     const yearAsString = String(selectedYear);
-    let deptID = '0';
-    let tempDepartmentName = 'COLOMBIA';
+    let regionID = '0';
+    let tempRegionName = 'COLOMBIA';
 
-    if (selectedDepartment) {
-      if (typeof selectedDepartment === 'object' && selectedDepartment.properties && selectedDepartment.properties.CODIGO_ETC) {
-        deptID = String(selectedDepartment.properties.CODIGO_ETC);
-        tempDepartmentName = selectedDepartment.properties.ETC || 'Desconocido';
-      } else if (typeof selectedDepartment === 'string') {
-        deptID = selectedDepartment;
+    if (selectedRegion) {
+      if (typeof selectedRegion === 'object' && selectedRegion.properties && selectedRegion.properties[config[dataType].idProperty]) {
+        regionID = String(selectedRegion.properties[config[dataType].idProperty]);
+        tempRegionName = selectedRegion.properties[config[dataType].nameProperty] || 'Desconocido';
+      } else if (typeof selectedRegion === 'string') {
+        regionID = selectedRegion;
       }
     }
 
     if (yearAsString && data.length > 0) {
-      const departmentData = data.find(
-        (d) => String(d.CODIGO_ETC).padStart(2, '0') === deptID || String(d.CODIGO_ETC) === deptID,
+      const regionData = data.find(
+        (d) => String(d[config[dataType].idProperty]).padStart(2, '0') === regionID || String(d[config[dataType].idProperty]) === regionID,
       );
-      console.log(departmentData);
-
-      if (departmentData && departmentData.values[yearAsString]) {
-        let metrics = departmentData.values[yearAsString];
+      
+      if (regionData && regionData.values[yearAsString]) {
+        let metrics = regionData.values[yearAsString];
 
         if (selectedIndex > 0) {
           const categoryLabel = labels[selectedIndex];
@@ -78,18 +90,16 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
           }
         }
         setFilteredMetrics([metrics]);
-        setDepartmentName(tempDepartmentName);
+        setDepartmentName(tempRegionName);
       } else {
-        console.log('No data for year or department');
         setFilteredMetrics([]);
-        setDepartmentName(tempDepartmentName);
+        setDepartmentName(tempRegionName);
       }
     } else {
-      console.log('No data or year not set');
       setFilteredMetrics([]);
-      setDepartmentName(tempDepartmentName);
+      setDepartmentName(tempRegionName);
     }
-  }, [selectedYear, selectedDepartment, selectedIndex, data]);
+      }, [selectedYear, selectedRegion, selectedIndex, data, dataType]);
 
   if (loading) return <div className="p-4 text-center">Loading...</div>;
   if (error) return <div className="p-4 text-red-500 text-center">Error: {error}</div>;
@@ -98,7 +108,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
       <h1 className="menu-title text-2xl font-bold mb-4">IDE: {departmentName} - {selectedYear} </h1>
       {filteredMetrics.length === 0 ? (
         <div className="p-4 text-center">
-          No hay datos disponibles para el año {selectedYear} y el departamento {departmentName}.
+          No hay datos disponibles para el año {selectedYear} y la región {departmentName}.
         </div>
       ) : (
         <CollapsibleMenu data={filteredMetrics} selectedIndex={selectedIndex} />
@@ -109,16 +119,19 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedDepartment, selectedIn
 
 CollapsibleMenuContainer.propTypes = {
   selectedYear: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  selectedDepartment: PropTypes.oneOfType([
+  selectedRegion: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({
       properties: PropTypes.shape({
+        CODIGO_ETC: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         DPTO_CCDGO: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        ETC: PropTypes.string,
         DPTO_CNMBR: PropTypes.string,
       }),
     }),
   ]),
   selectedIndex: PropTypes.number.isRequired,
+  dataType: PropTypes.oneOf(['ETC', 'DEPARTMENTS']).isRequired,
 };
 
 export default CollapsibleMenuContainer;

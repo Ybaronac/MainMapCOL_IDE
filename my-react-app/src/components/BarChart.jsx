@@ -1,22 +1,31 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { labels, generalColours } from '../config/config.js';
+import PropTypes from 'prop-types';
 
 const BarChart = ({ 
   data, 
   selectedYear,
-  selectedDepartment,
+  selectedRegion,
   width = 350,
   height = 180,
-  labels: propLabels = labels
+  labels: propLabels = labels,
+  dataType,
 }) => {
   const svgRef = useRef();
   const margin = { top: 50, right: 20, bottom: 50, left: 40 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
-  // Function to wrap text into multiple lines
+  const config = {
+    ETC: { nameProperty: 'ETC' },
+    DEPARTMENTS: { nameProperty: 'DPTO_CNMBR' },
+  };
+
   const wrapText = (text, maxWidth, fontSize) => {
+    if (!text || typeof text !== 'string') {
+      return ['Colombia']; // Fallback to a single line with 'Colombia'
+    }
     const words = text.split(' ');
     const lines = [];
     let currentLine = words[0];
@@ -92,13 +101,12 @@ const BarChart = ({
       .style("font-family", "'Poppins', sans-serif")
       .text(d => d);
 
-    // Title: Department name
-    const deptText = selectedDepartment 
-      ? selectedDepartment.properties.ETC
-      : 'Colombia';
+    // Title: Region name
+    const regionText = selectedRegion 
+      ? selectedRegion.properties[config[dataType].nameProperty]: 'Colombia';
     const deptFontSize = 14;
     const maxTitleWidth = chartWidth - 20;
-    const deptLines = wrapText(deptText, maxTitleWidth, deptFontSize);
+    const regionLines = wrapText(regionText, maxTitleWidth, deptFontSize);
 
     const title = g.append("text")
       .attr("x", chartWidth / 2)
@@ -106,7 +114,7 @@ const BarChart = ({
       .attr("text-anchor", "middle")
       .style("font-family", "'Poppins', sans-serif");
 
-    deptLines.forEach((line, i) => {
+    regionLines.forEach((line, i) => {
       title.append("tspan")
         .attr("x", chartWidth / 2)
         .attr("dy", i === 0 ? 0 : 12)
@@ -118,7 +126,7 @@ const BarChart = ({
     // Title: Year
     title.append("tspan")
       .attr("x", chartWidth / 2)
-      .attr("dy", deptLines.length > 1 ? 14 : 12)
+      .attr("dy", regionLines.length > 1 ? 14 : 12)
       .style("font-size", "10px")
       .style("font-weight", "400")
       .text(selectedYear);
@@ -156,7 +164,7 @@ const BarChart = ({
       .duration(1000)
       .style("opacity", 1);
 
-  }, [data, selectedYear, selectedDepartment, width, height, propLabels]);
+  }, [data, selectedYear, selectedRegion, width, height, propLabels, dataType]);
 
   return (
     <svg
@@ -166,5 +174,26 @@ const BarChart = ({
     />
   );
 };
+
+BarChart.propTypes = {
+  data: PropTypes.array.isRequired,
+  selectedYear: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectedRegion: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      properties: PropTypes.shape({
+        CODIGO_ETC: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        DPTO_CCDGO: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        ETC: PropTypes.string,
+        DPTO_CNMBR: PropTypes.string,
+      }),
+    }),
+  ]),
+  width: PropTypes.number,
+  height: PropTypes.number,
+  labels: PropTypes.array,
+  dataType: PropTypes.oneOf(['ETC', 'DEPARTMENTS']).isRequired,
+};
+
 
 export default BarChart;

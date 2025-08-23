@@ -6,43 +6,35 @@ import Legend from './components/Legend';
 import YearSlider from './components/YearSlider';
 import ButtonGroup from './components/ButtonGroup';
 import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
-import MapSelector from './components/MapSelector';
 import './App.css';
-import {labels, generalColours, yearSliderGeneralColours } from './config/config.js';
-import { IDE_DEPARTMENTS_CHOROPLETH, IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
-
+import {labels, years} from './config/config.js';
+import { IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
 
 const MapVisualization = () => {
   const [dataIDE, setDataIDE] = useState(new Map());
   const [countryData, setCountryData] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(2007);
+  const [selectedYear, setSelectedYear] = useState(years[0]);
   const [buttonIndex, setButtonIndex] = useState(0);
   const [selectedData, setSelectedData] = useState(null);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [dataType, setDataType] = useState('ETC');
+  const [selectedRegion, setSelectedRegion] = useState(null);
 
   const config = {
     ETC: {
       url: IDE_ETC_CHOROPLETH,
       idProperty: 'CODIGO_ETC',
     },
-    DEPARTMENTS: {
-      url: IDE_DEPARTMENTS_CHOROPLETH,
-      idProperty: 'departmentID',
-    },
   };
-
 
   useEffect(() => {
     const mapPromises = [
-      d3.json(config[dataType].url),
+      d3.json(config.ETC.url),
       d3.json(IDE_COLOMBIA_CHOROPLETH)
     ];
 
     Promise.all(mapPromises).then(([ideData, countryIdeData]) => {
       const newDataIDE = new Map();
       ideData.forEach(d => {
-        const id = Number(d[config[dataType].idProperty]);
+        const id = Number(d[config.ETC.idProperty]);
         newDataIDE.set(id, d.rates);
       });
       setDataIDE(newDataIDE);
@@ -51,7 +43,7 @@ const MapVisualization = () => {
     }).catch(error => {
       console.error('Error loading data:', error);
     });
-  }, [dataType]);
+  }, []);
 
   const handleYearChange = (year) => {
     setSelectedYear(year);
@@ -61,45 +53,52 @@ const MapVisualization = () => {
     setButtonIndex(index);
   };
 
-  const handleDepartmentClick = (department, rates) => {
-    if (department === null) {
-      setSelectedDepartment(null);
+  const handleRegionClick = (region, rates) => {
+    if (region === null) {
+      setSelectedRegion(null);
       setSelectedData(countryData);
     } else {
-      setSelectedDepartment(department);
-      setSelectedData(rates);
+      setSelectedRegion(region);
+      // No establecemos selectedData aquí, lo hará el useEffect
     }
   };
 
-  const handleDataTypeChange = (type) => {
-    setDataType(type);
-    //setSelectedDepartment(null);
-  };
-
-  const barChartData = selectedData
-    ? Object.entries(selectedData[selectedYear]).map(([key, value], i) => ({
-        group: labels[i] || key,
-        value: parseFloat(value),
-      }))
-    : [];
-
+  // Actualizar datos cuando cambie la región seleccionada
   useEffect(() => {
-    if (selectedDepartment) {
-      const deptID = Number(selectedDepartment.properties[config[dataType].idProperty]);
-      const rates = dataIDE.get(deptID);
+    if (selectedRegion && dataIDE.size > 0) {
+      const regionID = Number(selectedRegion.properties[config.ETC.idProperty]);
+      const rates = dataIDE.get(regionID);
       if (rates) {
         setSelectedData(rates);
+      } else {
+        // Si no hay datos para la región, usar datos del país
+        setSelectedData(countryData);
       }
-    } else {
+    } else if (!selectedRegion && countryData) {
       setSelectedData(countryData);
     }
-  }, [selectedYear, buttonIndex, selectedDepartment, dataIDE, countryData, dataType]);
+  }, [selectedRegion, dataIDE, countryData]);
+
+
+
+
+
+
+
+  const barChartData = selectedData && selectedData[selectedYear]
+    ? Object.entries(selectedData[selectedYear])
+        .filter(([, value]) => value !== null && value !== undefined)
+        .map(([key, value], i) => ({
+          group: labels[i] || key,
+          value: parseFloat(value) || 0,
+        }))
+    : [];
+
+
 
   return (
-    
     <div className="app" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Container: 990px wide, centered */}
-      <MapSelector onDataTypeChange={handleDataTypeChange} selectedDataType={dataType} />
       <div
         className="visualization-container"
         style={{
@@ -125,15 +124,14 @@ const MapVisualization = () => {
               boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
               width: '100%',
               paddingTop: '10px'
-
             }}
           >
-          <YearSlider
-                selectedYear={selectedYear}
-                onYearChange={handleYearChange}
-                width={596} 
-                buttonIndex={buttonIndex}
-              />
+            <YearSlider
+              selectedYear={selectedYear}
+              onYearChange={handleYearChange}
+              width={596} 
+              buttonIndex={buttonIndex}
+            />
             <div
               className="map-content"
               style={{
@@ -144,36 +142,17 @@ const MapVisualization = () => {
                 paddingTop: '10px'
               }}
             >
-              
-              {/* D3Map para DEPARTMENTS */}
-              {dataType === 'DEPARTMENTS' && (
-                <D3Map
-                  selectedYear={selectedYear}
-                  buttonIndex={buttonIndex}
-                  dataIDE={dataIDE}
-                  countryData={countryData}
-                  onDepartmentClick={handleDepartmentClick}
-                  selectedDepartment={selectedDepartment}
-                  width={660} 
-                  height={600} 
-                  dataType="DEPARTMENTS"
-                />
-              )}
-
-              {/* D3Map para ETC */}
-              {dataType === 'ETC' && (
-                <D3Map
-                  selectedYear={selectedYear}
-                  buttonIndex={buttonIndex}
-                  dataIDE={dataIDE}
-                  countryData={countryData}
-                  onDepartmentClick={handleDepartmentClick}
-                  selectedDepartment={selectedDepartment}
-                  width={660} 
-                  height={600} 
-                  dataType="ETC"
-                />
-              )}
+              <D3Map
+                selectedYear={selectedYear}
+                buttonIndex={buttonIndex}
+                dataIDE={dataIDE}
+                countryData={countryData}
+                onRegionClick={handleRegionClick}
+                selectedRegion={selectedRegion}
+                width={660} 
+                height={600} 
+                dataType="ETC"
+              />
               <Legend
                 buttonIndex={buttonIndex}
                 width={596}
@@ -217,32 +196,31 @@ const MapVisualization = () => {
             <BarChart
               data={barChartData}
               selectedYear={selectedYear}
-              selectedDepartment={selectedDepartment}
+              selectedRegion={selectedRegion}
               width={310} 
               height={380}
               labels={labels}
-              dataType={dataType}
+              dataType="ETC"
             />
           </div>
         </div>
       </div>
       <div
-      className="collapsible-menu-wrapper"
-      style={{
-        width: '990px',
-        backgroundColor: 'white',
-        boxShadow: '0 1px 5px rgba(0, 0, 0, 0.1)',
-        boxSizing: 'border-box',
-
-      }}
-    >
-      <CollapsibleMenuContainer
-        selectedYear={selectedYear}
-        selectedDepartment={selectedDepartment}
-        selectedIndex={buttonIndex}
-        dataType={dataType}
-      />
-    </div>
+        className="collapsible-menu-wrapper"
+        style={{
+          width: '990px',
+          backgroundColor: 'white',
+          boxShadow: '0 1px 5px rgba(0, 0, 0, 0.1)',
+          boxSizing: 'border-box',
+        }}
+      >
+        <CollapsibleMenuContainer
+          selectedYear={selectedYear}
+          selectedRegion={selectedRegion}
+          selectedIndex={buttonIndex}
+          dataType="ETC"
+        />
+      </div>
     </div>
   );
 };

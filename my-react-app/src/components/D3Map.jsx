@@ -16,7 +16,7 @@ const D3Map = ({
     buttonIndex, 
     dataIDE, 
     countryData, 
-    onDepartmentClick,
+    onRegionClick,
     dataType
   }) => {
     const svgRef = useRef();
@@ -27,6 +27,8 @@ const D3Map = ({
     const activeRef = useRef(null);
     const zoomRef = useRef(null);
     const [windowText, setWindowText] = useState('Ventana Transparente');
+    const [isLoading, setIsLoading] = useState(true);
+    const [mapError, setMapError] = useState(null);
     
     const config = {
       ETC: {
@@ -93,7 +95,7 @@ const D3Map = ({
           .duration(750)
           .call(zoom.transform, d3.zoomIdentity);
         activeRef.current = null;
-        onDepartmentClick(null, countryData);
+        onRegionClick(null, countryData);
         setWindowText('Ventana Transparente');
         // Remove active class from all departments
         d3.selectAll("path.departments").classed("active", false);
@@ -127,11 +129,18 @@ const D3Map = ({
       const backgroundMapGroup = g.append("g").attr("class", "background-map");
   
       // Load and render map data
+      setIsLoading(true);
+      setMapError(null);
+      
       Promise.all([
         d3.json(config[dataType].url),
         d3.json(WORLD_MAP_JSON_DATA)
       ]).then(([data, worldData]) => {
-          backgroundMapGroup.selectAll("path.background-countries")
+        if (!data || !worldData) {
+          throw new Error('Failed to load map data');
+        }
+        
+        backgroundMapGroup.selectAll("path.background-countries")
           .data(worldData.features)
           .enter()
           .append("path")
@@ -231,8 +240,8 @@ const D3Map = ({
                 .duration(750)
                 .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
 
-              onDepartmentClick(d, rates);
-              setWindowText(`Departamento: ${d.properties[config[dataType].nameProperty]}`);
+              onRegionClick(d, rates);
+                              setWindowText(`Región: ${d.properties[config[dataType].nameProperty]}`);
 
               // Show tooltip on click
               const value = rates ? rates[selectedYear][buttonIndex] : "No data";
@@ -268,8 +277,12 @@ const D3Map = ({
             .datum(topojson.mesh(data, data.objects[config[dataType].topojsonObject], (a, b) => a !== b))
             .attr("class", "dept-borders")
             .attr("d", path);
+          
+          setIsLoading(false);
         }).catch(error => {
           console.error('Error al cargar los datos del mapa:', error);
+          setMapError(error.message);
+          setIsLoading(false);
         });
   
       return () => {
@@ -341,6 +354,32 @@ const D3Map = ({
           });
         });
     }, [selectedYear, buttonIndex, dataIDE, dataType]);
+
+    // Asegurar que el mapa se actualice cuando se carguen los datos
+    useEffect(() => {
+      if (dataIDE.size > 0 && !isLoading) {
+        // Forzar una actualización del mapa
+        const g = d3.select(gRef.current);
+        if (g && g.selectAll("path.departments").size() > 0) {
+          g.selectAll("path.departments")
+            .each(function(d) {
+              const deptID = Number(d.properties[config[dataType].idProperty]);
+              const rates = dataIDE.get(deptID);
+              const path = d3.select(this);
+              
+              if (rates && rates[selectedYear]) {
+                const color = d3.scaleQuantize()
+                  .domain([0, 100])
+                  .range(selectedColours);
+                
+                path.transition()
+                  .duration(300)
+                  .attr("fill", color(rates[selectedYear][buttonIndex]));
+              }
+            });
+        }
+      }
+    }, [dataIDE, selectedYear, buttonIndex, dataType, isLoading]);
     
     const resetZoomExt = () => {
       if (!svgRef.current || !zoomRef.current) return;
@@ -355,7 +394,7 @@ const D3Map = ({
       g.style("stroke-width", "1.5px");
 
       activeRef.current = null;
-      onDepartmentClick(null, countryData);
+              onRegionClick(null, countryData);
       d3.selectAll("path.departments").classed("active", false);
       tooltipRef.current.transition().duration(500).style("opacity", 0);
     };
@@ -380,14 +419,59 @@ const D3Map = ({
   
     return (
       <div style={{ position: 'relative' }}>
-            <svg 
-                ref={svgRef}
-                width={width}
-                height={height}
-                className="choropleth"
-            >
-                <g ref={gRef} />
-            </svg>
+        {isLoading && (
+          <div 
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1000,
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              padding: '20px',
+              borderRadius: '8px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+              textAlign: 'center'
+            }}
+          >
+            <div>Cargando mapa...</div>
+          </div>
+        )}
+        
+        {mapError && (
+          <div 
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1000,
+              backgroundColor: 'rgba(255, 0, 0, 0.1)',
+              padding: '20px',
+              borderRadius: '8px',
+              border: '1px solid #ff0000',
+              color: '#ff0000',
+              textAlign: 'center'
+            }}
+          >
+            <div>Error al cargar el mapa:</div>
+            <div style={{ fontSize: '12px', marginTop: '5px' }}>{mapError}</div>
+          </div>
+        )}
+        
+        <svg 
+            ref={svgRef}
+            width={width}
+            height={height}
+            className="choropleth"
+            style={{ 
+              backgroundColor: isLoading ? '#f5f5f5' : 'white',
+              opacity: isLoading ? 0.5 : 1,
+              transition: 'opacity 0.3s ease'
+            }}
+        >
+            <g ref={gRef} />
+        </svg>
             
             <TransparentWindow
               top={20}
@@ -432,7 +516,7 @@ selectedYear: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequir
 buttonIndex: PropTypes.number.isRequired,
 dataIDE: PropTypes.instanceOf(Map).isRequired,
 countryData: PropTypes.object.isRequired,
-onDepartmentClick: PropTypes.func.isRequired,
+  onRegionClick: PropTypes.func.isRequired,
 dataType: PropTypes.oneOf(['ETC', 'DEPARTMENTS']).isRequired,
 };
 
