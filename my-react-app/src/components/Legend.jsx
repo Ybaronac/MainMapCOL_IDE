@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import {generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
+import WebpageContent from '../config/WebpageContent';
 
 const Legend = ({ 
   width = 700, 
@@ -62,7 +63,7 @@ const Legend = ({
 
   return (
     <div>
-      <p>IDE</p>
+      <p>{WebpageContent.legend_label}</p>
       <svg 
       ref={svgRef}
       width={width}
@@ -74,4 +75,4 @@ const Legend = ({
   );
 };
 
-export default Legend; 
+export default Legend;

@@ -1,16 +1,40 @@
 import React from 'react';
-import '../styles/Description.css';
+import WebpageContent from '../config/WebpageContent';
+import TextSection from './TextSection';
 
-const Description = () => {
-  return (
-    <div className="description-container">
-      <h2 className="description-title">About the Visualization</h2>
-      <div className="description-content">
-        <p>This interactive visualization allows you to explore educational indicators across different departments in Colombia. You can analyze various aspects including availability, accessibility, adaptability, and acceptability of education through different years.</p>
-        <p>Use the buttons above to switch between different indicators and the slider to change years. Click on departments to see detailed information.</p>
-      </div>
-    </div>
-  );
-};
+const Description = () => (
+  <div>
+    <TextSection
+      content={[
+        { type: 'title', text: WebpageContent.description_title1 },
+        { type: 'paragraph', text: WebpageContent.description_paragraph1 }
+      ]}
+    />
+
+    <TextSection
+      content={[
+        { type: 'title', text: WebpageContent.description_title2 },
+        { type: 'paragraph', text: WebpageContent.description_paragraph2 },
+        { type: 'subtitle', text: WebpageContent.description_title3 },
+        { type: 'paragraph', text: WebpageContent.description_paragraph3 },
+        { type: 'subtitle', text: WebpageContent.description_title4 },
+        { type: 'paragraph', text: WebpageContent.description_paragraph4 },
+        { type: 'subtitle', text: WebpageContent.description_title5 },
+        { type: 'paragraph', text: WebpageContent.description_paragraph5 },
+        { type: 'subtitle', text: WebpageContent.description_title6 },
+        { type: 'paragraph', text: WebpageContent.description_paragraph6 }
+      ]}
+    />
+
+    <TextSection
+      content={[
+        { type: 'title', text: WebpageContent.description_title7 },
+        { type: 'paragraph', text: WebpageContent.description_paragraph7 }
+      ]}
+    />
+
+    
+  </div>
+);
 
 export default Description;

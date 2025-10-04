@@ -8,6 +8,7 @@ import TransparentWindow from './TransparentWindow';
 import '../styles/D3Map.css';
 import {labels, generalColours, generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
 import { COLOMBIA_DEPARTMENTS_MAP_JSON_DATA, ETC_MAP_2025_JSON_DATA,WORLD_MAP_JSON_DATA} from '../config/configURLDataSource.js';
+import WebpageContent from '../config/WebpageContent';
 
 const D3Map = ({ 
     width = 800, 
@@ -26,7 +27,7 @@ const D3Map = ({
     const tooltipRef = useRef();
     const activeRef = useRef(null);
     const zoomRef = useRef(null);
-    const [windowText, setWindowText] = useState('Ventana Transparente');
+    const [windowText, setWindowText] = useState(WebpageContent.transparent_window_label);
     const [isLoading, setIsLoading] = useState(true);
     const [mapError, setMapError] = useState(null);
     
@@ -96,7 +97,7 @@ const D3Map = ({
           .call(zoom.transform, d3.zoomIdentity);
         activeRef.current = null;
         onRegionClick(null, countryData);
-        setWindowText('Ventana Transparente');
+        setWindowText(WebpageContent.transparent_window_label);
         // Remove active class from all departments
         d3.selectAll("path.departments").classed("active", false);
         tooltip.transition().duration(500).style("opacity", 0);

@@ -7,6 +7,7 @@ import Footer from './components/Footer.jsx';
 import Description from './components/Description.jsx';
 import About from './components/About.jsx';
 import Resources from './components/Resources.jsx';
+import History from './components/History.jsx'; // Importa el componente History
 import './App.css';
 
 const App = () => (
@@ -32,6 +33,10 @@ const App = () => (
         <Route
           path="/resources"
           element={<Resources />}
+        />
+        <Route
+          path="/history"
+          element={<History />}
         />
       </Routes>
       <Footer />

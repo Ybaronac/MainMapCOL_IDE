@@ -9,6 +9,7 @@ import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
 import './App.css';
 import {labels, years} from './config/config.js';
 import { IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
+import WebpageContent from './config/WebpageContent';
 
 const MapVisualization = () => {
   const [dataIDE, setDataIDE] = useState(new Map());
@@ -177,7 +178,7 @@ const MapVisualization = () => {
               boxSizing: 'border-box'
             }}
           >
-            <h3 className="menu-title">Categorías IDE</h3>
+            <h3 className="menu-title">{WebpageContent.button_group_label}</h3>
             <ButtonGroup
               selectedIndex={buttonIndex}
               onButtonClick={handleButtonClick}

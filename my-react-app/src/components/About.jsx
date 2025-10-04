@@ -1,18 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Description.css';
+import WebpageContent from '../config/WebpageContent';
+import TextSection from './TextSection';
 
 const About = () => (
-    <div className="main-content-area">
-        <div className="description-container my-8">
-            <h1 className="description-title">About This Application</h1>
-            <div className="description-content">
-            <p>This application provides an interactive visualization of educational metrics in Colombia. It features a choropleth map built with D3.js and React, allowing users to explore data across various categories such as General, Availability, Accessibility, Adaptability, and Acceptability. The app is designed to be responsive and user-friendly, with tools like tooltips, zoom functionality, and interactive controls.</p>
-            <p>Our goal is to make educational data accessible and insightful for researchers, policymakers, and the general public. This project is developed with modern web technologies and a focus on data-driven decision-making.</p>
-            </div>
-            <Link to="/" className="mt-6 inline-block text-blue-600 hover:underline">Back to Home</Link>
-        </div>
-    </div>
+  <div className="main-content-area">
+    <TextSection
+      content={[
+        { type: 'title', text: WebpageContent.purpose_title2 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph2 },
+        { type: 'title', text: WebpageContent.purpose_title3 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph3 },
+        { type: 'title', text: WebpageContent.purpose_title4 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph4 },
+        { type: 'title', text: WebpageContent.purpose_title5 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph5 },
+      ]}
+    />
+    <TextSection
+      content={[
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph6 },
+        { type: 'title', text: WebpageContent.purpose_title7 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph7 },
+        { type: 'title', text: WebpageContent.purpose_title8 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph8 },
+        { type: 'title', text: WebpageContent.purpose_title9 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph9 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph10 },
+        { type: 'paragraph', text: WebpageContent.purpose_paragraph11 }
+      ]}
+    />
+    <Link to="/" className="mt-6 inline-block text-blue-600 hover:underline">
+      {WebpageContent.about_backToHome}
+    </Link>
+  </div>
 );
 
 export default About;
