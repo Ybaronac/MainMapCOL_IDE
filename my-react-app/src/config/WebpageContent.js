@@ -38,6 +38,7 @@ const WebpageContent = {
 
   navigation_home: "¿Qué es el IDE?",
   navigation_about: "¿Para qué sirve?",
+  navigation_visualization_tool: "Herramienta de visualización",
   navigation_resources: "Recursos",
   navigation_history: "Historia",
 
@@ -65,6 +66,20 @@ const WebpageContent = {
   description_title7:"La Escala del IDE: Un Enfoque por Porcentaje",
   description_paragraph7:"El IDE está diseñado para ser entendido en términos de porcentaje. Un valor de 0% significa una materialización nula del derecho en esa dimensión o indicador, mientras que un 100% indica una materialización total. Esto permite a los usuarios interpretar los resultados de manera clara y directa, facilitando la identificación de las áreas que requieren mayor atención.",
   
+
+  VTool_title: "Explorando los Resultados del IDE",
+  VTool_paragraph: "En esta página, podrás visualizar los resultados del índice a través de herramientas interactivas:",
+
+  VTool_title1: "Mapa de Colombia:",
+  VTool_paragraph1: "Un mapa interactivo que muestra la puntuación del IDE por Entidad Territorial Certificada (ETC). Esta es la primera vez que se ofrece este nivel de desagregación en una herramienta web, permitiendo a las autoridades locales, como secretarios de educación, diagnosticar con precisión el estado de la educación en sus territorios. Puedes seleccionar los diferentes años para ver cómo ha cambiado el índice y hacer clic en cada ETC para ver un desglose detallado de sus resultados por dimensión.",
+
+  VTool_title2: "Descarga de Datos:",
+  VTool_paragraph2: "Podrás descargar los datos del IDE para que puedas realizar tus propios análisis, incluyendo gráficos de tendencia, comparaciones y desagregaciones específicas que necesites.",
+
+
+
+
+
   history_title1: "Historia del IDE en Colombia",
   history_paragraph1: "La historia del IDE es un reflejo del compromiso de diversas organizaciones para medir y mejorar la educación en el país. El desarrollo original del índice fue una iniciativa de la Alianza Educación Compromiso de Todos (ECT), una coalición de organizaciones que funcionó hasta 2018.",
   history_paragraph1_2: "Actualmente, el IDE hace parte de una iniciativa colaborativa entre la Facultad de Ciencias Económicas de la Universidad Nacional de Colombia y el Laboratorio de Economía de la Educación de la Pontificia Universidad Javeriana, quienes continúan con la labor de investigación, medición y promoción del índice.",

@@ -214,7 +214,7 @@ const D3Map = ({
               if (activeRef.current === this) {
                 resetZoom();
                 d3.select(this).classed("active", false);
-                setWindowText('Ventana Transparente');
+                setWindowText(WebpageContent.transparent_window_label);
                 return;
               }
 
