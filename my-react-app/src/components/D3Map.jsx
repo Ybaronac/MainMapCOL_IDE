@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { MdMyLocation } from "react-icons/md";
 import { HiOutlineZoomOut, HiOutlineZoomIn  } from "react-icons/hi";
 import TransparentWindow from './TransparentWindow';
-import '../styles/D3Map.css';
 import {labels, generalColours, generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
 import { COLOMBIA_DEPARTMENTS_MAP_JSON_DATA, ETC_MAP_2025_JSON_DATA,WORLD_MAP_JSON_DATA} from '../config/configURLDataSource.js';
 import WebpageContent from '../config/WebpageContent';

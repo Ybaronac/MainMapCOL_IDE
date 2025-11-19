@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import '../styles/YearSlider.css';
+// import '../styles/YearSlider.css';  // <-- removed: styles migrated to src/styles/tailwind.css
 import { generalColours, yearSliderGeneralColours, years} from '../config/config.js';
 
 const YearSlider = ({

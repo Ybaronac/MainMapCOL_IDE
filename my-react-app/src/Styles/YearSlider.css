@@ -1,5 +1,0 @@
-.rc-slider-handle.rc-slider-handle-dragging {
-    border-color: var(--halo-color) !important;
-    border-width: 6px !important;
-    box-shadow: 0 0 0 5px var(--halo-color) !important;
-  }

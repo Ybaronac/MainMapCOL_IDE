@@ -1,17 +1,23 @@
 import React from 'react';
 import Navigation from './Navigation.jsx';
-import '../styles/Header.css';
 import WebpageContent from '../config/WebpageContent';
+import ThemeToggle from './ThemeToggle.jsx';
 
 const Header = () => (
   <>
     <header className="header">
-      <h1>{WebpageContent.header_title}</h1>
-      <p>{WebpageContent.header_subtitle}</p>
+      <div className="nav-container flex items-center justify-between">
+        <div>
+          <h1 className="header-title">{WebpageContent.header_title}</h1>
+          <p className="header-subtitle">{WebpageContent.header_subtitle}</p>
+        </div>
+        <div>
+          <ThemeToggle />
+        </div>
+      </div>
     </header>
-    <div className="sub-header-bar">
-      <Navigation />
-    </div>
+
+    <Navigation />
   </>
 );
 

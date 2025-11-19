@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Description.css';
 import WebpageContent from '../config/WebpageContent';
 import TextSection from './TextSection';
 
 const About = () => (
-  <div className="main-content-area">
+  <div className="min-h-screen bg-gray-50 py-8">
     <TextSection
       content={[
         { type: 'title', text: WebpageContent.purpose_title2 },
@@ -31,9 +30,11 @@ const About = () => (
         { type: 'paragraph', text: WebpageContent.purpose_paragraph11 }
       ]}
     />
-    <Link to="/" className="mt-6 inline-block text-blue-600 hover:underline">
-      {WebpageContent.about_backToHome}
-    </Link>
+    <div className="max-w-4xl w-full mx-auto p-4">
+      <Link to="/" className="inline-block mt-4 text-blue-600 hover:underline">
+        {WebpageContent.about_backToHome}
+      </Link>
+    </div>
   </div>
 );
 

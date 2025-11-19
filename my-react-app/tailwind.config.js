@@ -1,16 +1,20 @@
 module.exports = {
-    content: ["./src/**/*.{js,jsx,ts,tsx}"],
-    safelist: [
-      'ml-0',
-      'ml-6',
-      'ml-12',
-      'ml-18',
-      'ml-24',
-      'ml-30',
-      'ml-36',
-    ],
-    theme: {
-      extend: {},
+  content: [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx,css}",
+    "./src/styles/tailwind.css"
+  ],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: {
+        montserrat: ['"Montserrat"', 'sans-serif'],
+        poppins: ['"Poppins"', 'sans-serif'],
+      },
+      colors: {
+        'brand-gray': '#333333',
+      },
     },
-    plugins: [],
-  };
+  },
+  plugins: [],
+};

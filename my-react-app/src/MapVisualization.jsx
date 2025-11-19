@@ -6,7 +6,6 @@ import Legend from './components/Legend';
 import YearSlider from './components/YearSlider';
 import ButtonGroup from './components/ButtonGroup';
 import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
-import './App.css';
 import {labels, years} from './config/config.js';
 import { IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
 import WebpageContent from './config/WebpageContent';

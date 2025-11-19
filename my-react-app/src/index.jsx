@@ -9,13 +9,10 @@
   } catch (e) {}
 })();
 
-import React, { StrictMode } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import './styles/tailwind.css'; // <-- IMPORTA TU CSS CENTRAL AQUÍ
-import App from './App.jsx';
+import App from './App';
+import './styles/tailwind.css'; // <-- importa tu CSS con las variables y @tailwind
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);

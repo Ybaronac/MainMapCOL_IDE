@@ -32,8 +32,6 @@ const Description = () => (
         { type: 'paragraph', text: WebpageContent.description_paragraph7 }
       ]}
     />
-
-    
   </div>
 );
 

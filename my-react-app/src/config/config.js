@@ -19,7 +19,7 @@ export const colorRangeLimits = {
   red: { min: 0, max: 50 },
   yellow: { min: 51, max: 75 },
   green: { min: 76, max: 100 }
-};
+};       
 
 //Colores Test
 /*

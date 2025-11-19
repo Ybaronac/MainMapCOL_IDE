@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/TransparentWindow.css';
 
 const TransparentWindow = ({
   top = 20,
