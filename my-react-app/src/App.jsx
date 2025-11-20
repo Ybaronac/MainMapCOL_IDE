@@ -11,7 +11,7 @@ import Resources from './components/Resources.jsx';
 import History from './components/History.jsx';
 
 const App = () => (
-  <BrowserRouter>
+  <BrowserRouter basename="/MainMapCOL_IDE">
     <div className="app-wrapper min-h-screen bg-gray-100">
       <Header />
       <Routes>
