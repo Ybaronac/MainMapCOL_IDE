@@ -4,6 +4,7 @@ import * as topojson from 'topojson-client';
 import PropTypes from 'prop-types';
 import { MdMyLocation } from "react-icons/md";
 import { HiOutlineZoomOut, HiOutlineZoomIn  } from "react-icons/hi";
+import { ZoomIn, ZoomOut, LocateFixed  } from 'lucide-react';
 import TransparentWindow from './TransparentWindow';
 import {labels, generalColours, generalIDEColours, availabilityColours,accessibilityColours,acceptabilityColours,adaptabilityColours } from '../config/config.js';
 import { COLOMBIA_DEPARTMENTS_MAP_JSON_DATA, ETC_MAP_2025_JSON_DATA,WORLD_MAP_JSON_DATA} from '../config/configURLDataSource.js';
@@ -119,13 +120,14 @@ const D3Map = ({
       .attr("height", 8)
       .attr("patternTransform", "rotate(45)")
       .append("line")
+      .attr("class", "map-hatch-line")            // <-- usa la clase centralizada
       .attr("x1", 0)
       .attr("y1", 0)
       .attr("x2", 0)
       .attr("y2", 8)
-      .attr("stroke", "#bdc3c7") 
+      // .attr("stroke", "#bdc3c7")   <-- removido: controla por CSS variable
       .attr("stroke-width", 1);
-
+  
       const backgroundMapGroup = g.append("g").attr("class", "background-map");
   
       // Load and render map data
@@ -146,10 +148,10 @@ const D3Map = ({
           .append("path")
           .attr("class", "background-countries")
           .attr("d", path)
-          .style("fill", "#d7dbdd")
-          .style("fill", "url(#diagonal-hatch)")
-          .style("stroke", "#ffffff")
-          .style("stroke-width", 3)
+          // .style("fill", "#d7dbdd")    <-- removido
+          // .style("fill", "url(#diagonal-hatch)") <-- removido (ahora por clase)
+          // .style("stroke", "#ffffff")  <-- removido (controlado por CSS var)
+          // .style("stroke-width", 3)
           .style("pointer-events", "none");
 
           g.selectAll("path.departments")
@@ -420,40 +422,13 @@ const D3Map = ({
     return (
       <div style={{ position: 'relative' }}>
         {isLoading && (
-          <div 
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1000,
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-              padding: '20px',
-              borderRadius: '8px',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-              textAlign: 'center'
-            }}
-          >
+          <div className="map-overlay loading">
             <div>Cargando mapa...</div>
           </div>
         )}
         
         {mapError && (
-          <div 
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 1000,
-              backgroundColor: 'rgba(255, 0, 0, 0.1)',
-              padding: '20px',
-              borderRadius: '8px',
-              border: '1px solid #ff0000',
-              color: '#ff0000',
-              textAlign: 'center'
-            }}
-          >
+          <div className="map-overlay error">
             <div>Error al cargar el mapa:</div>
             <div style={{ fontSize: '12px', marginTop: '5px' }}>{mapError}</div>
           </div>
@@ -465,7 +440,6 @@ const D3Map = ({
             height={height}
             className="choropleth"
             style={{ 
-              backgroundColor: isLoading ? '#f5f5f5' : 'white',
               opacity: isLoading ? 0.5 : 1,
               transition: 'opacity 0.3s ease'
             }}
@@ -487,21 +461,21 @@ const D3Map = ({
                 className="map-button reset-button"
                 title="Reiniciar posición"
             >
-                <MdMyLocation size={20} />
+                <LocateFixed size={22} />
             </button>
             <button
                 onClick={zoomIn}
                 className="map-button zoom-in-button"
                 title="Zoom In"
             >
-                <HiOutlineZoomIn size={20} />
+                <ZoomIn size={22} />
             </button>
             <button
                 onClick={zoomOut}
                 className="map-button zoom-out-button"
                 title="Zoom Out"
             >
-                <HiOutlineZoomOut size={20} />
+                <ZoomOut size={22} />
             </button>
         </div>
       

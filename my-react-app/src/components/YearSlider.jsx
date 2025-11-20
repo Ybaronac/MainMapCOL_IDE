@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-// import '../styles/YearSlider.css';  // <-- removed: styles migrated to src/styles/tailwind.css
-import { generalColours, yearSliderGeneralColours, years} from '../config/config.js';
+import { generalColours, yearSliderGeneralColours, years } from '../config/config.js';
 
 const YearSlider = ({
   width = 500,
@@ -24,24 +23,16 @@ const YearSlider = ({
   const normalBorderColor = generalColours[buttonIndex % generalColours.length] || '#1890ff';
   const haloColor = yearSliderGeneralColours[buttonIndex % yearSliderGeneralColours.length] || '#e6f7ff';
 
-  const sliderStyle = {
-    '--halo-color': haloColor,
-  };
-
-  const handleStyle = {
-    borderColor: isActive ? haloColor : normalBorderColor,
-    height: isActive ? 24 : 20,
-    width: isActive ? 24 : 20,
-    marginTop: isActive ? -10 : -8,
-    backgroundColor: '#fff',
-    borderWidth: isActive ? 5 : 3,
-    borderStyle: 'solid',
-    transition: 'all 0.3s ease',
-    boxSizing: 'border-box',
-  };
-
   return (
-    <div id="year-slider" style={{ width: width + 60, padding: '5px', ...sliderStyle }}>
+    <div
+      className="year-slider"
+      style={{
+        width: width + 60,
+        '--halo-color': haloColor,
+        '--normal-border-color': normalBorderColor,
+        '--track-bg': normalBorderColor,
+      }}
+    >
       <Slider
         min={Math.min(...years)}
         max={Math.max(...years)}
@@ -52,9 +43,6 @@ const YearSlider = ({
         included={false}
         dotStyle={{ display: 'none' }}
         activeDotStyle={{ display: 'none' }}
-        railStyle={{ backgroundColor: '#e9e9e9' }}
-        trackStyle={{ backgroundColor: '#1890ff' }}
-        handleStyle={handleStyle}
         onBeforeChange={() => setIsActive(true)}
         onAfterChange={() => setIsActive(false)}
       />

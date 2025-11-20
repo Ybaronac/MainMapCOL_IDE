@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Sun, Moon } from 'lucide-react';
+
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState(() => {
@@ -29,7 +31,7 @@ const ThemeToggle = () => {
                  bg-white text-gray-800 dark:bg-[#171717] dark:text-[#e5e5e5]
                  border-gray-200 dark:border-[#1d1e1e] shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-400"
     >
-      {theme === 'dark' ? '☀️' : '🌙'}
+      {theme === 'dark' ? <Sun /> : <Moon />}
     </button>
   );
 };

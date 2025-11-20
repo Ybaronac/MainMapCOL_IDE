@@ -6,9 +6,9 @@ import Legend from './components/Legend';
 import YearSlider from './components/YearSlider';
 import ButtonGroup from './components/ButtonGroup';
 import CollapsibleMenuContainer from './components/CollapsibleMenuContainer';
-import {labels, years} from './config/config.js';
-import { IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
+import { labels, years, generalColours, yearSliderGeneralColours } from './config/config.js';
 import WebpageContent from './config/WebpageContent';
+import { IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from './config/configURLDataSource.js';
 
 const MapVisualization = () => {
   const [dataIDE, setDataIDE] = useState(new Map());
@@ -79,12 +79,6 @@ const MapVisualization = () => {
     }
   }, [selectedRegion, dataIDE, countryData]);
 
-
-
-
-
-
-
   const barChartData = selectedData && selectedData[selectedYear]
     ? Object.entries(selectedData[selectedYear])
         .filter(([, value]) => value !== null && value !== undefined)
@@ -94,54 +88,20 @@ const MapVisualization = () => {
         }))
     : [];
 
-
-
   return (
-    <div className="app" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {/* Container: 990px wide, centered */}
+    <div className="app-wrapper">
       <div
         className="visualization-container"
         style={{
-          width: '990px',
-          display: 'flex',
-          flexDirection: 'row',
-          boxSizing: 'border-box',
-          marginBottom: '24px',
+          '--accent-color': generalColours[buttonIndex % generalColours.length],
+          '--halo-color': yearSliderGeneralColours[buttonIndex % yearSliderGeneralColours.length],
+          '--active-bg': generalColours[buttonIndex % generalColours.length],
         }}
       >
-        {/* Left Column: 2/3 (~660px) */}
-        <div
-          style={{
-            width: '660px', 
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div
-            className="map-box"
-            style={{
-              backgroundColor: 'white',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-              width: '100%',
-              paddingTop: '10px'
-            }}
-          >
-            <YearSlider
-              selectedYear={selectedYear}
-              onYearChange={handleYearChange}
-              width={596} 
-              buttonIndex={buttonIndex}
-            />
-            <div
-              className="map-content"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                width: '100%',
-                paddingTop: '10px'
-              }}
-            >
+        <div className="left-column">
+          <div className="map-box">
+            <YearSlider selectedYear={selectedYear} onYearChange={handleYearChange} width={596} buttonIndex={buttonIndex} />
+            <div className="map-content">
               <D3Map
                 selectedYear={selectedYear}
                 buttonIndex={buttonIndex}
@@ -149,77 +109,29 @@ const MapVisualization = () => {
                 countryData={countryData}
                 onRegionClick={handleRegionClick}
                 selectedRegion={selectedRegion}
-                width={660} 
-                height={600} 
+                width={660}
+                height={600}
                 dataType="ETC"
               />
-              <Legend
-                buttonIndex={buttonIndex}
-                width={596}
-              />
+              <Legend buttonIndex={buttonIndex} width={596} />
             </div>
           </div>
         </div>
-        <div
-          style={{
-            width: '306px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '24px',
-          }}
-        >
-          <div
-            className="button-sidebar"
-            style={{
-              backgroundColor: 'white',
-              boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
-              width: '100%',
-              boxSizing: 'border-box'
-            }}
-          >
+
+        <div className="right-column">
+          <div className="button-sidebar">
             <h3 className="menu-title">{WebpageContent.button_group_label}</h3>
-            <ButtonGroup
-              selectedIndex={buttonIndex}
-              onButtonClick={handleButtonClick}
-              labels={labels} 
-            />
+            <ButtonGroup selectedIndex={buttonIndex} onButtonClick={handleButtonClick} labels={labels} />
           </div>
-          <div
-            className="chart-box"
-            style={{
-              backgroundColor: 'white',
-              boxShadow: '0 1px 5px rgba(0, 0, 0, 0.1)',
-              width: '100%',
-              boxSizing: 'border-box'
-            }}
-          >
-            <BarChart
-              data={barChartData}
-              selectedYear={selectedYear}
-              selectedRegion={selectedRegion}
-              width={310} 
-              height={380}
-              labels={labels}
-              dataType="ETC"
-            />
+
+          <div className="chart-box">
+            <BarChart data={barChartData} selectedYear={selectedYear} selectedRegion={selectedRegion} width={310} height={380} labels={labels} dataType="ETC" />
           </div>
         </div>
       </div>
-      <div
-        className="collapsible-menu-wrapper"
-        style={{
-          width: '990px',
-          backgroundColor: 'white',
-          boxShadow: '0 1px 5px rgba(0, 0, 0, 0.1)',
-          boxSizing: 'border-box',
-        }}
-      >
-        <CollapsibleMenuContainer
-          selectedYear={selectedYear}
-          selectedRegion={selectedRegion}
-          selectedIndex={buttonIndex}
-          dataType="ETC"
-        />
+
+      <div className="collapsible-menu-container">
+        <CollapsibleMenuContainer selectedYear={selectedYear} selectedRegion={selectedRegion} selectedIndex={buttonIndex} dataType="ETC" />
       </div>
     </div>
   );

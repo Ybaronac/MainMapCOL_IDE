@@ -8,7 +8,7 @@ import Description from './components/Description.jsx';
 import About from './components/About.jsx';
 import VisualizationTool from './components/VisualizationTool.jsx';
 import Resources from './components/Resources.jsx';
-import History from './components/History.jsx'; // Importa el componente History
+import History from './components/History.jsx';
 
 const App = () => (
   <BrowserRouter>
