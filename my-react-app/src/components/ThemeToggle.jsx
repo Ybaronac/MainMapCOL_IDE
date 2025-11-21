@@ -27,9 +27,9 @@ const ThemeToggle = () => {
       aria-pressed={theme === 'dark'}
       aria-label="Toggle color theme"
       title={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-      className="inline-flex items-center justify-center w-10 h-10 rounded-full border transition-colors duration-150
-                 bg-white text-gray-800 dark:bg-[#171717] dark:text-[#e5e5e5]
-                 border-gray-200 dark:border-[#1d1e1e] shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-400"
+      className="inline-flex items-center justify-center w-10 h-80 rounded-full border transition-colors duration-150
+                 bg-black text-gray-800 dark:bg-white dark:text-[#e5e5e5]
+                 border-gray-200 dark:border-[#1d1e1e] shadow-sm "
     >
       {theme === 'dark' ? <Sun /> : <Moon />}
     </button>

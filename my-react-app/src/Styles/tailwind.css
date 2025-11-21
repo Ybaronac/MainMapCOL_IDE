@@ -4,7 +4,7 @@
 */
 
 /* ---------- Fonts & Tailwind directives ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -18,6 +18,14 @@
   --component-bg: #f8f8f8;
   --component-border: #e9e9e9;
   --halo-color: rgba(99,102,241,0.25);
+
+  /* mapa (valores por defecto) */
+  --map-bg-fill: #d7dbdd;
+  --map-diagonal-hatch-stroke: #bdc3c7;
+  --map-border-color: #ffffff;
+  --map-border-width: 0.5px;
+  --map-overlay-bg: rgba(255,255,255,0.9);
+  --map-error-bg: rgba(94, 11, 11, 0.801);
   --accent: #3182ce;
   --muted-shadow: rgba(0,0,0,0.06);
 
@@ -27,6 +35,7 @@
   --space-8: 2rem;
   --radius-md: 0.375rem;
   --border-width: 1px;
+  --header-height: 4rem;
 
   /* fallbacks for dynamic per-component vars */
   --accent-color: var(--accent);
@@ -43,6 +52,14 @@
   --halo-color: rgba(99,102,241,0.18);
   --accent: #3182ce;
   --muted-shadow: rgba(0,0,0,0.04);
+
+  /* mapa overrides */
+  --map-bg-fill: #121212;
+  --map-diagonal-hatch-stroke: #2b2b2b;
+  --map-border-color: #1d1e1e;
+  --map-border-width: 0.5px;
+  --map-overlay-bg: rgba(10,10,10,0.85);
+  --map-error-bg: rgba(255,0,0,0.08);
 }
 
 /* ---------- Base: global resets + typography ---------- */
@@ -51,7 +68,7 @@
   html, body, #root { height: 100%; }
   body {
     margin: 0;
-    font-family: "Montserrat","Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background-color: var(--page-bg);
     color: var(--text-color);
     -webkit-font-smoothing: antialiased;
@@ -70,17 +87,100 @@
   .content-container { max-width:1280px; margin:0 auto; width:100%; display:flex; flex-direction:column; align-items:center; gap:2rem; box-sizing:border-box; }
 
   /* Header */
-  .header { padding:2rem; text-align:center; background-color:var(--component-bg); border-bottom:1px solid var(--component-border); color:var(--title-color); box-sizing:border-box; }
+  .header { padding:2rem; text-align:center; background-color:var(--component-bg); color:var(--title-color); box-sizing:border-box; }
   .header-title { font-size:2.25rem; font-weight:600; color:var(--title-color); }
   .header-subtitle { margin-top:0.5rem; font-size:1rem; color:var(--text-color); }
+  .title-header-container { padding:2rem; text-align:center;justify-content: center;align-items: center;max-width: 1000px;margin: 0 auto; padding-bottom: 6rem; width: 100%; background-color:var(--page-bg); color:var(--title-color); box-sizing:border-box; }
+  .title-header-container h1 { font-size:2.25rem; font-weight:600; color:var(--title-color); }
+  .title-header-container p { margin-top:0.5rem; font-size:1rem; color:var(--text-color); }
 
   /* Navigation */
-  .nav-container { max-width:62rem; width:100%; margin:0 auto; padding:1rem; background-color:var(--component-bg); border-bottom:1px solid var(--component-border); box-shadow:0 1px 3px var(--muted-shadow); box-sizing:border-box; }
+  .nav-container { max-width:62rem; width:100%; margin:0 auto; padding:1rem; background-color:var(--component-bg); box-sizing:border-box; }
   .nav-links { display:flex; gap:2rem; align-items:center; }
   .nav-link { color:var(--text-color); font-size:1rem; font-weight:500; position:relative; }
   .nav-link:hover { color:var(--accent); }
   .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background-color:var(--accent); transition: width .25s ease; }
   .nav-link:hover::after { width:100%; }
+
+  /* Menu Navigation (new unified menu) */
+  .menu-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+    font-family: "Montserrat", sans-serif;
+  }
+  .dark .menu-header {
+    border-bottom-color: rgb(31, 41, 55);
+    background-color: rgba(10, 10, 10, 0.95);
+  }
+  .menu-container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+  }
+  .menu-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    outline: none;
+    color: #000;
+    height: 2rem;
+    border-radius: 0.375rem;
+    gap: 0.375rem;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-family: "Montserrat", sans-serif;
+  }
+  .menu-button:hover {
+    background-color: rgba(229, 231, 235, 0.5);
+    color: rgb(17, 24, 39);
+  }
+  .menu-button:focus-visible {
+    outline: 2px solid rgb(99, 102, 241);
+    outline-offset: 2px;
+  }
+  .menu-button.active {
+    font-weight: 700;
+    color: #000;
+  }
+  .dark .menu-button {
+    color: #fff;
+  }
+  .dark .menu-button:hover {
+    background-color: rgba(55, 65, 81, 0.5);
+    color: rgb(243, 244, 246);
+  }
+  .dark .menu-button.active {
+    color: #fff;
+  }
+  .menu-button-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+  .menu-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
   /* Description / TextSection */
   .description-container { max-width:62rem; width:100%; background-color:var(--component-bg); padding:2rem; margin:0 auto 1.5rem; border-radius:0.375rem; border:1px solid var(--component-border); box-shadow:0 1px 3px var(--muted-shadow); box-sizing:border-box; }
@@ -101,13 +201,13 @@
 
   /* Buttons & controls */
   #button-container { display:flex; gap:10px; justify-content:center; width:fit-content; margin:0; padding:0; }
-  .button { font-family:"Poppins",sans-serif; background-color:var(--component-bg); color:var(--text-color); padding:.5rem .75rem; border-radius:.375rem; border:1px solid var(--component-border); cursor:pointer; font-weight:500; transition:background-color .2s, transform .08s; }
+  .button { font-family:"Montserrat",sans-serif; background-color:var(--component-bg); color:var(--text-color); padding:.5rem .75rem; border-radius:.375rem; border:1px solid var(--component-border); cursor:pointer; font-weight:500; transition:background-color .2s, transform .08s; }
   .button:hover { background-color: rgba(49,130,206,0.06); transform:translateY(-1px); }
-  .button.active { background-color:var(--accent); color:#fff; border-color:transparent; }
+  .button.active { background-color:var(--accent); border-color:transparent; }
 
   /* Collapsible Menu */
   .collapsible-menu-container { width:990px; margin:0 auto; background-color:var(--component-bg); border:1px solid var(--component-border); border-radius:.375rem; box-shadow:0 1px 3px var(--muted-shadow); display:flex; flex-direction:column; align-items:center; box-sizing:border-box; }
-  .menu-title { font-family:"Poppins",sans-serif; font-size:1.25rem; font-weight:600; background-color:var(--title-color); color:var(--page-bg); width:100%; padding:.75rem 1rem; text-align:center; border-top-left-radius:.375rem; border-top-right-radius:.375rem; box-sizing:border-box; }
+  .menu-title { font-family:"Montserrat",sans-serif; font-size:1.25rem; font-weight:600; background-color:var(--title-color); color:var(--page-bg); width:100%; padding:.75rem 1rem; text-align:center; border-top-left-radius:.375rem; border-top-right-radius:.375rem; box-sizing:border-box; }
   .collapsible-menu { width:100%; padding:1rem; border-bottom:1px solid var(--component-border); box-sizing:border-box; }
   .collapsible-menu .menu-node { border-bottom:1px solid var(--component-border) !important; }
 
@@ -115,7 +215,7 @@
   .site-bleed { width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; }
 
   /* Footer */
-  .footer { background-color:var(--component-bg); color:var(--text-color); padding:1rem; text-align:center; width:100%; border-top:1px solid var(--component-border); box-shadow:0 -2px 4px var(--muted-shadow); box-sizing:border-box; }
+  .footer { background-color:var(--component-bg); color:var(--text-color); padding:1rem; text-align:center; width:100%;  box-shadow:0 -2px 4px var(--muted-shadow); box-sizing:border-box; }
   .footer p { margin:0; font-size:.9rem; opacity:.9; }
 
   /* Map / D3 helpers (merged from D3Map.css) */
@@ -160,7 +260,7 @@
     border-radius: 0.25rem;
     box-shadow: 0 2px 4px var(--muted-shadow);
     padding: 0;
-    font-family: "Poppins", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 0.95rem;
   }
 
@@ -190,11 +290,8 @@
   .d3-tooltip-table tbody tr td:last-child { text-align: right; }
 
   /* axis / label helpers */
-  .axis text, .tooltip p, .value-label { font-family: "Poppins", sans-serif; }
+  .axis text, .tooltip p, .value-label { font-family: "Montserrat", sans-serif; }
   .axis path, .axis line { fill:none; stroke: #000; shape-rendering: crispEdges; }
-
-  /* rc-slider handle dragging */
-  .rc-slider-handle.rc-slider-handle-dragging { border-color: var(--halo-color) !important; border-width: 6px !important; box-shadow: 0 0 0 5px var(--halo-color) !important; }
 
   /* small utility */
   .text-justify { text-align: justify; }
@@ -213,29 +310,27 @@
 
   .button-item {
     padding-left: 10px;
-    background-color: var(--component-bg); /* fallback background for list items */
+    background-color: var(--component-bg); /* fallback */
     color: var(--text-color);
+    border-bottom: var(--border-width) solid var(--component-border);
+    line-height: 35px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: background-color 0.3s, transform 0.1s;
-    font-family: "Poppins", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 500;
     font-size: 14px;
     text-align: left;
     width: 100%;
     box-sizing: border-box;
-    border-bottom: 1px solid var(--component-border);
-    line-height: 35px;
   }
 
-  .button-item:last-child {
-    border-bottom: none;
-  }
-
-  /* active state: background color should be set inline from JS for dynamic palette,
-     but ensure correct text color and accessible styles here */
   .button-item.active {
-    color: #fff; /* text on active colored background */
+    background-color: var(--active-bg);
+    color: #fff;
   }
+
+  .button-item:last-child { border-bottom: none; }
 
   .button-item:focus {
     outline: none;
@@ -243,25 +338,9 @@
     transform: translateY(-1px);
   }
 
-  /* small utility if you want a neutral inactive style override */
   .button-item.inactive-neutral {
     background-color: #fafafa;
     color: #333333;
-  }
-
-  /* example: button-item uses variable for active bg */
-  .button-item {
-    padding-left: 10px;
-    background-color: var(--component-bg);
-    color: var(--text-color);
-    border-bottom: var(--border-width) solid var(--component-border);
-    line-height: 35px;
-    border-radius: var(--radius-md);
-  }
-
-  .button-item.active {
-    background-color: var(--active-bg); /* <-- will read per-element var or fallback to --accent */
-    color: #fff;
   }
 
   /* map-box / chart-box use vars for bg, border, shadow */
@@ -284,7 +363,7 @@
     max-width: 596px;
     margin: 0.5rem auto;
     color: var(--text-color);
-    font-family: "Poppins", sans-serif;
+    font-family: "Montserrat", sans-serif;
   }
   .legend-container p {
     margin: 0 0 0.5rem 0;
@@ -303,7 +382,7 @@
   /* axis/legend text */
   .legend-container .axis text {
     fill: var(--text-color);
-    font-family: "Poppins", sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-size: 0.85rem;
   }
   .legend-container .axis line, .legend-container .axis path {
@@ -393,28 +472,6 @@
   }
 }
 
-/* ---------- Map: variables y estilos centralizados (visible / organizado) ---------- */
-/* Coloca esta sección en @layer components (o justo después de tus variables) */
-:root {
-  /* valores por defecto (light) */
-  --map-bg-fill: #d7dbdd;                /* color base fill de background countries */
-  --map-diagonal-hatch-stroke: #bdc3c7;  /* color línea hatch diagonal */
-  --map-border-color: #ffffff;           /* color de líneas/bordes del mapa */
-  --map-border-width: 0.5px;             /* grosor por defecto */
-  --map-overlay-bg: rgba(255,255,255,0.9);/* loading overlay light */
-  --map-error-bg: rgba(94, 11, 11, 0.801);    /* error overlay light */
-}
-
-.dark {
-  /* overrides para dark */
-  --map-bg-fill: #121212;
-  --map-diagonal-hatch-stroke: #2b2b2b;
-  --map-border-color: #1d1e1e;
-  --map-border-width: 0.5px;
-  --map-overlay-bg: rgba(10,10,10,0.85);
-  --map-error-bg: rgba(255,0,0,0.08);
-}
-
 /* SVG / mapa */
 .choropleth {
   display: block;
@@ -466,7 +523,7 @@
   border-radius: 0.5rem;
   text-align: center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  font-family: "Poppins", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 .map-overlay.loading { background: var(--map-overlay-bg); color: var(--text-color); border: 1px solid var(--component-border); }
 .map-overlay.error { background: var(--map-error-bg); color: #b91c1c; border: 1px solid rgba(255,0,0,0.2); }

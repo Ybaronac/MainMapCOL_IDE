@@ -1,9 +1,11 @@
 import React from 'react';
 import WebpageContent from '../config/WebpageContent';
 import TextSection from './TextSection';
+import TitleHeader from './TitleHeader.jsx';
 
 const VisualizationTool = () => (
   <div className="main-content-area">
+    <TitleHeader />
     <TextSection
       content={[
         { type: 'title', text: WebpageContent.VTool_title },

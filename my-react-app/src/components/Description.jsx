@@ -1,9 +1,11 @@
 import React from 'react';
 import WebpageContent from '../config/WebpageContent';
 import TextSection from './TextSection';
+import TitleHeader from './TitleHeader.jsx';
 
 const Description = () => (
   <div>
+    <TitleHeader />
     <TextSection
       content={[
         { type: 'title', text: WebpageContent.description_title1 },

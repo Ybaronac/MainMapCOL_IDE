@@ -43,7 +43,7 @@ const WebpageContent = {
   navigation_history: "Historia",
 
   header_title: "Índice del derecho a la Educación (IDE) en Colombia",
-  header_subtitle: "Visualización interactiva del IDE en Colombia por Entidad Territorial Certificada de Educación (ETC)",
+  header_subtitle: "IDE en Colombia por Entidad Territorial Certificada de Educación (ETC)",
 
   description_title1: "¿Qué es el IDE?",
   description_paragraph1: "El Índice del Derecho a la Educación (IDE) en Colombia es un modelo de medición y una herramienta conceptual diseñada para evaluar y monitorear el progreso del país en el cumplimiento del derecho fundamental a la educación. Por otro lado, esta página web es una nueva herramienta de visualización interactiva, la primera de este tipo para el país, que utiliza los datos del IDE para ir más allá de las cifras de cobertura y explorar la calidad, equidad y pertinencia de la educación en cada rincón de Colombia. Nuestro objetivo es empoderar a ciudadanos, investigadores y formuladores de políticas con datos claros a través de esta plataforma, para impulsar cambios significativos.",
@@ -131,23 +131,23 @@ const WebpageContent = {
   purpose_paragraph11: "En resumen, el IDE transforma la complejidad del sistema educativo en información accionable, permitiendo a los líderes diseñar políticas públicas que respondan a las necesidades reales de sus comunidades, monitorear el progreso y rendir cuentas de manera efectiva.",
 
 
-  resources_title1: "Herramienta de visualización",
-  resources_paragraph1: "",
-  resources_title2: "Explorando los Resultados",
-  resources_paragraph2: "En esta página, podrás visualizar los resultados del índice a través de herramientas interactivas:",
-  resources_title3: "Mapa de Colombia: ",
-  resources_paragraph3: "Un mapa interactivo que muestra la puntuación del IDE por Entidad Territorial Certificada (ETC). Esta es la primera vez que se ofrece este nivel de desagregación en una herramienta web, permitiendo a las autoridades locales, como secretarios de educación, diagnosticar con precisión el estado de la educación en sus territorios. Puedes seleccionar los diferentes años para ver cómo ha cambiado el índice y hacer clic en cada ETC para ver un desglose detallado de sus resultados por dimensión.",
-  resources_title4: "Descarga de Datos:",
-  resources_paragraph4: "Podrás descargar los datos del IDE para que puedas realizar tus propios análisis, incluyendo gráficos de tendencia, comparaciones y desagregaciones específicas que necesites.",
-  resources_title5: "",
-  resources_paragraph5: "",
-  resources_title6: "",
-  resources_paragraph6: "",
-  resources_title7: "",
-  resources_paragraph7: "",
+  resources_title1: "Recursos",
+  resources_paragraph1: "Aqui podras encontrar algunos recursos para aprender más sobre los datos y encontrar la informacion relacionada con el estudio realizado a las entidades territoriales certificadas de educación(ETC).",
+  resources_title2: "Datos relacionados con las ETC",
+  resources_paragraph2: "Aquí encontrarás enlaces a conjuntos de datos, informes y documentación relevante sobre el Índice del Derecho a la Educación (IDE) y las Entidades Territoriales Certificadas (ETC) en Colombia. Estos recursos te permitirán profundizar en el análisis y comprensión de la situación educativa en diferentes regiones del país.",
+  resources_title3: "Json de las ETC ",
+  resources_paragraph3: "Aquí podrás encontrar un archivo JSON que contiene información detallada sobre las Entidades Territoriales Certificadas (ETC) en Colombia, incluyendo sus códigos, nombres y otros datos relevantes que pueden ser útiles para análisis y visualizaciones.",
+  resources_title4: "Mapa de las ETC",
+  resources_paragraph4: "Aquí encontrarás un enlace del mapa de las entidades territoriales certificadas de educación (ETC) en Colombia, el cual te permitirá visualizar geográficamente la distribución y características de estas entidades a lo largo del país.",
+  resources_title5: "Otros estudios relacionados con el IDE",
+  resources_paragraph5: "Aquí podrás encontrar enlaces a otros estudios e investigaciones relacionados con el Índice del Derecho a la Educación (IDE) en Colombia. Estos recursos adicionales te permitirán explorar diferentes perspectivas y análisis sobre la educación en el país.",
+  resources_title6: "Articulos y publicaciones",
+  resources_paragraph6: "Aqui podras encontrar varios articulos y publicaciones relacionadas con el estudio del indice del derecho a la educacion (IDE) en Colombia.",
+  resources_title7: "Libros y documentos",
+  resources_paragraph7: "Aqui podras encontrar varios libros y documentos relacionados con el estudio del indice del derecho a la educacion (IDE) en Colombia.",
 
   
-  footer_copyright: "Colombia Map Visualization. All rights reserved.",
+  footer_copyright: "Colombia Map Visualization IDE.",
 
   legend_label: "IDE"
 };

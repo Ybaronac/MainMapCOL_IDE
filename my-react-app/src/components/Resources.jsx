@@ -2,9 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import WebpageContent from '../config/WebpageContent';
 import TextSection from './TextSection';
+import TitleHeader from './TitleHeader.jsx';
 
 const Resources = () => (
   <div className="min-h-screen bg-gray-50 py-8">
+
+    <TitleHeader />
     <TextSection
       content={[
         { type: 'title', text: WebpageContent.resources_title1 },
