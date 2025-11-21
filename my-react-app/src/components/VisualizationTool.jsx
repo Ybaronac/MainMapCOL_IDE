@@ -4,7 +4,7 @@ import TextSection from './TextSection';
 import TitleHeader from './TitleHeader.jsx';
 
 const VisualizationTool = () => (
-  <div className="main-content-area">
+  <div>
     <TitleHeader />
     <TextSection
       content={[

@@ -17,11 +17,7 @@ const App = () => (
       <Routes>
         <Route
           path="/"
-          element={
-            <div className="main-content-area">
-              <Description />
-           </div>
-          }
+          element={<Description />}
         />
         <Route
           path="/about"
@@ -34,12 +30,11 @@ const App = () => (
         <Route
           path="/visualization-tool"
           element={
-            <div className="main-content-area">
-              <div className="content-container mx-auto my-8">
+              <div>
                 <VisualizationTool />
                 <MapVisualization />
               </div>
-            </div>
+
           }
         />
         <Route
