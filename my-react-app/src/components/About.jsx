@@ -32,11 +32,7 @@ const About = () => (
         { type: 'paragraph', text: WebpageContent.purpose_paragraph11 }
       ]}
     />
-    <div className="max-w-4xl w-full mx-auto p-4">
-      <Link to="/" className="inline-block mt-4 text-blue-600 hover:underline">
-        {WebpageContent.about_backToHome}
-      </Link>
-    </div>
+
   </div>
 );
 

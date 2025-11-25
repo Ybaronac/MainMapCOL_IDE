@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { labels, generalColours } from '../config/config.js';
+import { labels } from '../config/config.js';
 import PropTypes from 'prop-types';
 
-const BarChart = ({ 
-  data, 
+const BarChart = ({
+  data,
   selectedYear,
   selectedRegion,
   width = 350,
@@ -13,9 +13,27 @@ const BarChart = ({
   dataType,
 }) => {
   const svgRef = useRef();
+  const wrapperRef = useRef();
+  const [chartWidth, setChartWidth] = useState(width);
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (entries[0]) {
+        const { width } = entries[0].contentRect;
+        setChartWidth(width);
+      }
+    });
+
+    if (wrapperRef.current) {
+      resizeObserver.observe(wrapperRef.current);
+    }
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   const margin = { top: 50, right: 20, bottom: 50, left: 40 };
-  const chartWidth = width - margin.left - margin.right;
-  const chartHeight = height - margin.top - margin.bottom;
+  const innerWidth = chartWidth - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
 
   const config = {
     ETC: { nameProperty: 'ETC' },
@@ -55,22 +73,23 @@ const BarChart = ({
 
     // X axis
     const x = d3.scaleBand()
-      .range([0, chartWidth])
+      .range([0, innerWidth])
       .padding(0.4)
       .domain(propLabels);
 
     g.append("g")
-      .attr("transform", `translate(0,${chartHeight})`)
+      .attr("transform", `translate(0,${innerHeight})`)
       .call(d3.axisBottom(x))
       .selectAll("text")
       .attr("transform", "translate(-10,0)rotate(-45)")
       .style("text-anchor", "end")
-      .style("font-size", "8px");
+      .style("font-size", "8px")
+      .style("fill", "var(--chart-text-color)");
 
     // Y scale
     const y = d3.scaleLinear()
       .domain([0, 100])
-      .range([chartHeight, 0]);
+      .range([innerHeight, 0]);
 
     // Horizontal grid lines
     const yTicks = y.ticks(5);
@@ -81,12 +100,11 @@ const BarChart = ({
       .append("line")
       .attr("class", "grid-line")
       .attr("x1", 0)
-      .attr("x2", chartWidth)
+      .attr("x2", innerWidth)
       .attr("y1", d => y(d))
       .attr("y2", d => y(d))
-      .attr("stroke", "#d3d3d3")
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "4 4");
+      .attr("stroke", "var(--chart-grid-color)")
+      .attr("stroke-width", 0.2);
 
     // Y-axis values
     g.selectAll(".y-label")
@@ -99,24 +117,26 @@ const BarChart = ({
       .attr("text-anchor", "end")
       .style("font-size", "8px")
       .style("font-family", "'Poppins', sans-serif")
+      .style("fill", "var(--chart-text-color)")
       .text(d => d);
 
     // Title: Region name
-    const regionText = selectedRegion 
-      ? selectedRegion.properties[config[dataType].nameProperty]: 'Colombia';
+    const regionText = selectedRegion
+      ? selectedRegion.properties[config[dataType].nameProperty] : 'Colombia';
     const deptFontSize = 14;
-    const maxTitleWidth = chartWidth - 20;
+    const maxTitleWidth = innerWidth - 20;
     const regionLines = wrapText(regionText, maxTitleWidth, deptFontSize);
 
     const title = g.append("text")
-      .attr("x", chartWidth / 2)
+      .attr("x", innerWidth / 2)
       .attr("y", -margin.top + 15)
       .attr("text-anchor", "middle")
-      .style("font-family", "'Poppins', sans-serif");
+      .style("font-family", "'Poppins', sans-serif")
+      .style("fill", "var(--chart-text-color)");
 
     regionLines.forEach((line, i) => {
       title.append("tspan")
-        .attr("x", chartWidth / 2)
+        .attr("x", innerWidth / 2)
         .attr("dy", i === 0 ? 0 : 12)
         .style("font-size", `${deptFontSize}px`)
         .style("font-weight", "600")
@@ -125,7 +145,7 @@ const BarChart = ({
 
     // Title: Year
     title.append("tspan")
-      .attr("x", chartWidth / 2)
+      .attr("x", innerWidth / 2)
       .attr("dy", regionLines.length > 1 ? 14 : 12)
       .style("font-size", "10px")
       .style("font-weight", "400")
@@ -137,16 +157,19 @@ const BarChart = ({
       .enter()
       .append("rect")
       .attr("x", (d, i) => x(propLabels[i]))
-      .attr("y", chartHeight)
+      .attr("y", innerHeight)
       .attr("width", x.bandwidth())
       .attr("height", 0)
-      .attr("fill", (d, i) => generalColours[i % generalColours.length]);
+      .attr("fill", (d, i) => `var(--chart-bar-${i % 5})`)
+      .attr("fill-opacity", 0.4)
+      .attr("stroke", (d, i) => `var(--chart-bar-${i % 5})`)
+      .attr("stroke-width", 1);
 
     // Animate bars
     bars.transition()
       .duration(1000)
       .attr("y", d => y(d.value))
-      .attr("height", d => chartHeight - y(d.value));
+      .attr("height", d => innerHeight - y(d.value));
 
     // Add value labels
     g.selectAll(".value-label")
@@ -159,19 +182,22 @@ const BarChart = ({
       .attr("text-anchor", "middle")
       .style("font-size", "8px")
       .style("opacity", 0)
+      .style("fill", "var(--chart-text-color)")
       .text(d => `${d.value}%`)
       .transition()
       .duration(1000)
       .style("opacity", 1);
 
-  }, [data, selectedYear, selectedRegion, width, height, propLabels, dataType]);
+  }, [data, selectedYear, selectedRegion, chartWidth, height, propLabels, dataType]);
 
   return (
-    <svg
-      ref={svgRef}
-      width={width}
-      height={height}
-    />
+    <div ref={wrapperRef} style={{ width: '100%', height: height }}>
+      <svg
+        ref={svgRef}
+        width={chartWidth}
+        height={height}
+      />
+    </div>
   );
 };
 
