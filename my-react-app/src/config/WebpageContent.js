@@ -104,6 +104,9 @@ const WebpageContent = {
   history_paragraph8: "El propósito de la iniciativa es ofrecer herramientas que permitan que las políticas educativas garanticen el Derecho a la Educación.",
 
   purpose_title1: "¿Para qué sirve?",
+  purpose_paragraph1: "El IDE transforma la complejidad del sistema educativo en información accionable, permitiendo a los líderes diseñar políticas públicas que respondan a las necesidades reales de sus comunidades, monitorear el progreso y rendir cuentas de manera efectiva.",
+
+
 
   purpose_title2: "El IDE como Herramienta para la Política Pública",
   purpose_paragraph2: "El Índice del Derecho a la Educación es más que un simple conjunto de datos; es una herramienta práctica y potente para la incidencia en la política pública. Los gobernadores y alcaldes pueden utilizar los datos del IDE a través de esta nueva plataforma web para:",
@@ -128,7 +131,6 @@ const WebpageContent = {
   purpose_paragraph9: "Conoce la situación de tu ETC, úsalo para el debate público y exige mejoras en el sistema educativo.",
 
   purpose_paragraph10: "Te invitamos a explorar la información, descargar los informes completos y compartir tus hallazgos. Tu participación es clave para asegurar que el derecho a la educación sea una realidad para todos en Colombia.",
-  purpose_paragraph11: "En resumen, el IDE transforma la complejidad del sistema educativo en información accionable, permitiendo a los líderes diseñar políticas públicas que respondan a las necesidades reales de sus comunidades, monitorear el progreso y rendir cuentas de manera efectiva.",
 
 
   resources_title1: "Recursos",

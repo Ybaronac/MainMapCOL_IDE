@@ -19,11 +19,11 @@ const Resources = () => (
         />
       </div>
 
-      <div className="pb-16" style={{ marginTop: '6rem', paddingTop: '2rem' }}>
+      <div className="pb-16" style={{ marginTop: '1rem', paddingTop: '1rem' }}>
         <div className="w-[85%] max-w-none mx-auto">
           <div
             className="w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
-            style={{ gap: '3rem', padding: '2rem 0' }}
+            style={{ gap: '2rem', padding: '2rem 0' }}
           >
             <InfoCards
               title={WebpageContent.resources_title2}
