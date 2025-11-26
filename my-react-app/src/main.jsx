@@ -6,12 +6,12 @@
     const theme = stored || (prefersDark ? 'dark' : 'light');
     if (theme === 'dark') document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
-  } catch (e) {}
+  } catch (e) { }
 })();
 
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './styles/tailwind.css'; // <-- IMPORTA TU CSS CENTRAL AQUÍ
+import './Styles/tailwind.css'; // <-- IMPORTA TU CSS CENTRAL AQUÍ
 import App from './App.jsx';
 
 createRoot(document.getElementById('root')).render(

@@ -19,39 +19,44 @@ const Resources = () => (
     </div>
 
     <div className="pb-16 mt-20">
-      <div className="w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-12 py-12">
-        <InfoCards
-          title={WebpageContent.resources_title2}
-          text={WebpageContent.resources_paragraph2}
-          icon={<BookOpen className="w-20 h-20" />}
-          link="/resources/guide"
-        />
-        <InfoCards
-          title={WebpageContent.resources_title3}
-          text={WebpageContent.resources_paragraph3}
-          icon={<FileText className="w-20 h-20" />}
-        />
-        <InfoCards
-          title={WebpageContent.resources_title4}
-          text={WebpageContent.resources_paragraph4}
-          icon={<BarChart2 className="w-20 h-20" />}
-        />
-        <InfoCards
-          title={WebpageContent.resources_title5}
-          text={WebpageContent.resources_paragraph5}
-          icon={<Globe className="w-20 h-20" />}
-          link="https://www.dane.gov.co"
-        />
-        <InfoCards
-          title={WebpageContent.resources_title6}
-          text={WebpageContent.resources_paragraph6}
-          icon={<Database className="w-20 h-20" />}
-        />
-        <InfoCards
-          title={WebpageContent.resources_title7}
-          text={WebpageContent.resources_paragraph7}
-          icon={<HelpCircle className="w-20 h-20" />}
-        />
+      <div className="max-w-7xl mx-auto px-6">
+        <div
+          className="w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-12 py-12"
+          style={{ gap: '3rem' }}
+        >
+          <InfoCards
+            title={WebpageContent.resources_title2}
+            text={WebpageContent.resources_paragraph2}
+            icon={<BookOpen className="w-20 h-20" />}
+            link="/resources/guide"
+          />
+          <InfoCards
+            title={WebpageContent.resources_title3}
+            text={WebpageContent.resources_paragraph3}
+            icon={<FileText className="w-20 h-20" />}
+          />
+          <InfoCards
+            title={WebpageContent.resources_title4}
+            text={WebpageContent.resources_paragraph4}
+            icon={<BarChart2 className="w-20 h-20" />}
+          />
+          <InfoCards
+            title={WebpageContent.resources_title5}
+            text={WebpageContent.resources_paragraph5}
+            icon={<Globe className="w-20 h-20" />}
+            link="https://www.dane.gov.co"
+          />
+          <InfoCards
+            title={WebpageContent.resources_title6}
+            text={WebpageContent.resources_paragraph6}
+            icon={<Database className="w-20 h-20" />}
+          />
+          <InfoCards
+            title={WebpageContent.resources_title7}
+            text={WebpageContent.resources_paragraph7}
+            icon={<HelpCircle className="w-20 h-20" />}
+          />
+        </div>
       </div>
     </div>
   </>
