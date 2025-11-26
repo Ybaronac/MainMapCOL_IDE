@@ -4,37 +4,39 @@ import PropTypes from 'prop-types';
 
 const InfoCards = ({ title, text, icon, link }) => {
     return (
-        <div className="max-w-sm rounded overflow-hidden shadow-lg bg-[var(--component-bg)] border border-[var(--component-border)] h-full flex flex-col p-2">
+        <div className="w-full flex flex-col h-full rounded-xl overflow-hidden shadow-xl bg-[var(--component-bg)] border border-[var(--component-border)] transition-all duration-300 hover:shadow-2xl hover:border-[var(--accent)/30]">
             {icon && (
-                <div className="w-full h-48 flex items-center justify-center bg-[var(--component-bg)] border-b border-[var(--component-border)]">
-                    <div className="text-[var(--accent)] transform scale-150">
+                <div className="p-8 lg:p-12 flex items-center justify-center bg-[var(--component-bg)] border-b border-[var(--component-border)]">
+                    <div className="text-[var(--accent)] scale-125 lg:scale-150">
                         {icon}
                     </div>
                 </div>
             )}
-            <div className="px-6 py-4 flex-grow">
-                <div className="font-bold text-xl mb-2 text-[var(--title-color)]">
-                    {title}
+            <div className="px-8 py-10 flex-grow flex flex-col justify-between">
+                <div>
+                    <h3 className="font-bold text-2xl mb-4 text-[var(--title-color)] leading ­tight">
+                        {title}
+                    </h3>
+                    <p className="text-[var(--text-color)] text-base leading-relaxed text-justify">
+                        {text}
+                    </p>
                 </div>
-                <p className="text-[var(--text-color)] text-base text-justify">
-                    {text}
-                </p>
             </div>
             {link && (
-                <div className="px-6 pt-4 pb-4 border-t border-[var(--component-border)] bg-[var(--component-bg)]">
+                <div className="px-8 pb-8 pt-4">
                     {link.startsWith('http') ? (
                         <a
                             href={link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block bg-[var(--accent)] rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 hover:opacity-90 transition-opacity"
+                            className="inline-flex items-center gap-2 bg-[var(--accent)] hover:bg-[var(--accent)/90] text-white font-semibold py-3 px-6 rounded-full transition-all"
                         >
-                            Learn more <ExternalLink className="inline ml-1 w-3 h-3" />
+                            Learn more <ExternalLink className="w-4 h-4" />
                         </a>
                     ) : (
                         <Link
                             to={link}
-                            className="inline-block bg-[var(--accent)] rounded-full px-3 py-1 text-sm font-semibold text-white mr-2 mb-2 hover:opacity-90 transition-opacity"
+                            className="inline-flex items-center gap-2 bg-[var(--accent)] hover:bg-[var(--accent)/90] text-white font-semibold py-3 px-6 rounded-full transition-all"
                         >
                             Learn more
                         </Link>
