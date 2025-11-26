@@ -12,7 +12,7 @@ const InfoCards = ({ title, text, icon, link }) => {
                     </div>
                 </div>
             )}
-            <div className="px-8 py-10 flex-grow flex flex-col justify-between">
+            <div className="px-10 py-12 flex-grow flex flex-col justify-between">
                 <div>
                     <h3 className="font-bold text-2xl mb-4 text-[var(--title-color)] leading ­tight">
                         {title}

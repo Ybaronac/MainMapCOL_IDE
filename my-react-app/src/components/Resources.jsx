@@ -18,8 +18,8 @@ const Resources = () => (
       />
     </div>
 
-    <div className="pb-16 mt-20">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="pb-16 mt-32">
+      <div className="w-[85%] max-w-none mx-auto">
         <div
           className="w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-12 py-12"
           style={{ gap: '3rem' }}
