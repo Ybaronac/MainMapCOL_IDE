@@ -1,7 +1,7 @@
 import React from 'react';
 
-const TextSection = ({ content = [] }) => (
-  <div className="description-container">
+const TextSection = ({ content = [], className = '' }) => (
+  <div className={`description-container ${className}`}>
     <div className="description-content">
       {content.map((item, idx) => {
         const prev = content[idx - 1];

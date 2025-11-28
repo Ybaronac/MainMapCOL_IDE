@@ -18,6 +18,16 @@ const About = () => (
       />
     </div>
 
+    {/* Párrafo de contexto */}
+    <div className="pb-2" style={{ paddingTop: '1.5rem' }}>
+      <TextSection
+        content={[
+          { type: 'paragraph', text: WebpageContent.purpose_paragraph11 }
+        ]}
+        className="transparent-section"
+      />
+    </div>
+
     {/* Primera sección de InfoCards */}
     <div className="pb-2" style={{ paddingTop: '0.5rem' }}>
       <div className="w-[85%] max-w-none mx-auto">
@@ -55,6 +65,7 @@ const About = () => (
         content={[
           { type: 'paragraph', text: WebpageContent.purpose_paragraph6 }
         ]}
+        className="transparent-section"
       />
     </div>
 
@@ -90,6 +101,7 @@ const About = () => (
         content={[
           { type: 'paragraph', text: WebpageContent.purpose_paragraph10 }
         ]}
+        className="transparent-section"
       />
     </div>
 

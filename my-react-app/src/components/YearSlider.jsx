@@ -28,6 +28,7 @@ const YearSlider = ({
       className="year-slider"
       style={{
         width: '100%',
+        paddingBottom: '1.2rem',
         '--halo-color': haloColor,
         '--normal-border-color': normalBorderColor,
         '--track-bg': normalBorderColor,

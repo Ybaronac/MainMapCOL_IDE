@@ -8,7 +8,7 @@ const Timeline = () => {
     return (
         <div className="timeline-container bg-gray-100 dark:bg-[#171717] p-8 rounded-lg">
             <div className="mb-2">
-                <h2 className="text-3xl font-bold text-center mb-2 text-[#262626] dark:text-[#e5e5e5] pd">
+                <h2 className="text-3xl font-bold text-center mb-2 text-[#262626] dark:text-[#d4d4d4] pd">
                     {WebpageContent.history_title2}
                 </h2>
             </div>

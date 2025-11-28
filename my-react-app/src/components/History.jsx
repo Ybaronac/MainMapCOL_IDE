@@ -26,6 +26,7 @@ const History = () => (
         content={[
           { type: 'paragraph', text: WebpageContent.history_paragraph8 }
         ]}
+        className="transparent-section"
       />
     </div>
 

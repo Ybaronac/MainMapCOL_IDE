@@ -23,6 +23,7 @@ const Description = () => (
           { type: 'title', text: WebpageContent.description_title2 },
           { type: 'paragraph', text: WebpageContent.description_paragraph2 }
         ]}
+        className="transparent-section"
       />
     </div>
 
@@ -62,6 +63,7 @@ const Description = () => (
           { type: 'title', text: WebpageContent.description_title7 },
           { type: 'paragraph', text: WebpageContent.description_paragraph7 }
         ]}
+        className="transparent-section"
       />
     </div>
 

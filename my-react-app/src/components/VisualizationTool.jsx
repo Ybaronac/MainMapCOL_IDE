@@ -93,21 +93,15 @@ const VisualizationTool = () => {
   return (
     <div>
       <TitleHeader />
-      <TextSection
-        content={[
-          { type: 'title', text: WebpageContent.VTool_title },
-          { type: 'paragraph', text: WebpageContent.VTool_paragraph },
-        ]}
-      />
+      <div style={{ paddingBottom: '2.5rem' }}>
 
-      <TextSection
-        content={[
-          { type: 'title', text: WebpageContent.VTool_title1 },
-          { type: 'paragraph', text: WebpageContent.VTool_paragraph1 },
-          { type: 'title', text: WebpageContent.VTool_title2 },
-          { type: 'paragraph', text: WebpageContent.VTool_paragraph2 },
-        ]}
-      />
+        <TextSection
+          content={[
+            { type: 'title', text: WebpageContent.VTool_title },
+            { type: 'paragraph', text: WebpageContent.VTool_paragraph },
+          ]}
+        />
+      </div>
 
       <div
         className="visualization-container mt-8 flex flex-col lg:flex-row gap-8 w-full max-w-[1200px] mx-auto"

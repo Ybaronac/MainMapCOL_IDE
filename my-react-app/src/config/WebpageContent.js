@@ -67,11 +67,9 @@ const WebpageContent = {
   description_paragraph7: "El IDE está diseñado para ser entendido en términos de porcentaje. Un valor de 0% significa una materialización nula del derecho en esa dimensión o indicador, mientras que un 100% indica una materialización total. Esto permite a los usuarios interpretar los resultados de manera clara y directa, facilitando la identificación de las áreas que requieren mayor atención.",
 
 
-  VTool_title: "Explorando los Resultados del IDE",
-  VTool_paragraph: "En esta página, podrás visualizar los resultados del índice a través de herramientas interactivas:",
+  VTool_title: "Explorando los Resultados del IDE en el Mapa de Colombia",
+  VTool_paragraph: "En esta página, podrás visualizar los resultados del índice a través de herramientas interactivas que muestran la puntuación del IDE por Entidad Territorial Certificada (ETC). Esta es la primera vez que se ofrece este nivel de desagregación en una herramienta web, permitiendo a las autoridades locales, como secretarios de educación, diagnosticar con precisión el estado de la educación en sus territorios. Puedes seleccionar los diferentes años para ver cómo ha cambiado el índice y hacer clic en cada ETC para ver un desglose detallado de sus resultados por dimensión.",
 
-  VTool_title1: "Mapa de Colombia:",
-  VTool_paragraph1: "Un mapa interactivo que muestra la puntuación del IDE por Entidad Territorial Certificada (ETC). Esta es la primera vez que se ofrece este nivel de desagregación en una herramienta web, permitiendo a las autoridades locales, como secretarios de educación, diagnosticar con precisión el estado de la educación en sus territorios. Puedes seleccionar los diferentes años para ver cómo ha cambiado el índice y hacer clic en cada ETC para ver un desglose detallado de sus resultados por dimensión.",
 
   VTool_title2: "Descarga de Datos:",
   VTool_paragraph2: "Podrás descargar los datos del IDE para que puedas realizar tus propios análisis, incluyendo gráficos de tendencia, comparaciones y desagregaciones específicas que necesites.",
@@ -106,18 +104,18 @@ const WebpageContent = {
   purpose_title1: "¿Para qué sirve?",
   purpose_paragraph1: "El IDE transforma la complejidad del sistema educativo en información accionable, permitiendo a los líderes diseñar políticas públicas que respondan a las necesidades reales de sus comunidades, monitorear el progreso y rendir cuentas de manera efectiva.",
 
+  purpose_paragraph11: "El IDE puede ser una Herramienta para:",
 
-
-  purpose_title2: "El IDE como Herramienta para la Política Pública",
+  purpose_title2: "La Política Pública",
   purpose_paragraph2: "El Índice del Derecho a la Educación es más que un simple conjunto de datos; es una herramienta práctica y potente para la incidencia en la política pública. Los gobernadores y alcaldes pueden utilizar los datos del IDE a través de esta nueva plataforma web para:",
 
-  purpose_title3: "Diagnóstico preciso:",
+  purpose_title3: "Diagnóstico preciso",
   purpose_paragraph3: "La herramienta de visualización ofrece un diagnóstico claro y detallado del estado de la educación en su ETC. Al desagregar los resultados, les permite identificar qué dimensiones (Disponibilidad, Accesibilidad, Adaptabilidad o Aceptabilidad) presentan mayores desafíos en su jurisdicción. Por ejemplo, una ETC podría tener un alto puntaje en Accesibilidad pero un bajo puntaje en Aceptabilidad, lo que sugiere que se debe enfocar en mejorar la calidad y el desempeño académico en lugar de la cobertura.",
 
-  purpose_title4: "Formulación de metas concretas:",
+  purpose_title4: "Formulación de metas concretas",
   purpose_paragraph4: "Al entender las brechas y los indicadores más rezagados a través de la visualización, los líderes locales pueden establecer metas realistas y medibles. Por ejemplo, si el problema es la Disponibilidad, la meta podría ser aumentar el porcentaje de estudiantes en jornada única o reducir la proporción de alumnos por docente.",
 
-  purpose_title5: "Asignación de recursos efectiva:",
+  purpose_title5: "Asignación de recursos efectiva",
   purpose_paragraph5: "El IDE, visualizado en la plataforma, permite a los tomadores de decisiones asignar los recursos de manera estratégica. Al conocer las necesidades específicas de cada pilar en su territorio, pueden invertir en las áreas que tendrán un mayor impacto.",
 
   purpose_paragraph6: "Este índice es más que solo datos; es una herramienta para la acción:",
