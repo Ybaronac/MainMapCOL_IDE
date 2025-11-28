@@ -110,17 +110,17 @@ const VisualizationTool = () => {
       />
 
       <div
-        className="visualization-container mt-8"
+        className="visualization-container mt-8 flex flex-col lg:flex-row gap-8 w-full max-w-[1200px] mx-auto"
         style={{
           '--accent-color': generalColours[buttonIndex % generalColours.length],
           '--halo-color': yearSliderGeneralColours[buttonIndex % yearSliderGeneralColours.length],
           '--active-bg': generalColours[buttonIndex % generalColours.length],
         }}
       >
-        <div className="left-column">
-          <div className="map-box">
-            <YearSlider selectedYear={selectedYear} onYearChange={handleYearChange} width={596} buttonIndex={buttonIndex} />
-            <div className="map-content">
+        <div className="left-column flex-1 min-w-0 flex flex-col gap-4">
+          <div className="map-box w-full">
+            <YearSlider selectedYear={selectedYear} onYearChange={handleYearChange} buttonIndex={buttonIndex} />
+            <div className="map-content w-full">
               <D3Map
                 selectedYear={selectedYear}
                 buttonIndex={buttonIndex}
@@ -128,23 +128,21 @@ const VisualizationTool = () => {
                 countryData={countryData}
                 onRegionClick={handleRegionClick}
                 selectedRegion={selectedRegion}
-                width={660}
-                height={600}
                 dataType="ETC"
               />
-              <Legend buttonIndex={buttonIndex} width={596} />
+              <Legend buttonIndex={buttonIndex} />
             </div>
           </div>
         </div>
 
-        <div className="right-column">
-          <div className="button-sidebar">
+        <div className="right-column w-full lg:w-[350px] flex-shrink-0 flex flex-col gap-6">
+          <div className="button-sidebar w-full">
             <h3 className="menu-title">{WebpageContent.button_group_label}</h3>
             <ButtonGroup selectedIndex={buttonIndex} onButtonClick={handleButtonClick} labels={labels} />
           </div>
 
-          <div className="chart-box">
-            <BarChart data={barChartData} selectedYear={selectedYear} selectedRegion={selectedRegion} width={310} height={380} labels={labels} dataType="ETC" />
+          <div className="chart-box w-full">
+            <BarChart data={barChartData} selectedYear={selectedYear} selectedRegion={selectedRegion} labels={labels} dataType="ETC" />
           </div>
         </div>
       </div>

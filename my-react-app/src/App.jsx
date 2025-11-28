@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import MapVisualization from './MapVisualization.jsx';
 import VisualizationTool from './components/VisualizationTool.jsx';
 import Resources from './components/Resources.jsx';
 import About from './components/About.jsx';

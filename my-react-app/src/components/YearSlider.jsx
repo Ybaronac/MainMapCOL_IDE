@@ -27,7 +27,7 @@ const YearSlider = ({
     <div
       className="year-slider"
       style={{
-        width: width + 60,
+        width: '100%',
         '--halo-color': haloColor,
         '--normal-border-color': normalBorderColor,
         '--track-bg': normalBorderColor,

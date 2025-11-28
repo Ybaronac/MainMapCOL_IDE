@@ -448,15 +448,15 @@
 
   /* Visualization / Map layout */
   .visualization-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 990px;
+    /* Layout handled by Tailwind classes in JSX, but keeping this for legacy/fallback if needed */
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
   .button-sidebar {
-    min-width: 200px;
+    /* Width handled by parent flex container */
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -470,7 +470,6 @@
 
   .map-box {
     width: 100%;
-    max-width: 990px;
     background-color: var(--component-bg);
     border: 1px solid var(--component-border);
     border-radius: .375rem;
@@ -530,7 +529,8 @@
 
   /* Collapsible Menu */
   .collapsible-menu-container {
-    width: 990px;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     background-color: var(--component-bg);
     border: 1px solid var(--component-border);
@@ -597,6 +597,7 @@
   /* Map / D3 helpers (merged from D3Map.css) */
   .map-container {
     position: relative;
+    width: 100%;
   }
 
   .map-button {
@@ -794,7 +795,7 @@
 
   /* ---------- Legend, YearSlider, layout columns (centralized) ---------- */
   .legend-container {
-    max-width: 596px;
+    width: 100%;
     margin: 0.5rem auto;
     color: var(--text-color);
     font-family: "Montserrat", sans-serif;
@@ -890,30 +891,16 @@
 
   /* Layout columns used by MapVisualization */
   .left-column {
-    width: 660px;
+    /* Flex child properties handled in JSX */
     display: flex;
     flex-direction: column;
   }
 
   .right-column {
-    width: 306px;
+    /* Flex child properties handled in JSX */
     display: flex;
     flex-direction: column;
     gap: 24px;
-  }
-
-  /* small responsive fallback */
-  @media (max-width: 1024px) {
-    .visualization-container {
-      width: 100%;
-      padding: 0 1rem;
-    }
-
-    .left-column,
-    .right-column,
-    .visualization-container {
-      width: 100%;
-    }
   }
 }
 

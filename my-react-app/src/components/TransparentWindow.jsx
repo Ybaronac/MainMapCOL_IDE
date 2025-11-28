@@ -16,7 +16,9 @@ const TransparentWindow = ({
         '--top': `${top}px`,
         '--left': `${left}px`,
         '--width': `${width}px`,
-        '--height': `${height}px`
+        '--height': `${height}px`,
+        maxWidth: 'calc(100% - 40px)', // Prevent overflow
+        maxHeight: 'calc(100% - 40px)'
       }}
     >
       {text ? <p>{text}</p> : children}

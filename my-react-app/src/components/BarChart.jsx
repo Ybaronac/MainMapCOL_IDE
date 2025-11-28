@@ -7,8 +7,8 @@ const BarChart = ({
   data,
   selectedYear,
   selectedRegion,
-  width = 350,
-  height = 180,
+  width = 350, // Initial fallback
+  height = 380,
   labels: propLabels = labels,
   dataType,
 }) => {
