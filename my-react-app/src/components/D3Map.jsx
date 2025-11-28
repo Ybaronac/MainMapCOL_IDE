@@ -170,7 +170,8 @@ const D3Map = ({
 
           const deptID = Number(d.properties[config[dataType].idProperty]);
           const rates = dataIDE.get(deptID);
-          const value = rates ? rates[selectedYear][buttonIndex] : "No data";
+          const yearData = rates ? rates[selectedYear] : null;
+          const value = yearData ? Object.values(yearData)[buttonIndex] : "No data";
           const html = `
                   <table class="d3-tooltip-table">
                     <thead>
@@ -295,7 +296,7 @@ const D3Map = ({
   }, [dataType]); // Only re-run when dataType changes
 
   useEffect(() => {
-    if (!gRef.current) return;
+    if (!gRef.current || !tooltipRef.current) return;
 
     const g = d3.select(gRef.current);
     const color = d3.scaleQuantize()
@@ -309,9 +310,11 @@ const D3Map = ({
         const path = d3.select(this);
 
         // Update fill color
+        const yearData = rates ? rates[selectedYear] : null;
+        const colorValue = yearData ? Object.values(yearData)[buttonIndex] : 0;
         path.transition()
           .duration(500)
-          .attr("fill", rates ? color(rates[selectedYear][buttonIndex]) : "white");
+          .attr("fill", yearData ? color(colorValue) : "white");
 
         // Reattach tooltip event handlers
         path.on("mouseover", function (event) {
@@ -319,7 +322,7 @@ const D3Map = ({
             .duration(200)
             .style("opacity", 0.9);
 
-          const value = rates ? rates[selectedYear][buttonIndex] : "No data";
+          const value = yearData ? Object.values(yearData)[buttonIndex] : "No data";
           const html = `
                 <table class="d3-tooltip-table">
                   <thead>

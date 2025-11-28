@@ -54,7 +54,7 @@
 
 .dark {
   --title-color: #e5e5e5;
-  --text-color: #525252;
+  --text-color: #a3a3a3;
   --page-bg: #0a0a0a;
   --component-bg: #171717;
   --component-border: #1d1e1e;
@@ -74,7 +74,7 @@
   --chart-bar-4: #38bdf8;
   /* Sky-400 */
   --chart-grid-color: #404040;
-  --chart-text-color: #a3a3a3;
+  --chart-text-color: #d4d4d4;
 
   /* mapa overrides */
   --map-bg-fill: #121212;

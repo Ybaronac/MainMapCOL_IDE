@@ -19,11 +19,12 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedRegion, selectedIndex 
     nameProperty: 'ETC',
   };
 
+
   const categoryKeysMap = {
-    Disponibilidad: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29'],
-    Accesibilidad: ['30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49'],
-    Adaptabilidad: ['50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69'],
-    Aceptabilidad: ['70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94']
+    Disponibilidad: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'],
+    Accesibilidad: ['26', '27', '28', '29', '30'],
+    Adaptabilidad: ['31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'],
+    Aceptabilidad: ['47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62']
   };
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedRegion, selectedIndex 
       const regionData = data.find(
         (d) => String(d[config.idProperty]).padStart(2, '0') === regionID || String(d[config.idProperty]) === regionID,
       );
-      
+
       if (regionData && regionData.values[yearAsString]) {
         let metrics = regionData.values[yearAsString];
 

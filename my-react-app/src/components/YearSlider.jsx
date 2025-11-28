@@ -45,7 +45,7 @@ const YearSlider = ({
         dotStyle={{ display: 'none' }}
         activeDotStyle={{ display: 'none' }}
         onBeforeChange={() => setIsActive(true)}
-        onAfterChange={() => setIsActive(false)}
+        onChangeComplete={() => setIsActive(false)}
       />
     </div>
   );

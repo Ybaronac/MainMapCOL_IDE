@@ -4,7 +4,7 @@ import { IoIosSquare, IoIosRadioButtonOn } from 'react-icons/io';
 import { labels, generalColours, traficLightColours, colorRangeLimits } from '../config/config.js';
 import { ITEMS_IDE } from '../config/configURLDataSource.js';
 
-const CollapsibleMenu = ({ data,selectedIndex }) => {
+const CollapsibleMenu = ({ data, selectedIndex }) => {
   const [openSections, setOpenSections] = useState({});
   const [textJson, setTextJson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,8 +34,8 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
     Object.entries(obj).forEach(([key, value]) => {
       if (key === 'score') return;
       const currentPath = path ? `${path}.${key}` : key;
-      sections[currentPath] = false; 
-      if (typeof value === 'object' && value !== null)  {
+      sections[currentPath] = false;
+      if (typeof value === 'object' && value !== null) {
         const childSections = initializeOpenSections(value, currentPath);
         Object.assign(sections, childSections);
       }
@@ -60,7 +60,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
       const initialSections = initializeOpenSections(filteredTextJson);
       setOpenSections(initialSections);
     }
-  }, [textJson,selectedIndex]);
+  }, [textJson, selectedIndex]);
 
   const toggleSection = (key) => {
     setOpenSections((prev) => ({
@@ -71,7 +71,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
 
   const replaceValues = (textObj, values) => {
     if (!values || !textObj) return textObj;
-    const result = JSON.parse(JSON.stringify(textObj)); 
+    const result = JSON.parse(JSON.stringify(textObj));
     const replaceInObject = (obj) => {
       Object.keys(obj).forEach((key) => {
         if (key === 'score' && typeof obj[key] === 'string') {
@@ -122,7 +122,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
       const isOpen = openSections[currentPath] ?? false;
       const isMainLabel = level === 0 && labels.includes(key);
 
-      let iconColor = '#000'; 
+      let iconColor = '#000';
       if (level === 0 && !isLeaf) {
         if (selectedIndex === 0) {
           const labelIndex = labels.indexOf(key);
@@ -152,42 +152,42 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
                 </div>
               ) : !isMainLabel && displayValue ? (
                 <div className="w-12 flex items-center space-x-1">
-                <IoIosRadioButtonOn
-                  className="text-sm"
-                  style={{
-                    color: traficLightColours[0],
-                    opacity: iconStates.red ? 1 : 0.1,
-                    border: '1px solid black',
-                    borderColor: '#e5e7eb',
-                    borderRadius: '50%',
-                  }}
-                />
-                <IoIosRadioButtonOn
-                  className="text-sm"
-                  style={{
-                    color: traficLightColours[1],
-                    opacity: iconStates.yellow ? 1 : 0.1,
-                    border: '1px solid black',
-                    borderColor: '#e5e7eb',
-                    borderRadius: '50%',
-                  }}
-                />
-                <IoIosRadioButtonOn
-                  className="text-sm"
-                  style={{
-                    color: traficLightColours[2],
-                    opacity: iconStates.green ? 1 : 0.1,
-                    border: '1px solid black',
-                    borderColor: '#e5e7eb',
-                    borderRadius: '50%',
-                  }}
-                />
+                  <IoIosRadioButtonOn
+                    className="text-sm"
+                    style={{
+                      color: traficLightColours[0],
+                      opacity: iconStates.red ? 1 : 0.1,
+                      border: '1px solid black',
+                      borderColor: '#e5e7eb',
+                      borderRadius: '50%',
+                    }}
+                  />
+                  <IoIosRadioButtonOn
+                    className="text-sm"
+                    style={{
+                      color: traficLightColours[1],
+                      opacity: iconStates.yellow ? 1 : 0.1,
+                      border: '1px solid black',
+                      borderColor: '#e5e7eb',
+                      borderRadius: '50%',
+                    }}
+                  />
+                  <IoIosRadioButtonOn
+                    className="text-sm"
+                    style={{
+                      color: traficLightColours[2],
+                      opacity: iconStates.green ? 1 : 0.1,
+                      border: '1px solid black',
+                      borderColor: '#e5e7eb',
+                      borderRadius: '50%',
+                    }}
+                  />
                 </div>
-              ) : null}														 
+              ) : null}
             </div>
             <div className="flex items-center w-full">
               <div className="flex items-center">
-              {level === 0 ? (
+                {level === 0 ? (
                   <div style={{ width: '120px' }}>
                     <span
                       className="font-bold debug-first-level"
@@ -199,7 +199,7 @@ const CollapsibleMenu = ({ data,selectedIndex }) => {
                 ) : (
                   <span className="font-medium">{key}</span>
                 )}
-              {isMainLabel && displayValue && (
+                {isMainLabel && displayValue && (
                   <div className="w-12 flex items-center space-x-1">
                     <IoIosRadioButtonOn
                       className="text-sm"
