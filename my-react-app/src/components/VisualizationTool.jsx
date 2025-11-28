@@ -94,7 +94,6 @@ const VisualizationTool = () => {
     <div>
       <TitleHeader />
       <div style={{ paddingBottom: '2.5rem' }}>
-
         <TextSection
           content={[
             { type: 'title', text: WebpageContent.VTool_title },
@@ -104,14 +103,20 @@ const VisualizationTool = () => {
       </div>
 
       <div
-        className="visualization-container mt-8 flex flex-col lg:flex-row gap-8 w-full max-w-[1200px] mx-auto"
+        className="visualization-grid mt-8"
         style={{
           '--accent-color': generalColours[buttonIndex % generalColours.length],
           '--halo-color': yearSliderGeneralColours[buttonIndex % yearSliderGeneralColours.length],
           '--active-bg': generalColours[buttonIndex % generalColours.length],
         }}
       >
-        <div className="left-column flex-1 min-w-0 flex flex-col gap-4">
+        {/* Column 1: ButtonGroup */}
+        <div className="grid-buttons">
+          <ButtonGroup selectedIndex={buttonIndex} onButtonClick={handleButtonClick} labels={labels} />
+        </div>
+
+        {/* Column 2: Map Section */}
+        <div className="grid-map">
           <div className="map-box w-full">
             <YearSlider selectedYear={selectedYear} onYearChange={handleYearChange} buttonIndex={buttonIndex} />
             <div className="map-content w-full">
@@ -129,21 +134,17 @@ const VisualizationTool = () => {
           </div>
         </div>
 
-        <div className="right-column w-full lg:w-[350px] flex-shrink-0 flex flex-col gap-6">
-          <div className="button-sidebar w-full">
-            <h3 className="menu-title">{WebpageContent.button_group_label}</h3>
-            <ButtonGroup selectedIndex={buttonIndex} onButtonClick={handleButtonClick} labels={labels} />
-          </div>
-
-          <div className="chart-box w-full">
-            <BarChart data={barChartData} selectedYear={selectedYear} selectedRegion={selectedRegion} labels={labels} dataType="ETC" />
-          </div>
+        {/* Column 3: BarChart */}
+        <div className="grid-chart">
+          <BarChart data={barChartData} selectedYear={selectedYear} selectedRegion={selectedRegion} labels={labels} dataType="ETC" />
+        </div>
+      </div>
+      <div style={{ paddingTop: '2rem' }}>
+        <div className="collapsible-menu-container mt-8">
+          <CollapsibleMenuContainer selectedYear={selectedYear} selectedRegion={selectedRegion} selectedIndex={buttonIndex} />
         </div>
       </div>
 
-      <div className="collapsible-menu-container mt-8">
-        <CollapsibleMenuContainer selectedYear={selectedYear} selectedRegion={selectedRegion} selectedIndex={buttonIndex} dataType="ETC" />
-      </div>
     </div>
   );
 };

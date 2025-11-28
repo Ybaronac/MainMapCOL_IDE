@@ -462,9 +462,59 @@
     margin-bottom: 0;
   }
 
-  /* Visualization / Map layout */
+  /* Visualization Grid Layout (Desktop) */
+  .visualization-grid {
+    width: 85%;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .grid-buttons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .grid-map {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    /* Prevent grid blowout */
+  }
+
+  .grid-chart {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Responsive: Stack on smaller screens */
+  @media (max-width: 1023px) {
+    .visualization-grid {
+      width: 100%;
+      max-width: 990px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .grid-buttons,
+    .grid-map,
+    .grid-chart {
+      width: 100%;
+    }
+
+    .grid-chart {
+      max-width: 100%;
+    }
+  }
+
+  /* Legacy container (kept for backwards compatibility) */
   .visualization-container {
-    /* Layout handled by Tailwind classes in JSX, but keeping this for legacy/fallback if needed */
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
