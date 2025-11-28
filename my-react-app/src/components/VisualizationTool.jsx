@@ -9,6 +9,7 @@ import Legend from './Legend';
 import YearSlider from './YearSlider';
 import ButtonGroup from './ButtonGroup';
 import CollapsibleMenuContainer from './CollapsibleMenuContainer';
+import LineChart from './LineChart';
 import { labels, years, generalColours, yearSliderGeneralColours } from '../config/config.js';
 import { IDE_COLOMBIA_CHOROPLETH, IDE_ETC_CHOROPLETH } from '../config/configURLDataSource.js';
 
@@ -134,17 +135,25 @@ const VisualizationTool = () => {
           </div>
         </div>
 
-        {/* Column 3: BarChart */}
+        {/* Column 3: BarChart and LineChart */}
         <div className="grid-chart">
           <BarChart data={barChartData} selectedYear={selectedYear} selectedRegion={selectedRegion} labels={labels} dataType="ETC" />
+          <div style={{ paddingTop: '1.5rem' }}>
+            <LineChart
+              selectedData={selectedData}
+              selectedRegion={selectedRegion}
+              selectedIndex={buttonIndex}
+              dataType="ETC"
+            />
+          </div>
         </div>
       </div>
+
       <div style={{ paddingTop: '2rem' }}>
         <div className="collapsible-menu-container mt-8">
           <CollapsibleMenuContainer selectedYear={selectedYear} selectedRegion={selectedRegion} selectedIndex={buttonIndex} />
         </div>
       </div>
-
     </div>
   );
 };
