@@ -922,57 +922,84 @@
   .year-slider {
     width: 100%;
     box-sizing: border-box;
-    padding: 5px;
+    padding: 10px 5px 30px 5px;
+    /* Added bottom padding for marks */
     --halo-color: var(--halo-color);
     --normal-border-color: var(--normal-border-color, var(--accent));
-    --rail-bg: var(--rail-bg, #e9e9e9);
+    --rail-bg: var(--rail-bg, #e2e8f0);
     --track-bg: var(--track-bg, var(--accent));
   }
 
   /* rc-slider rail/track/handle styling scoped to .year-slider */
   .year-slider .rc-slider-rail {
     background-color: var(--rail-bg);
-    height: 6px;
+    height: 10px;
     border-radius: 9999px;
     opacity: 1;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
   .year-slider .rc-slider-track {
     background-color: var(--track-bg);
-    height: 6px;
+    height: 10px;
     border-radius: 9999px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
   /* default handle */
   .year-slider .rc-slider-handle {
     border-color: var(--normal-border-color);
-    height: 20px;
-    width: 20px;
-    margin-top: -8px;
-    /* centers the default handle */
+    height: 24px;
+    width: 24px;
+    margin-top: -7px;
+    /* Centers handle on 10px track */
     background-color: #fff;
     border-width: 3px;
     border-style: solid;
     box-sizing: border-box;
-    transition: all 0.18s ease;
-    box-shadow: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    cursor: grab;
   }
 
-  /* dragging/active handle */
-  .year-slider .rc-slider-handle.rc-slider-handle-dragging,
+  .year-slider .rc-slider-handle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
   .year-slider .rc-slider-handle:active {
-    height: 24px;
-    width: 24px;
-    margin-top: -10px;
-    /* centers the larger handle */
-    border-width: 5px;
-    border-color: var(--halo-color);
-    box-shadow: 0 0 0 5px var(--halo-color);
+    cursor: grabbing;
+    transform: scale(1.15);
+    box-shadow: 0 0 0 4px var(--halo-color);
+    border-color: var(--normal-border-color);
+  }
+
+  /* dragging/active handle override */
+  .year-slider .rc-slider-handle.rc-slider-handle-dragging {
+    box-shadow: 0 0 0 4px var(--halo-color);
+    border-color: var(--normal-border-color);
   }
 
   /* hides dots if any */
   .year-slider .rc-slider-dot {
     display: none !important;
+  }
+
+  /* Marks styling */
+  .year-slider .rc-slider-mark-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    margin-top: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .year-slider .rc-slider-mark-text-active {
+    color: var(--title-color);
+    opacity: 1;
+    font-weight: 600;
+    font-size: 0.85rem;
   }
 
   /* Layout columns used by MapVisualization */
