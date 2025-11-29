@@ -5,7 +5,7 @@ import { labels } from '../config/config.js';
 import { ETC_ITEMS } from '../config/configURLDataSource.js';
 import WebpageContent from '../config/WebpageContent';
 
-const CollapsibleMenuContainer = ({ selectedYear, selectedRegion, selectedIndex }) => {
+const CollapsibleMenuContainer = ({ selectedYear, selectedRegion, selectedIndex, expandAll = false }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -114,7 +114,7 @@ const CollapsibleMenuContainer = ({ selectedYear, selectedRegion, selectedIndex 
           No hay datos disponibles para el año {selectedYear} en la región seleccionada ({regionName}).
         </div>
       ) : (
-        <CollapsibleMenu data={filteredMetrics} selectedIndex={selectedIndex} />
+        <CollapsibleMenu data={filteredMetrics} selectedIndex={selectedIndex} expandAll={expandAll} />
       )}
     </div>
   );
@@ -132,6 +132,7 @@ CollapsibleMenuContainer.propTypes = {
     }),
   ]),
   selectedIndex: PropTypes.number.isRequired,
+  expandAll: PropTypes.bool,
 };
 
 export default CollapsibleMenuContainer;

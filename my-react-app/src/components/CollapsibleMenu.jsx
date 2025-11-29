@@ -4,7 +4,7 @@ import { IoIosSquare, IoIosRadioButtonOn } from 'react-icons/io';
 import { labels, generalColours, traficLightColours, colorRangeLimits } from '../config/config.js';
 import { ITEMS_IDE } from '../config/configURLDataSource.js';
 
-const CollapsibleMenu = ({ data, selectedIndex }) => {
+const CollapsibleMenu = ({ data, selectedIndex, expandAll = false }) => {
   const [openSections, setOpenSections] = useState({});
   const [textJson, setTextJson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,15 +28,15 @@ const CollapsibleMenu = ({ data, selectedIndex }) => {
     fetchTextJson();
   }, []);
 
-  const initializeOpenSections = (obj, path = '') => {
+  const initializeOpenSections = (obj, path = '', shouldExpandAll = false) => {
     if (!obj) return {};
     const sections = {};
     Object.entries(obj).forEach(([key, value]) => {
       if (key === 'score') return;
       const currentPath = path ? `${path}.${key}` : key;
-      sections[currentPath] = false;
+      sections[currentPath] = shouldExpandAll;
       if (typeof value === 'object' && value !== null) {
-        const childSections = initializeOpenSections(value, currentPath);
+        const childSections = initializeOpenSections(value, currentPath, shouldExpandAll);
         Object.assign(sections, childSections);
       }
     });
@@ -57,10 +57,10 @@ const CollapsibleMenu = ({ data, selectedIndex }) => {
   useEffect(() => {
     if (textJson) {
       const filteredTextJson = filterTextJson(textJson);
-      const initialSections = initializeOpenSections(filteredTextJson);
+      const initialSections = initializeOpenSections(filteredTextJson, '', expandAll);
       setOpenSections(initialSections);
     }
-  }, [textJson, selectedIndex]);
+  }, [textJson, selectedIndex, expandAll]);
 
   const toggleSection = (key) => {
     setOpenSections((prev) => ({
@@ -282,6 +282,7 @@ const CollapsibleMenu = ({ data, selectedIndex }) => {
 CollapsibleMenu.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   selectedIndex: PropTypes.number.isRequired,
+  expandAll: PropTypes.bool,
 };
 
 export default CollapsibleMenu;

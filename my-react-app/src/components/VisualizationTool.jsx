@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { Download } from 'lucide-react';
 import WebpageContent from '../config/WebpageContent';
 import TextSection from './TextSection';
 import TitleHeader from './TitleHeader.jsx';
@@ -20,6 +23,9 @@ const VisualizationTool = () => {
   const [buttonIndex, setButtonIndex] = useState(0);
   const [selectedData, setSelectedData] = useState(null);
   const [selectedRegion, setSelectedRegion] = useState(null);
+  const [expandAllMenu, setExpandAllMenu] = useState(false);
+  const visualizationRef = useRef(null);
+  const menuRef = useRef(null);
 
   const config = {
     ETC: {
@@ -62,7 +68,90 @@ const VisualizationTool = () => {
       setSelectedData(countryData);
     } else {
       setSelectedRegion(region);
-      // No establecemos selectedData aquí, lo hará el useEffect
+    }
+  };
+
+  const handleScreenshot = async () => {
+    if (!visualizationRef.current || !menuRef.current) return;
+
+    try {
+      const regionName = selectedRegion
+        ? selectedRegion.properties[config.ETC.idProperty]
+        : 'Colombia';
+
+      // Expand all menu sections
+      setExpandAllMenu(true);
+
+      // Wait for menu to expand AND for all D3 animations to complete
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--page-bg').trim() || '#ffffff';
+
+      // Capture grid visualization
+      const gridCanvas = await html2canvas(visualizationRef.current, {
+        backgroundColor: bgColor,
+        scale: 2,
+        logging: false,
+        useCORS: true,
+      });
+
+      // Capture expanded menu
+      const menuCanvas = await html2canvas(menuRef.current, {
+        backgroundColor: bgColor,
+        scale: 2,
+        logging: false,
+        useCORS: true,
+      });
+
+      // Create PDF
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      // Add grid visualization to first page
+      const gridImgData = gridCanvas.toDataURL('image/png');
+      const pdfWidth = 297; // A4 landscape width in mm
+      const pdfHeight = 210; // A4 landscape height in mm
+      const gridImgWidth = pdfWidth;
+      const gridImgHeight = (gridCanvas.height * pdfWidth) / gridCanvas.width;
+
+      // If image is taller than page, scale it down
+      if (gridImgHeight > pdfHeight) {
+        const scaledWidth = (pdfHeight * gridCanvas.width) / gridCanvas.height;
+        pdf.addImage(gridImgData, 'PNG', (pdfWidth - scaledWidth) / 2, 0, scaledWidth, pdfHeight);
+      } else {
+        pdf.addImage(gridImgData, 'PNG', 0, (pdfHeight - gridImgHeight) / 2, gridImgWidth, gridImgHeight);
+      }
+
+      // Add new page for menu
+      pdf.addPage();
+
+      // Add menu visualization to second page
+      const menuImgData = menuCanvas.toDataURL('image/png');
+      const menuImgWidth = pdfWidth;
+      const menuImgHeight = (menuCanvas.height * pdfWidth) / menuCanvas.width;
+
+      // If image is taller than page, scale it down
+      if (menuImgHeight > pdfHeight) {
+        const scaledWidth = (pdfHeight * menuCanvas.width) / menuCanvas.height;
+        pdf.addImage(menuImgData, 'PNG', (pdfWidth - scaledWidth) / 2, 0, scaledWidth, pdfHeight);
+      } else {
+        pdf.addImage(menuImgData, 'PNG', 0, (pdfHeight - menuImgHeight) / 2, menuImgWidth, menuImgHeight);
+      }
+
+      // Download PDF
+      pdf.save(`visualization_${regionName}_${selectedYear}.pdf`);
+
+      // Restore menu state
+      setTimeout(() => {
+        setExpandAllMenu(false);
+      }, 500);
+
+    } catch (error) {
+      console.error('Error capturing screenshot:', error);
+      setExpandAllMenu(false);
     }
   };
 
@@ -74,7 +163,6 @@ const VisualizationTool = () => {
       if (rates) {
         setSelectedData(rates);
       } else {
-        // Si no hay datos para la región, usar datos del país
         setSelectedData(countryData);
       }
     } else if (!selectedRegion && countryData) {
@@ -104,6 +192,7 @@ const VisualizationTool = () => {
       </div>
 
       <div
+        ref={visualizationRef}
         className="visualization-grid mt-8"
         style={{
           '--accent-color': generalColours[buttonIndex % generalColours.length],
@@ -135,7 +224,7 @@ const VisualizationTool = () => {
           </div>
         </div>
 
-        {/* Column 3: BarChart and LineChart */}
+        {/* Column 3: BarChart, LineChart and Screenshot Button */}
         <div className="grid-chart">
           <BarChart data={barChartData} selectedYear={selectedYear} selectedRegion={selectedRegion} labels={labels} dataType="ETC" />
           <div style={{ paddingTop: '1.5rem' }}>
@@ -146,12 +235,44 @@ const VisualizationTool = () => {
               dataType="ETC"
             />
           </div>
+
+          {/* Screenshot Button */}
+          <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+            <button
+              onClick={handleScreenshot}
+              className="screenshot-button"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.75rem 1.5rem',
+                backgroundColor: 'var(--accent)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '0.375rem',
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => e.target.style.opacity = '0.9'}
+              onMouseLeave={(e) => e.target.style.opacity = '1'}
+            >
+              <Download size={16} />
+              Descargar PDF
+            </button>
+          </div>
         </div>
       </div>
 
-      <div style={{ paddingTop: '2rem' }}>
+      <div ref={menuRef} style={{ paddingTop: '2rem' }}>
         <div className="collapsible-menu-container mt-8">
-          <CollapsibleMenuContainer selectedYear={selectedYear} selectedRegion={selectedRegion} selectedIndex={buttonIndex} />
+          <CollapsibleMenuContainer
+            selectedYear={selectedYear}
+            selectedRegion={selectedRegion}
+            selectedIndex={buttonIndex}
+            expandAll={expandAllMenu}
+          />
         </div>
       </div>
     </div>
