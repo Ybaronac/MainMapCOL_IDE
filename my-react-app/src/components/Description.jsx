@@ -8,7 +8,7 @@ import { Circle } from 'lucide-react';
 const Description = () => (
   <div>
     <TitleHeader />
-    <div className="pb-2" style={{ paddingTop: '0.5rem' }}>'
+    <div className="pb-2">
       <TextSection
         content={[
           { type: 'title', text: WebpageContent.description_title1 },
