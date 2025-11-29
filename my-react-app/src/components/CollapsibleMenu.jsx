@@ -75,9 +75,15 @@ const CollapsibleMenu = ({ data, selectedIndex, expandAll = false }) => {
     const replaceInObject = (obj) => {
       Object.keys(obj).forEach((key) => {
         if (key === 'score' && typeof obj[key] === 'string') {
-          obj[key] = obj[key].replace(/{(\d+)}/g, (match, id) => values[id] || match);
+          obj[key] = obj[key].replace(/{(\d+)}/g, (match, id) => {
+            const value = values[id];
+            return (value !== undefined && value !== null && value !== '') ? value : '-';
+          });
         } else if (typeof obj[key] === 'string') {
-          obj[key] = obj[key].replace(/{(\d+)}/g, (match, id) => values[id] || match);
+          obj[key] = obj[key].replace(/{(\d+)}/g, (match, id) => {
+            const value = values[id];
+            return (value !== undefined && value !== null && value !== '') ? value : '-';
+          });
           obj[key] = obj[key].replace(/{info}/g, (match) => {
             if (obj[key].includes('Saber 5')) return '5';
             if (obj[key].includes('Saber 11')) return '11';
