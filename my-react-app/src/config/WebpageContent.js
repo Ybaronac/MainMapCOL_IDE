@@ -41,6 +41,7 @@ const WebpageContent = {
   navigation_visualization_tool: "Herramienta de visualización",
   navigation_resources: "Recursos",
   navigation_history: "Historia",
+  navigation_credits: "Créditos",
 
   header_title: "Índice del derecho a la Educación (IDE) en Colombia",
   header_subtitle: "IDE en Colombia por Entidad Territorial Certificada de Educación (ETC)",
@@ -73,7 +74,6 @@ const WebpageContent = {
 
   VTool_title2: "Descarga de Datos:",
   VTool_paragraph2: "Podrás descargar los datos del IDE para que puedas realizar tus propios análisis, incluyendo gráficos de tendencia, comparaciones y desagregaciones específicas que necesites.",
-
 
 
 
@@ -146,6 +146,32 @@ const WebpageContent = {
   resources_title7: "Libros y documentos",
   resources_paragraph7: "Aqui podras encontrar varios libros y documentos relacionados con el estudio del indice del derecho a la educacion (IDE) en Colombia.",
 
+
+  credits_title1: "Créditos de los Datos",
+  credits_paragraph1: "Esta página presenta información sobre las fuentes de datos, instituciones y colaboradores que han hecho posible el desarrollo del Índice del Derecho a la Educación (IDE) en Colombia.",
+  credits_paragraph2: "Los datos utilizados en esta plataforma provienen de diversas fuentes oficiales y han sido procesados y analizados por instituciones académicas comprometidas con la mejora de la educación en Colombia.",
+
+  credits_title2: "Fuentes de Datos Oficiales",
+  credits_paragraph3: "Los datos del IDE provienen principalmente de fuentes oficiales del gobierno colombiano, incluyendo el Ministerio de Educación Nacional (MEN) y el Departamento Administrativo Nacional de Estadística (DANE), garantizando la confiabilidad y actualización de la información presentada.",
+
+  credits_title3: "Metodología y Documentación",
+  credits_paragraph4: "La metodología del IDE se basa en estándares internacionales para la medición del derecho a la educación, adaptados al contexto colombiano. Toda la documentación técnica y metodológica está disponible para consulta pública.",
+
+  credits_title4: "Datos Geográficos",
+  credits_paragraph5: "Los mapas y datos geográficos de las Entidades Territoriales Certificadas (ETC) han sido obtenidos y procesados a partir de información oficial del Instituto Geográfico Agustín Codazzi (IGAC) y otras fuentes cartográficas oficiales.",
+
+  credits_paragraph6: "El desarrollo y mantenimiento del IDE ha sido posible gracias a la colaboración de diversas instituciones académicas y organizaciones comprometidas con la educación:",
+
+  credits_title5: "Equipo de Investigación",
+  credits_paragraph7: "El IDE es desarrollado y mantenido por investigadores de la Facultad de Ciencias Económicas de la Universidad Nacional de Colombia y el Laboratorio de Economía de la Educación de la Pontificia Universidad Javeriana.",
+
+  credits_title6: "Alianza Educación Compromiso de Todos",
+  credits_paragraph8: "El desarrollo original del índice fue una iniciativa de la Alianza Educación Compromiso de Todos (ECT), una coalición de organizaciones que funcionó hasta 2018 y sentó las bases metodológicas del IDE.",
+
+  credits_title7: "Validación y Mejora Continua",
+  credits_paragraph9: "El IDE ha sido validado por más de 158 expertos del sector educativo mediante la metodología Delphi, asegurando la robustez y pertinencia de los indicadores utilizados en la medición del derecho a la educación.",
+
+  credits_paragraph10: "Agradecemos a todas las instituciones, investigadores y expertos que han contribuido al desarrollo del IDE. Su compromiso con la educación en Colombia hace posible esta herramienta de análisis y toma de decisiones.",
 
   footer_copyright: "Colombia Map Visualization IDE.",
 

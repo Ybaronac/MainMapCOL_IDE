@@ -6,6 +6,7 @@ import {
   Map,
   History,
   LibraryBig,
+  Award,
   Menu,
   X,
 } from "lucide-react";
@@ -88,6 +89,16 @@ const Navigation = () => {
             <LibraryBig className="menu-button-icon" />
             <span>{WebpageContent.navigation_resources}</span>
           </button>
+
+          <button
+            onClick={() => navigate("/credits")}
+            className={`menu-button ${isActive("/credits") ? "active" : ""}`}
+            aria-label={WebpageContent.navigation_credits}
+            type="button"
+          >
+            <Award className="menu-button-icon" />
+            <span>{WebpageContent.navigation_credits}</span>
+          </button>
         </nav>
 
         <div className="menu-actions">
@@ -137,6 +148,14 @@ const Navigation = () => {
             >
               <LibraryBig className="menu-button-icon" />
               <span>{WebpageContent.navigation_resources}</span>
+            </button>
+
+            <button
+              onClick={() => handleMobileNavigate("/credits")}
+              className={`menu-button mobile-menu-button ${isActive("/credits") ? "active" : ""}`}
+            >
+              <Award className="menu-button-icon" />
+              <span>{WebpageContent.navigation_credits}</span>
             </button>
           </nav>
         </div>

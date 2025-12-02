@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import VisualizationTool from './components/VisualizationTool.jsx';
 import Resources from './components/Resources.jsx';
 import About from './components/About.jsx';
+import Credits from './components/Credits.jsx';
 import Description from './components/Description.jsx';
 import History from './components/History.jsx';
 import Header from './components/Header.jsx';
@@ -19,6 +20,7 @@ const App = () => (
           <Route path="/" element={<Description />} />
           <Route path="/about" element={<About />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/credits" element={<Credits />} />
           <Route path="/visualization-tool" element={<VisualizationTool />} />
           <Route path="/history" element={<History />} />
         </Routes>
