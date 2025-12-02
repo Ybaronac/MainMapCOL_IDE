@@ -62,7 +62,6 @@ const D3Map = ({
     const svg = d3.select(svgRef.current);
     const g = d3.select(gRef.current);
 
-    // Create tooltip
     const tooltip = d3.select("body")
       .append("div")
       .attr("class", "tooltip")
@@ -74,7 +73,7 @@ const D3Map = ({
     tooltipRef.current = tooltip;
 
     const projection = d3.geoMercator()
-      .scale(1500) // Fixed scale for the base coordinate system
+      .scale(1500)
       .center([-74, 4.5])
       .translate([WIDTH / 2, HEIGHT / 2]);
 
@@ -92,7 +91,6 @@ const D3Map = ({
     zoomRef.current = zoom;
     svg.call(zoom);
 
-    // Function to reset zoom to country view
     const resetZoom = () => {
       svg.transition()
         .duration(750)
@@ -100,20 +98,16 @@ const D3Map = ({
       activeRef.current = null;
       onRegionClick(null, countryData);
       setWindowText(WebpageContent.transparent_window_label);
-      // Remove active class from all departments
       d3.selectAll("path.departments").classed("active", false);
       tooltip.transition().duration(500).style("opacity", 0);
     };
 
-    // Add click handler for the background
     svg.on("click", function (event) {
-      // Check if the click was on the background (not on a department)
       if (event.target === this) {
         resetZoom();
       }
     });
 
-    // Define the diagonal line pattern
     const defs = svg.append("defs");
     defs.append("pattern")
       .attr("id", "diagonal-hatch")
@@ -122,17 +116,15 @@ const D3Map = ({
       .attr("height", 8)
       .attr("patternTransform", "rotate(45)")
       .append("line")
-      .attr("class", "map-hatch-line")            // <-- usa la clase centralizada
+      .attr("class", "map-hatch-line")
       .attr("x1", 0)
       .attr("y1", 0)
       .attr("x2", 0)
       .attr("y2", 8)
-      // .attr("stroke", "#bdc3c7")   <-- removido: controla por CSS variable
       .attr("stroke-width", 1);
 
     const backgroundMapGroup = g.append("g").attr("class", "background-map");
 
-    // Load and render map data
     setIsLoading(true);
     setMapError(null);
 
@@ -150,10 +142,6 @@ const D3Map = ({
         .append("path")
         .attr("class", "background-countries")
         .attr("d", path)
-        // .style("fill", "#d7dbdd")    <-- removido
-        // .style("fill", "url(#diagonal-hatch)") <-- removido (ahora por clase)
-        // .style("stroke", "#ffffff")  <-- removido (controlado por CSS var)
-        // .style("stroke-width", 3)
         .style("pointer-events", "none");
 
       g.selectAll("path.departments")
@@ -214,7 +202,6 @@ const D3Map = ({
           const deptID = Number(d.properties[config[dataType].idProperty]);
           const rates = dataIDE.get(deptID) || countryData;
 
-          // If clicking the same department, reset zoom and remove active state
           if (activeRef.current === this) {
             resetZoom();
             d3.select(this).classed("active", false);
@@ -222,16 +209,13 @@ const D3Map = ({
             return;
           }
 
-          // Remove active class from previously selected department
           if (activeRef.current) {
             d3.select(activeRef.current).classed("active", false);
           }
 
-          // Update active department
           activeRef.current = this;
           d3.select(this).classed("active", true);
 
-          // Calculate zoom transform
           const bounds = pathRef.current.bounds(d);
           const dx = bounds[1][0] - bounds[0][0];
           const dy = bounds[1][1] - bounds[0][1];
@@ -240,7 +224,6 @@ const D3Map = ({
           const scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / WIDTH || 0.1, dy / HEIGHT || 0.1)));
           const translate = [WIDTH / 2 - scale * x, HEIGHT / 2 - scale * y];
 
-          // Apply zoom transform
           svg.transition()
             .duration(750)
             .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
@@ -248,7 +231,6 @@ const D3Map = ({
           onRegionClick(d, rates);
           setWindowText(`Región: ${d.properties[config[dataType].nameProperty]}`);
 
-          // Show tooltip on click
           const value = rates ? rates[selectedYear][buttonIndex] : "No data";
           const html = `
               <table class="d3-tooltip-table">
@@ -293,7 +275,7 @@ const D3Map = ({
     return () => {
       tooltip.remove();
     };
-  }, [dataType]); // Only re-run when dataType changes
+  }, [dataType]);
 
   useEffect(() => {
     if (!gRef.current || !tooltipRef.current) return;
@@ -309,14 +291,12 @@ const D3Map = ({
         const rates = dataIDE.get(deptID);
         const path = d3.select(this);
 
-        // Update fill color
         const yearData = rates ? rates[selectedYear] : null;
         const colorValue = yearData ? Object.values(yearData)[buttonIndex] : 0;
         path.transition()
           .duration(500)
           .attr("fill", yearData ? color(colorValue) : "white");
 
-        // Reattach tooltip event handlers
         path.on("mouseover", function (event) {
           tooltipRef.current.transition()
             .duration(200)
@@ -393,7 +373,6 @@ const D3Map = ({
     const svg = d3.select(svgRef.current);
     const g = d3.select(gRef.current);
 
-    // Reset transform and stroke-width to initial state
     svg.transition()
       .duration(750)
       .call(zoomRef.current.transform, d3.zoomIdentity);
@@ -406,7 +385,6 @@ const D3Map = ({
     tooltipRef.current.transition().duration(500).style("opacity", 0);
   };
 
-  // Zoom In function
   const zoomIn = () => {
     if (!svgRef.current || !zoomRef.current) return;
     const svg = d3.select(svgRef.current);
@@ -415,7 +393,6 @@ const D3Map = ({
       .call(zoomRef.current.scaleBy, 1.5);
   };
 
-  // Zoom Out function
   const zoomOut = () => {
     if (!svgRef.current || !zoomRef.current) return;
     const svg = d3.select(svgRef.current);

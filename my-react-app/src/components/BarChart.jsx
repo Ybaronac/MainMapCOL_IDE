@@ -7,7 +7,7 @@ const BarChart = ({
   data,
   selectedYear,
   selectedRegion,
-  width = 350, // Initial fallback
+  width = 350,
   height = 380,
   labels: propLabels = labels,
   dataType,
@@ -42,7 +42,7 @@ const BarChart = ({
 
   const wrapText = (text, maxWidth, fontSize) => {
     if (!text || typeof text !== 'string') {
-      return ['Colombia']; // Fallback to a single line with 'Colombia'
+      return ['Colombia'];
     }
     const words = text.split(' ');
     const lines = [];

@@ -17,7 +17,7 @@ const TransparentWindow = ({
         '--left': `${left}px`,
         '--width': `${width}px`,
         '--height': `${height}px`,
-        maxWidth: 'calc(100% - 40px)', // Prevent overflow
+        maxWidth: 'calc(100% - 40px)',
         maxHeight: 'calc(100% - 40px)'
       }}
     >

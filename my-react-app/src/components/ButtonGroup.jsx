@@ -16,7 +16,6 @@ const ButtonGroup = ({
 
   return (
     <div className="button-group-container">
-      {/* Mobile Toggle Button */}
       <button
         className="mobile-menu-toggle"
         onClick={toggleMenu}
@@ -30,7 +29,6 @@ const ButtonGroup = ({
         {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
       </button>
 
-      {/* Button List */}
       <ul id="button-container" className={`button-group ${isOpen ? 'open' : ''}`}>
         {propLabels.map((label, index) => {
           const isActive = index === selectedIndex;
@@ -44,7 +42,7 @@ const ButtonGroup = ({
               className={`button-item ${isActive ? 'active' : ''}`}
               onClick={() => {
                 onButtonClick(index);
-                setIsOpen(false); // Close menu on selection
+                setIsOpen(false);
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
