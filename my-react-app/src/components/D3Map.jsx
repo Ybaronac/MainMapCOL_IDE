@@ -231,7 +231,8 @@ const D3Map = ({
           onRegionClick(d, rates);
           setWindowText(`Región: ${d.properties[config[dataType].nameProperty]}`);
 
-          const value = rates ? rates[selectedYear][buttonIndex] : "No data";
+          const yearData = rates ? rates[selectedYear] : null;
+          const value = yearData ? Object.values(yearData)[buttonIndex] : "No data";
           const html = `
               <table class="d3-tooltip-table">
                 <thead>
@@ -302,7 +303,9 @@ const D3Map = ({
             .duration(200)
             .style("opacity", 0.9);
 
-          const value = yearData ? Object.values(yearData)[buttonIndex] : "No data";
+          // Recalculate yearData inside the event handler to get fresh data
+          const currentYearData = rates ? rates[selectedYear] : null;
+          const value = currentYearData ? Object.values(currentYearData)[buttonIndex] : "No data";
           const html = `
                 <table class="d3-tooltip-table">
                   <thead>
