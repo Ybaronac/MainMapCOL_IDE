@@ -23,22 +23,30 @@ const InfoCards = ({ title, text, icon, link }) => {
                 </div>
             </div>
             {link && (
-                <div className="px-10 pb-10 pt-6" style={{ padding: '0.375rem 0.625rem 0.625rem' }}>
+                <div className="px-6 pb-6 pt-4">
                     {link.startsWith('http') ? (
                         <a
                             href={link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 bg-[var(--accent)] hover:bg-[#60a5fa] text-white font-semibold py-4 px-8 rounded-full transition-all"
+                            className="inline-flex items-center justify-center gap-2 bg-[var(--accent)] hover:bg-[var(--accent)]/80 text-white font-semibold py-3 px-6 rounded-lg transition-all hover:shadow-lg"
+                            style={{
+                                minWidth: '120px',
+                                color: 'white'
+                            }}
                         >
-                            ver <ExternalLink className="w-4 h-4" />
+                            Ver <ExternalLink className="w-4 h-4" />
                         </a>
                     ) : (
                         <Link
                             to={link}
-                            className="inline-flex items-center gap-2 bg-[var(--accent)] hover:bg-[#60a5fa] text-white font-semibold py-4 px-8 rounded-full transition-all"
+                            className="inline-flex items-center justify-center gap-2 bg-[var(--accent)] hover:bg-[var(--accent)]/80 text-white font-semibold py-3 px-6 rounded-lg transition-all hover:shadow-lg"
+                            style={{
+                                minWidth: '120px',
+                                color: 'white'
+                            }}
                         >
-                            ver
+                            Ver
                         </Link>
                     )}
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import WebpageContent from '../config/WebpageContent';
+import RESOURCE_LINKS from '../config/resourceLinks';
 import TextSection from './TextSection';
 import TitleHeader from './TitleHeader.jsx';
 import InfoCards from './InfoCards';
@@ -29,33 +30,37 @@ const Resources = () => (
               title={WebpageContent.resources_title2}
               text={WebpageContent.resources_paragraph2}
               icon={<BookOpen className="w-20 h-20" />}
-              link="/resources/guide"
+              link={RESOURCE_LINKS.etcData}
             />
             <InfoCards
               title={WebpageContent.resources_title3}
               text={WebpageContent.resources_paragraph3}
               icon={<FileText className="w-20 h-20" />}
+              link={RESOURCE_LINKS.etcJson}
             />
             <InfoCards
               title={WebpageContent.resources_title4}
               text={WebpageContent.resources_paragraph4}
               icon={<BarChart2 className="w-20 h-20" />}
+              link={RESOURCE_LINKS.etcMap}
             />
             <InfoCards
               title={WebpageContent.resources_title5}
               text={WebpageContent.resources_paragraph5}
               icon={<Globe className="w-20 h-20" />}
-              link="https://www.dane.gov.co"
+              link={RESOURCE_LINKS.ideStudies}
             />
             <InfoCards
               title={WebpageContent.resources_title6}
               text={WebpageContent.resources_paragraph6}
               icon={<Database className="w-20 h-20" />}
+              link={RESOURCE_LINKS.publications}
             />
             <InfoCards
               title={WebpageContent.resources_title7}
               text={WebpageContent.resources_paragraph7}
               icon={<HelpCircle className="w-20 h-20" />}
+              link={RESOURCE_LINKS.documents}
             />
           </div>
         </div>

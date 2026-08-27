@@ -33,6 +33,7 @@
   --map-bg-fill: #d7dbdd;
   --map-diagonal-hatch-stroke: #bdc3c7;
   --map-border-color: #ffffff;
+  --map-world-border-color: #bdc3c7;
   --map-border-width: 0.5px;
   --map-overlay-bg: rgba(255, 255, 255, 0.9);
   --map-error-bg: rgba(94, 11, 11, 0.801);
@@ -81,7 +82,8 @@
   /* mapa overrides */
   --map-bg-fill: #121212;
   --map-diagonal-hatch-stroke: #2b2b2b;
-  --map-border-color: #1d1e1e;
+  --map-border-color: #ffffff;
+  --map-world-border-color: #3b3b3b;
   --map-border-width: 0.5px;
   --map-overlay-bg: rgba(10, 10, 10, 0.85);
   --map-error-bg: rgba(255, 0, 0, 0.08);
@@ -187,7 +189,7 @@
   }
 
   .title-header-container h1 {
-    font-size: 2.25rem;
+    font-size: 3.04rem;
     font-weight: 600;
     color: var(--title-color);
   }
@@ -1236,7 +1238,7 @@
   /* fallback si el patrón no aplica en algún navegador */
   -webkit-fill-color: var(--map-bg-fill);
   fill-opacity: 1;
-  stroke: var(--map-border-color);
+  stroke: var(--map-world-border-color);
   stroke-width: var(--map-border-width);
   pointer-events: none;
 }
@@ -1249,7 +1251,7 @@
 
 /* departamentos y bordes */
 .departments {
-  /* fill lo gestiona d3 según datos; dejar stroke controlado por CSS */
+  stroke: var(--map-border-color);
   stroke-width: 0.5px;
 }
 
