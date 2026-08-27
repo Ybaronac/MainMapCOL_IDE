@@ -1,5 +1,5 @@
 //Configuracion de URL - Mapeo
-export const WORLD_MAP_JSON_DATA = 'https://gist.githubusercontent.com/Ybaronac/ce02fcf1cd6d455ef585e2946117363e/raw/8a30de4e4753bd1a701caa08870df42dfd1e9bcd/worldMapData.json';
+export const WORLD_MAP_JSON_DATA = 'https://gist.githubusercontent.com/Ybaronac/5ce3b59882fa483c53aec08803b275ad/raw/16d7b262b19fa7f18b824d71b6f4cb97e67e2be6/WorldMapNoCol.json';
 export const COLOMBIA_DEPARTMENTS_MAP_JSON_DATA = 'https://gist.githubusercontent.com/Ybaronac/f3ca46a0b899e8d9f233bf44bff6e6fa/raw/3a34ef5852514bba6fc6378a58202ebbd65c7516/ColombiaDepartamentosV2.json';
 export const ETC_MAP_2025_JSON_DATA = 'https://gist.githubusercontent.com/Ybaronac/746580a6fca0405c7ec3b049393cb399/raw/0346ca455bff6bafd88ef5ed9ba529c4365bd01f/MapETCv4.json';
 
