@@ -83,7 +83,8 @@ const D3Map = ({
     pathRef.current = path;
 
     const zoom = d3.zoom()
-      .scaleExtent([1, 50])
+      .scaleExtent([1, 18])
+      .translateExtent([[-100, -100], [WIDTH + 100, HEIGHT + 100]])
       .on("zoom", (event) => {
         g.style("stroke-width", 1.5 / event.transform.k + "px");
         g.attr("transform", event.transform);
@@ -144,6 +145,22 @@ const D3Map = ({
         .attr("d", path)
         .style("pointer-events", "none");
 
+      const extractValue = (ratesObj, year, bIndex) => {
+        if (!ratesObj || !ratesObj[year]) return null;
+        const yearData = ratesObj[year];
+        let rawVal = null;
+        if (Array.isArray(yearData)) {
+          rawVal = yearData[bIndex];
+        } else if (typeof yearData === 'object') {
+          const keys = Object.keys(yearData);
+          rawVal = yearData[keys[bIndex]];
+        }
+        if (rawVal === null || rawVal === undefined || isNaN(Number(rawVal))) {
+          return null;
+        }
+        return parseFloat(rawVal);
+      };
+
       g.selectAll("path.departments")
         .data(topojson.feature(data, data.objects[config[dataType].topojsonObject]).features)
         .enter()
@@ -158,8 +175,8 @@ const D3Map = ({
 
           const deptID = Number(d.properties[config[dataType].idProperty]);
           const rates = dataIDE.get(deptID);
-          const yearData = rates ? rates[selectedYear] : null;
-          const value = yearData ? Object.values(yearData)[buttonIndex] : "No data";
+          const val = extractValue(rates, selectedYear, buttonIndex);
+          const valueText = val !== null ? `${val}%` : "Sin información";
           const html = `
                   <table class="d3-tooltip-table">
                     <thead>
@@ -175,7 +192,7 @@ const D3Map = ({
                           </svg>
                           ${labels[buttonIndex] || 'Sin label'}
                         </td>
-                        <td>${value}%</td>
+                        <td>${valueText}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -231,8 +248,8 @@ const D3Map = ({
           onRegionClick(d, rates);
           setWindowText(`Región: ${d.properties[config[dataType].nameProperty]}`);
 
-          const yearData = rates ? rates[selectedYear] : null;
-          const value = yearData ? Object.values(yearData)[buttonIndex] : "No data";
+          const val = extractValue(rates, selectedYear, buttonIndex);
+          const valueText = val !== null ? `${val}%` : "Sin información";
           const html = `
               <table class="d3-tooltip-table">
                 <thead>
@@ -248,7 +265,7 @@ const D3Map = ({
                       </svg>
                       ${labels[buttonIndex] || 'Sin label'}
                     </td>
-                    <td>${value}%</td>
+                    <td>${valueText}</td>
                   </tr>
                 </tbody>
               </table>
@@ -286,26 +303,42 @@ const D3Map = ({
       .domain([0, 100])
       .range(selectedColours);
 
+    const extractVal = (ratesObj, year, bIndex) => {
+      if (!ratesObj || !ratesObj[year]) return null;
+      const yearData = ratesObj[year];
+      let rawVal = null;
+      if (Array.isArray(yearData)) {
+        rawVal = yearData[bIndex];
+      } else if (typeof yearData === 'object') {
+        const keys = Object.keys(yearData);
+        rawVal = yearData[keys[bIndex]];
+      }
+      if (rawVal === null || rawVal === undefined || isNaN(Number(rawVal))) {
+        return null;
+      }
+      return parseFloat(rawVal);
+    };
+
     g.selectAll("path.departments")
       .each(function (d) {
         const deptID = Number(d.properties[config[dataType].idProperty]);
         const rates = dataIDE.get(deptID);
         const path = d3.select(this);
 
-        const yearData = rates ? rates[selectedYear] : null;
-        const colorValue = yearData ? Object.values(yearData)[buttonIndex] : 0;
+        const val = extractVal(rates, selectedYear, buttonIndex);
+        const fillColor = val !== null ? color(val) : "#121212";
+
         path.transition()
           .duration(500)
-          .attr("fill", yearData ? color(colorValue) : "white");
+          .attr("fill", fillColor);
 
         path.on("mouseover", function (event) {
           tooltipRef.current.transition()
             .duration(200)
             .style("opacity", 0.9);
 
-          // Recalculate yearData inside the event handler to get fresh data
-          const currentYearData = rates ? rates[selectedYear] : null;
-          const value = currentYearData ? Object.values(currentYearData)[buttonIndex] : "No data";
+          const currentVal = extractVal(rates, selectedYear, buttonIndex);
+          const valueText = currentVal !== null ? `${currentVal}%` : "Sin información";
           const html = `
                 <table class="d3-tooltip-table">
                   <thead>
@@ -321,7 +354,7 @@ const D3Map = ({
                         </svg>
                         ${labels[buttonIndex] || 'Sin label'}
                       </td>
-                      <td>${value}%</td>
+                      <td>${valueText}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -348,24 +381,39 @@ const D3Map = ({
   // Asegurar que el mapa se actualice cuando se carguen los datos
   useEffect(() => {
     if (dataIDE.size > 0 && !isLoading) {
-      // Forzar una actualización del mapa
       const g = d3.select(gRef.current);
       if (g && g.selectAll("path.departments").size() > 0) {
+        const color = d3.scaleQuantize()
+          .domain([0, 100])
+          .range(selectedColours);
+
+        const extractVal = (ratesObj, year, bIndex) => {
+          if (!ratesObj || !ratesObj[year]) return null;
+          const yearData = ratesObj[year];
+          let rawVal = null;
+          if (Array.isArray(yearData)) {
+            rawVal = yearData[bIndex];
+          } else if (typeof yearData === 'object') {
+            const keys = Object.keys(yearData);
+            rawVal = yearData[keys[bIndex]];
+          }
+          if (rawVal === null || rawVal === undefined || isNaN(Number(rawVal))) {
+            return null;
+          }
+          return parseFloat(rawVal);
+        };
+
         g.selectAll("path.departments")
           .each(function (d) {
             const deptID = Number(d.properties[config[dataType].idProperty]);
             const rates = dataIDE.get(deptID);
             const path = d3.select(this);
+            const val = extractVal(rates, selectedYear, buttonIndex);
+            const fillColor = val !== null ? color(val) : "#121212";
 
-            if (rates && rates[selectedYear]) {
-              const color = d3.scaleQuantize()
-                .domain([0, 100])
-                .range(selectedColours);
-
-              path.transition()
-                .duration(300)
-                .attr("fill", color(rates[selectedYear][buttonIndex]));
-            }
+            path.transition()
+              .duration(300)
+              .attr("fill", fillColor);
           });
       }
     }

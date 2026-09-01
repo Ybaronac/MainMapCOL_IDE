@@ -63,7 +63,7 @@ const BarChart = ({
   };
 
   useEffect(() => {
-    if (!svgRef.current || !data.length) return;
+    if (!svgRef.current) return;
 
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
@@ -151,25 +151,43 @@ const BarChart = ({
       .style("font-weight", "400")
       .text(selectedYear);
 
+    // Verificar si hay algún dato numérico
+    const hasAnyData = data && data.length > 0 && data.some(d => d.value !== null && d.value !== undefined && !isNaN(d.value));
+
+    if (!hasAnyData) {
+      g.append("text")
+        .attr("class", "no-data-msg")
+        .attr("x", innerWidth / 2)
+        .attr("y", innerHeight / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "11px")
+        .style("font-family", "'Poppins', sans-serif")
+        .style("font-style", "italic")
+        .style("fill", "var(--chart-text-color)")
+        .text("No hay información para este período de tiempo");
+      return;
+    }
+
     // Bars
-    const bars = g.selectAll("rect")
+    const bars = g.selectAll("rect.bar")
       .data(data)
       .enter()
       .append("rect")
+      .attr("class", "bar")
       .attr("x", (d, i) => x(propLabels[i]))
       .attr("y", innerHeight)
       .attr("width", x.bandwidth())
       .attr("height", 0)
       .attr("fill", (d, i) => `var(--chart-bar-${i % 5})`)
-      .attr("fill-opacity", 0.4)
+      .attr("fill-opacity", d => (d.value !== null && d.value !== undefined) ? 0.4 : 0)
       .attr("stroke", (d, i) => `var(--chart-bar-${i % 5})`)
-      .attr("stroke-width", 1);
+      .attr("stroke-width", d => (d.value !== null && d.value !== undefined) ? 1 : 0);
 
     // Animate bars
     bars.transition()
       .duration(1000)
-      .attr("y", d => y(d.value))
-      .attr("height", d => innerHeight - y(d.value));
+      .attr("y", d => (d.value !== null && d.value !== undefined) ? y(d.value) : innerHeight)
+      .attr("height", d => (d.value !== null && d.value !== undefined) ? (innerHeight - y(d.value)) : 0);
 
     // Add value labels
     g.selectAll(".value-label")
@@ -178,12 +196,12 @@ const BarChart = ({
       .append("text")
       .attr("class", "value-label")
       .attr("x", (d, i) => x(propLabels[i]) + x.bandwidth() / 2)
-      .attr("y", d => y(d.value) - 3)
+      .attr("y", d => (d.value !== null && d.value !== undefined) ? (y(d.value) - 3) : (innerHeight - 3))
       .attr("text-anchor", "middle")
       .style("font-size", "8px")
       .style("opacity", 0)
       .style("fill", "var(--chart-text-color)")
-      .text(d => `${d.value}%`)
+      .text(d => (d.value !== null && d.value !== undefined) ? `${d.value}%` : "-")
       .transition()
       .duration(1000)
       .style("opacity", 1);

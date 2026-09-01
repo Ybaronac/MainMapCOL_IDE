@@ -62,20 +62,7 @@ const LineChart = ({
     };
 
     useEffect(() => {
-        if (!svgRef.current || !selectedData) return;
-
-        // Prepare data: extract values for the selected dimension across all years
-        const lineData = years.map(year => {
-            const yearData = selectedData[year];
-            if (!yearData) return { year, value: null };
-
-            const values = Object.values(yearData);
-            const value = values[selectedIndex] !== undefined ? values[selectedIndex] : null;
-
-            return { year, value };
-        }).filter(d => d.value !== null);
-
-        if (lineData.length === 0) return;
+        if (!svgRef.current) return;
 
         const svg = d3.select(svgRef.current);
         svg.selectAll("*").remove();
@@ -158,7 +145,40 @@ const LineChart = ({
             .attr("dy", regionLines.length > 1 ? 14 : 12)
             .style("font-size", "10px")
             .style("font-weight", "400")
-            .text(dimensionLabels[selectedIndex]);
+            .text(dimensionLabels[selectedIndex] || 'Dimensión');
+
+        if (!selectedData) return;
+
+        // Prepare data: extract values for the selected dimension across all years
+        const lineData = years.map(year => {
+            const yearData = selectedData[year];
+            if (!yearData) return { year, value: null };
+
+            let rawVal = null;
+            if (Array.isArray(yearData)) {
+                rawVal = yearData[selectedIndex];
+            } else if (typeof yearData === 'object') {
+                const keys = Object.keys(yearData);
+                rawVal = yearData[keys[selectedIndex]];
+            }
+            const value = (rawVal !== null && rawVal !== undefined && !isNaN(Number(rawVal))) ? parseFloat(rawVal) : null;
+
+            return { year, value };
+        }).filter(d => d.value !== null);
+
+        if (lineData.length === 0) {
+            g.append("text")
+                .attr("class", "no-data-msg")
+                .attr("x", innerWidth / 2)
+                .attr("y", innerHeight / 2)
+                .attr("text-anchor", "middle")
+                .style("font-size", "11px")
+                .style("font-family", "'Poppins', sans-serif")
+                .style("font-style", "italic")
+                .style("fill", "var(--chart-text-color)")
+                .text("No hay información histórica disponible");
+            return;
+        }
 
         // Line generator
         const line = d3.line()

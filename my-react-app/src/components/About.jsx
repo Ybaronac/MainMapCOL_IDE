@@ -18,11 +18,11 @@ const About = () => (
       />
     </div>
 
-    {/* Párrafo de contexto */}
-    <div className="pb-2" style={{ paddingTop: '1.5rem' }}>
+    <div className="pb-2" style={{ paddingTop: '2rem' }}>
       <TextSection
         content={[
-          { type: 'paragraph', text: WebpageContent.purpose_paragraph11 }
+          { type: 'title', text: WebpageContent.purpose_title2 },
+          { type: 'paragraph', text: WebpageContent.purpose_paragraph2 }
         ]}
         className="transparent-section"
       />
@@ -35,11 +35,6 @@ const About = () => (
           className="w-full grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))]"
           style={{ gap: '1rem', padding: '1rem 0' }}
         >
-          <InfoCards
-            title={WebpageContent.purpose_title2}
-            text={WebpageContent.purpose_paragraph2}
-            icon={<Target className="w-20 h-20" />}
-          />
           <InfoCards
             title={WebpageContent.purpose_title3}
             text={WebpageContent.purpose_paragraph3}
@@ -59,11 +54,10 @@ const About = () => (
       </div>
     </div>
 
-    {/* Párrafo de contexto */}
-    <div className="pb-2" style={{ paddingTop: '0.5rem' }}>
+    <div className="pb-2" style={{ paddingTop: '2rem' }}>
       <TextSection
         content={[
-          { type: 'paragraph', text: WebpageContent.purpose_paragraph6 }
+          { type: 'title', text: WebpageContent.purpose_paragraph6 },
         ]}
         className="transparent-section"
       />

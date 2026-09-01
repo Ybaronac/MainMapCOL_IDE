@@ -24,7 +24,7 @@ const History = () => (
     <div style={{ paddingTop: '2.5rem' }}>
       <TextSection
         content={[
-          { type: 'paragraph', text: WebpageContent.history_paragraph8 }
+          { type: 'paragraph', text: WebpageContent.history_paragraph9 }
         ]}
         className="transparent-section"
       />

@@ -79,6 +79,19 @@ const Timeline = () => {
                             {WebpageContent.history_paragraph7}
                         </p>
                     </VerticalTimelineElement>
+
+                    <VerticalTimelineElement
+                        className="vertical-timeline-element--work"
+                        contentStyle={{ background: 'var(--component-bg)', color: 'var(--text-color)', border: '1px solid var(--component-border)' }}
+                        contentArrowStyle={{ borderRight: '7px solid var(--accent)' }}
+                        date={WebpageContent.history_title8}
+                        iconStyle={{ background: '#fff', color: '#000e2a', boxShadow: '0 0 0 4px var(--title-color)' }}
+                        icon={<MapPin />}
+                    >
+                        <p>
+                            {WebpageContent.history_paragraph8}
+                        </p>
+                    </VerticalTimelineElement>
                 </VerticalTimeline>
             </div>
         </div>

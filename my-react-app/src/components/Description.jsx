@@ -12,7 +12,10 @@ const Description = () => (
       <TextSection
         content={[
           { type: 'title', text: WebpageContent.description_title1 },
-          { type: 'paragraph', text: WebpageContent.description_paragraph1 }
+          { type: 'paragraph', text: WebpageContent.description_paragraph1 },
+          { type: 'paragraph', text: WebpageContent.description_paragraph1_1 },
+          { type: 'paragraph', text: WebpageContent.description_paragraph1_2 },
+
         ]}
       />
     </div>
@@ -61,7 +64,9 @@ const Description = () => (
       <TextSection
         content={[
           { type: 'title', text: WebpageContent.description_title7 },
-          { type: 'paragraph', text: WebpageContent.description_paragraph7 }
+          { type: 'paragraph', text: WebpageContent.description_paragraph7 },
+          { type: 'paragraph', text: WebpageContent.description_paragraph7_1 },
+          { type: 'paragraph', text: WebpageContent.description_paragraph7_2 }
         ]}
         className="transparent-section"
       />

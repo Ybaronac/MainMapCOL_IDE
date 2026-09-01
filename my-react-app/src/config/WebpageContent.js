@@ -47,29 +47,33 @@ const WebpageContent = {
   header_subtitle: "IDE en Colombia por Entidad Territorial Certificada de Educación (ETC)",
 
   description_title1: "¿Qué es el IDE?",
-  description_paragraph1: "El Índice del Derecho a la Educación (IDE) en Colombia es un modelo de medición y una herramienta conceptual diseñada para evaluar y monitorear el progreso del país en el cumplimiento del derecho fundamental a la educación. Por otro lado, esta página web es una nueva herramienta de visualización interactiva, la primera de este tipo para el país, que utiliza los datos del IDE para ir más allá de las cifras de cobertura y explorar la calidad, equidad y pertinencia de la educación en cada rincón de Colombia. Nuestro objetivo es empoderar a ciudadanos, investigadores y formuladores de políticas con datos claros a través de esta plataforma, para impulsar cambios significativos.",
+  description_paragraph1: "El Índice del Derecho a la Educación (IDE) para Colombia es un modelo de medición basado en el marco conceptual de las 4As (Tamasevski), diseñado para evaluar y monitorear el progreso del país en el cumplimiento del derecho fundamental a la educación. El detalle del modelo se puede encontrar en el libro El derecho a la educación en Colombia (Bayona-Rodríguez & Bernal, 2026).",
+  description_paragraph1_1: "Esta página web es una herramienta de visualización interactiva que utiliza los datos del IDE para mostrar gráficamente las diferencias en la materialización del derecho a la educación entre las Entidades Territoriales Certificadas y, de esta forma, llamar la atención sobre las enormes brechas en el país.",
+  description_paragraph1_2: "Nuestro objetivo es empoderar a ciudadanos, investigadores y formuladores de políticas con datos claros a través de esta plataforma, para impulsar cambios significativos.",
+  description_title2: "Marco conceptual de las 4As",
+  description_paragraph2: "El Índice del Derecho a la Educación (IDE) se modeló a partir del marco conceptual de las 4A propuesto por Katarina Tomaševski: disponibilidad (availability), accesibilidad (accessibility), aceptabilidad (acceptability) y adaptabilidad (adaptability). Para comprender el alcance de cada dimensión, a continuación se presentan las preguntas centrales que el índice busca responder en el territorio:",
 
-  description_title2: "Metodología del Índice",
-  description_paragraph2: "El índice se construye sobre cuatro dimensiones, que reflejan los estándares internacionales para la medición del derecho a la educación:",
+  description_title3: "Disponibilidad (Availability)",
+  description_paragraph3: "¿Cuenta el Estado con suficientes escuelas, aulas, pupitres, profesores y recursos para atender a todos los estudiantes?",
 
-  description_title3: "Disponibilidad",
-  description_paragraph3: "¿Existen suficientes escuelas, docentes calificados y recursos educativos para toda la población? Este pilar mide la infraestructura y los insumos del sistema educativo.",
+  description_title4: "Accesibilidad (Accessibility)",
+  description_paragraph4: "¿Pueden todas las personas ingresar y permanecer en la escuela sin que el dinero, la distancia geográfica o la discriminación por cualquier razón sean un obstáculo?",
 
-  description_title4: "Accesibilidad",
-  description_paragraph4: "¿Puede toda la población, sin importar su ubicación geográfica, condición económica o discapacidad, acceder a las instituciones educativas? Analizamos barreras físicas, económicas y sociales.",
+  description_title5: "Aceptabilidad (Acceptability)",
+  description_paragraph5: "¿Es la educación digna y de calidad en todos sus componentes —desde lo que se enseña y la formación docente, hasta la infraestructura, la alimentación y el ambiente escolar?",
 
-  description_title5: "Aceptabilidad",
-  description_paragraph5: "¿Es la educación de calidad, culturalmente relevante y segura? Este pilar evalúa el currículo, la formación docente, el ambiente escolar y la protección de los estudiantes.",
+  description_title6: "Adaptabilidad (Adaptability)",
+  description_paragraph6: "¿Se adapta la escuela a las realidades, ritmos y necesidades particulares de cada estudiante y su entorno?",
 
-  description_title6: "Adaptabilidad",
-  description_paragraph6: "¿Responde el sistema educativo a las necesidades cambiantes de los estudiantes y la sociedad? Medimos la flexibilidad del sistema para adaptarse a contextos diversos y a las necesidades especiales.",
+  description_title7: "¿Cómo se interpreta el IDE?",
+  description_paragraph7: "El IDE fue diseñado para que cualquier persona —desde un ciudadano o docente hasta un tomador de decisiones— pueda comprenderlo de forma sencilla y directa.",
+  description_paragraph7_1: "Para facilitar su lectura, el índice se expresa en una escala porcentual del 0 % al 100 %, donde el 100 % indica una materialización plena y total del derecho.",
+  description_paragraph7_2: "Esta escala porcentual permite saber con claridad qué tan cerca o lejos estamos de alcanzar la garantía plena del derecho a la educación en cada municipio o departamento. Así, resulta muy fácil identificar en qué áreas se han logrado avances significativos y en cuáles se requiere concentrar la atención, los recursos y la política pública.",
 
-  description_title7: "La Escala del IDE: Un Enfoque por Porcentaje",
-  description_paragraph7: "El IDE está diseñado para ser entendido en términos de porcentaje. Un valor de 0% significa una materialización nula del derecho en esa dimensión o indicador, mientras que un 100% indica una materialización total. Esto permite a los usuarios interpretar los resultados de manera clara y directa, facilitando la identificación de las áreas que requieren mayor atención.",
 
+  VTool_title: "Explora los resultados del IDE en el territorio colombiano",
+  VTool_paragraph: "Visualiza la garantía del derecho a la educación por parte de la Entidad Territorial Certificada (ETC). Utiliza el mapa interactivo para seleccionar un año de análisis, filtrar por dimensiones (Disponibilidad, Accesibilidad, Adaptabilidad y Aceptabilidad) , o haz clic en una ETC para consultar la radiografía detallada de tu territorio.",
 
-  VTool_title: "Explorando los Resultados del IDE en el Mapa de Colombia",
-  VTool_paragraph: "En esta página, podrás visualizar los resultados del índice a través de herramientas interactivas que muestran la puntuación del IDE por Entidad Territorial Certificada (ETC). Esta es la primera vez que se ofrece este nivel de desagregación en una herramienta web, permitiendo a las autoridades locales, como secretarios de educación, diagnosticar con precisión el estado de la educación en sus territorios. Puedes seleccionar los diferentes años para ver cómo ha cambiado el índice y hacer clic en cada ETC para ver un desglose detallado de sus resultados por dimensión.",
 
 
   VTool_title2: "Descarga de Datos:",
@@ -99,36 +103,39 @@ const WebpageContent = {
   history_title7: "2017-2020",
   history_paragraph7: "Se realizaron modificaciones al índice para asegurar que la información fuera más accesible y para alinear la metodología con el índice internacional del Derecho a la Educación (RTEI). Esto permitió tener una serie de datos comparables para el periodo 2014-2017.",
 
-  history_paragraph8: "El propósito de la iniciativa es ofrecer herramientas que permitan que las políticas educativas garanticen el Derecho a la Educación.",
+  history_title8: "2026",
+  history_paragraph8: "En 2026 se lanza el libro El derecho a la educación en Colombia, el cual recoge la evolución de las normas internacionales y nacionales sobre el derecho a la educación, así como la metodología de cálculo del IDE y los resultados.",
+
+  history_paragraph9: "El propósito de la iniciativa es ofrecer herramientas que permitan que las políticas educativas garanticen el Derecho a la Educación.",
 
   purpose_title1: "¿Para qué sirve?",
-  purpose_paragraph1: "El IDE transforma la complejidad del sistema educativo en información accionable, permitiendo a los líderes diseñar políticas públicas que respondan a las necesidades reales de sus comunidades, monitorear el progreso y rendir cuentas de manera efectiva.",
+  purpose_paragraph1: "El IDE transforma la complejidad del sistema educativo en información clara y accionable. Su propósito es permitir que los líderes locales diseñen políticas públicas basadas en evidencia, monitoreen el progreso real de sus comunidades y rindan cuentas de manera transparente frente a la garantía de este derecho fundamental.",
 
   purpose_paragraph11: "El IDE puede ser una Herramienta para:",
 
-  purpose_title2: "La Política Pública",
-  purpose_paragraph2: "El Índice del Derecho a la Educación es más que un simple conjunto de datos; es una herramienta práctica y potente para la incidencia en la política pública. Los gobernadores y alcaldes pueden utilizar los datos del IDE a través de esta nueva plataforma web para:",
+  purpose_title2: "Una herramienta para la política pública territorial",
+  purpose_paragraph2: "El IDE trasciende las cifras tradicionales: es un insumo estratégico para la toma de decisiones y la incidencia en las Entidades Territoriales Certificadas (ETC). A través de esta plataforma interactiva, gobernadores, alcaldes y secretarios de educación pueden:",
 
   purpose_title3: "Diagnóstico preciso",
-  purpose_paragraph3: "La herramienta de visualización ofrece un diagnóstico claro y detallado del estado de la educación en su ETC. Al desagregar los resultados, les permite identificar qué dimensiones (Disponibilidad, Accesibilidad, Adaptabilidad o Aceptabilidad) presentan mayores desafíos en su jurisdicción. Por ejemplo, una ETC podría tener un alto puntaje en Accesibilidad pero un bajo puntaje en Aceptabilidad, lo que sugiere que se debe enfocar en mejorar la calidad y el desempeño académico en lugar de la cobertura.",
+  purpose_paragraph3: "Obtener una radiografía detallada del sistema educativo local. El detalle de los indicadores y la visualización geográfica permiten comparar los resultados tanto al interior de cada ETC como frente a las demás, lo que aporta un diagnóstico regional mucho más enriquecido.",
 
   purpose_title4: "Formulación de metas concretas",
-  purpose_paragraph4: "Al entender las brechas y los indicadores más rezagados a través de la visualización, los líderes locales pueden establecer metas realistas y medibles. Por ejemplo, si el problema es la Disponibilidad, la meta podría ser aumentar el porcentaje de estudiantes en jornada única o reducir la proporción de alumnos por docente.",
+  purpose_paragraph4: "Identificar los indicadores más desfavorecidos permite establecer compromisos realistas, medibles y viables en los Planes de Desarrollo Territorial.",
 
-  purpose_title5: "Asignación de recursos efectiva",
-  purpose_paragraph5: "El IDE, visualizado en la plataforma, permite a los tomadores de decisiones asignar los recursos de manera estratégica. Al conocer las necesidades específicas de cada pilar en su territorio, pueden invertir en las áreas que tendrán un mayor impacto.",
+  purpose_title5: "Asignación estratégica de recursos",
+  purpose_paragraph5: "Optimizar la inversión pública orientando el presupuesto hacia las dimensiones que generarán el mayor impacto social en el territorio, asegurando que los recursos del Sistema General de Participaciones (SGP) y las regalías respondan a las necesidades reales de cada comunidad.",
 
-  purpose_paragraph6: "Este índice es más que solo datos; es una herramienta para la acción:",
+  purpose_paragraph6: "Una herramienta para la acción colectiva",
 
   purpose_title7: "Para Investigadores y Académicos:",
-  purpose_paragraph7: "Utiliza los datos para tus análisis y estudios, identificando brechas y áreas de oportunidad.",
-  purpose_title8: "Para el Gobierno y las ONG:",
-  purpose_paragraph8: "Identifica las regiones más rezagadas y los pilares que requieren mayor inversión y atención.",
+  purpose_paragraph7: "Acceder a datos consolidados y replicables para profundizar en el análisis de los factores asociados a las brechas educativas y enriquecer el debate científico sobre el sector.",
+  purpose_title8: "Para Gobiernos y Organizaciones Sociales",
+  purpose_paragraph8: "Aumentar la visibilidad para priorizar las regiones históricamente marginadas y focalizar los programas de cooperación o intervención en las dimensiones más vulneradas.",
 
-  purpose_title9: "Para Ciudadanos y Defensores: ",
-  purpose_paragraph9: "Conoce la situación de tu ETC, úsalo para el debate público y exige mejoras en el sistema educativo.",
+  purpose_title9: "Para la Ciudadanía y Defensores de Derechos:",
+  purpose_paragraph9: "Conocer la realidad educativa de su municipio o departamento, cualificar el control social, promover el debate informado y exigir la garantía plena del derecho a la educación.",
 
-  purpose_paragraph10: "Te invitamos a explorar la información, descargar los informes completos y compartir tus hallazgos. Tu participación es clave para asegurar que el derecho a la educación sea una realidad para todos en Colombia.",
+  purpose_paragraph10: "Te invitamos a explorar el mapa interactivo, a descargar los informes completos y a utilizar estos datos. La participación informada es indispensable para hacer realidad el derecho a la educación en cada rincón de Colombia.",
 
 
   resources_title1: "Recursos",

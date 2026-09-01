@@ -76,14 +76,14 @@ const VisualizationTool = () => {
 
     try {
       const regionName = selectedRegion
-        ? selectedRegion.properties[config.ETC.idProperty]
+        ? (selectedRegion.properties ? (selectedRegion.properties[config.ETC.idProperty] || selectedRegion.properties.ETC) : 'Region')
         : 'Colombia';
 
       // Expand all menu sections
       setExpandAllMenu(true);
 
-      // Wait for menu to expand AND for all D3 animations to complete
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Wait for React to render all expanded nodes
+      await new Promise(resolve => setTimeout(resolve, 800));
 
       const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--page-bg').trim() || '#ffffff';
 
@@ -110,35 +110,67 @@ const VisualizationTool = () => {
         format: 'a4'
       });
 
-      // Add grid visualization to first page
-      const gridImgData = gridCanvas.toDataURL('image/png');
       const pdfWidth = 297; // A4 landscape width in mm
       const pdfHeight = 210; // A4 landscape height in mm
-      const gridImgWidth = pdfWidth;
-      const gridImgHeight = (gridCanvas.height * pdfWidth) / gridCanvas.width;
+      const pdfMargin = 10;
+      const printableWidth = pdfWidth - (pdfMargin * 2);
+      const printableHeight = pdfHeight - (pdfMargin * 2);
 
-      // If image is taller than page, scale it down
-      if (gridImgHeight > pdfHeight) {
-        const scaledWidth = (pdfHeight * gridCanvas.width) / gridCanvas.height;
-        pdf.addImage(gridImgData, 'PNG', (pdfWidth - scaledWidth) / 2, 0, scaledWidth, pdfHeight);
-      } else {
-        pdf.addImage(gridImgData, 'PNG', 0, (pdfHeight - gridImgHeight) / 2, gridImgWidth, gridImgHeight);
+      // Page 1: Grid visualization (Map + Charts)
+      const gridImgData = gridCanvas.toDataURL('image/png');
+      const gridAspectRatio = gridCanvas.width / gridCanvas.height;
+      let gridWidthMm = printableWidth;
+      let gridHeightMm = printableWidth / gridAspectRatio;
+
+      if (gridHeightMm > printableHeight) {
+        gridHeightMm = printableHeight;
+        gridWidthMm = printableHeight * gridAspectRatio;
       }
 
-      // Add new page for menu
-      pdf.addPage();
+      pdf.addImage(
+        gridImgData,
+        'PNG',
+        (pdfWidth - gridWidthMm) / 2,
+        (pdfHeight - gridHeightMm) / 2,
+        gridWidthMm,
+        gridHeightMm
+      );
 
-      // Add menu visualization to second page
-      const menuImgData = menuCanvas.toDataURL('image/png');
-      const menuImgWidth = pdfWidth;
-      const menuImgHeight = (menuCanvas.height * pdfWidth) / menuCanvas.width;
+      // Menu pages: Paginate if the fully expanded menu is taller than printableHeight
+      const pxPerMm = menuCanvas.width / printableWidth;
+      const pageSlicePxHeight = printableHeight * pxPerMm;
 
-      // If image is taller than page, scale it down
-      if (menuImgHeight > pdfHeight) {
-        const scaledWidth = (pdfHeight * menuCanvas.width) / menuCanvas.height;
-        pdf.addImage(menuImgData, 'PNG', (pdfWidth - scaledWidth) / 2, 0, scaledWidth, pdfHeight);
-      } else {
-        pdf.addImage(menuImgData, 'PNG', 0, (pdfHeight - menuImgHeight) / 2, menuImgWidth, menuImgHeight);
+      let yOffset = 0;
+      while (yOffset < menuCanvas.height) {
+        pdf.addPage();
+        const slicePxHeight = Math.min(pageSlicePxHeight, menuCanvas.height - yOffset);
+
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = menuCanvas.width;
+        pageCanvas.height = slicePxHeight;
+        const pageCtx = pageCanvas.getContext('2d');
+
+        pageCtx.fillStyle = bgColor;
+        pageCtx.fillRect(0, 0, pageCanvas.width, slicePxHeight);
+        pageCtx.drawImage(
+          menuCanvas,
+          0, yOffset, menuCanvas.width, slicePxHeight,
+          0, 0, menuCanvas.width, slicePxHeight
+        );
+
+        const sliceImgData = pageCanvas.toDataURL('image/png');
+        const sliceMmHeight = slicePxHeight / pxPerMm;
+
+        pdf.addImage(
+          sliceImgData,
+          'PNG',
+          pdfMargin,
+          pdfMargin,
+          printableWidth,
+          sliceMmHeight
+        );
+
+        yOffset += slicePxHeight;
       }
 
       // Download PDF
@@ -170,14 +202,21 @@ const VisualizationTool = () => {
     }
   }, [selectedRegion, dataIDE, countryData]);
 
-  const barChartData = selectedData && selectedData[selectedYear]
-    ? Object.entries(selectedData[selectedYear])
-      .filter(([, value]) => value !== null && value !== undefined)
-      .map(([key, value], i) => ({
-        group: labels[i] || key,
-        value: parseFloat(value) || 0,
-      }))
-    : [];
+  const currentYearRates = selectedData ? selectedData[selectedYear] : null;
+  const barChartData = labels.map((label, i) => {
+    let rawVal = null;
+    if (Array.isArray(currentYearRates)) {
+      rawVal = currentYearRates[i];
+    } else if (currentYearRates && typeof currentYearRates === 'object') {
+      const keys = Object.keys(currentYearRates);
+      rawVal = currentYearRates[keys[i]] !== undefined ? currentYearRates[keys[i]] : null;
+    }
+    const numVal = (rawVal !== null && rawVal !== undefined && !isNaN(Number(rawVal))) ? parseFloat(rawVal) : null;
+    return {
+      group: label,
+      value: numVal,
+    };
+  });
 
   return (
     <div>

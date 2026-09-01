@@ -125,7 +125,7 @@ const CollapsibleMenu = ({ data, selectedIndex, expandAll = false }) => {
       if (key === 'score') return null;
       const currentPath = path ? `${path}.${key}` : key;
       const isLeaf = typeof value === 'string';
-      const isOpen = openSections[currentPath] ?? false;
+      const isOpen = Boolean(expandAll || openSections[currentPath]);
       const isMainLabel = level === 0 && labels.includes(key);
 
       let iconColor = '#000';
@@ -253,9 +253,9 @@ const CollapsibleMenu = ({ data, selectedIndex, expandAll = false }) => {
           {!isLeaf && (
             <div
               style={{
-                maxHeight: isOpen ? '1000px' : '0',
-                overflow: 'hidden',
-                transition: 'max-height 300ms ease-in-out',
+                maxHeight: isOpen ? (expandAll ? 'none' : '2500px') : '0',
+                overflow: isOpen ? 'visible' : 'hidden',
+                transition: expandAll ? 'none' : 'max-height 300ms ease-in-out',
               }}
             >
               <div style={{ marginLeft: '0.75rem', paddingLeft: '0.5rem' }}>
