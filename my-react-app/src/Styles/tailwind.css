@@ -1291,3 +1291,14 @@
 }
 
 /* pequeño helper: botón de mapa z-index y colores ya usan variables existentes (map-button) */
+
+/* Timeline spacing overrides */
+.timeline-title-wrapper {
+  margin-bottom: 0.8rem !important;
+  padding-bottom: 0.4rem !important;
+}
+
+.timeline-container .vertical-timeline {
+  margin-top: 0.7rem !important;
+  padding-top: 0.5rem !important;
+}

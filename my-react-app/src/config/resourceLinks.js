@@ -12,7 +12,7 @@ export const RESOURCE_LINKS = {
     etcData: DANE_URL,
 
     // Json de las ETC
-    etcJson: DANE_URL,
+    etcJson: "https://gist.github.com/Ybaronac/746580a6fca0405c7ec3b049393cb399",
 
     // Mapa de las ETC
     etcMap: DANE_URL,
@@ -25,6 +25,11 @@ export const RESOURCE_LINKS = {
 
     // Libros y documentos
     documents: DANE_URL,
+
+    // Otros estudios relacionados
+    study1: "https://doi.org/10.36737/01230425.v0.n34.2018.1880",
+    study2: "https://hdl.handle.net/1992/48001",
+
 };
 
 /**
