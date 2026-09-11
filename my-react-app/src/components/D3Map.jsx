@@ -20,6 +20,8 @@ const D3Map = ({
 }) => {
   const svgRef = useRef();
   const gRef = useRef();
+  const backgroundGroupRef = useRef();
+  const deptGroupRef = useRef();
   const projectionRef = useRef();
   const pathRef = useRef();
   const tooltipRef = useRef();
@@ -57,6 +59,28 @@ const D3Map = ({
   ];
   const selectedColours = colorSchemes[buttonIndex] || generalIDEColours;
 
+  // Always holds the latest reset logic (closing over the current
+  // onRegionClick/countryData props), so both effects below and the
+  // reset button can call resetZoomRef.current() without ever going stale.
+  const resetZoomRef = useRef(() => { });
+  useEffect(() => {
+    resetZoomRef.current = () => {
+      const svg = d3.select(svgRef.current);
+      if (zoomRef.current) {
+        svg.transition().duration(750).call(zoomRef.current.transform, d3.zoomIdentity);
+      }
+      activeRef.current = null;
+      onRegionClick(null, countryData);
+      setWindowText(WebpageContent.transparent_window_label);
+      d3.selectAll("path.departments").classed("active", false);
+      tooltipRef.current?.transition().duration(500).style("opacity", 0);
+    };
+  });
+
+  // EFFECT A (runs once on mount): SVG scaffolding — tooltip, projection,
+  // zoom behaviour, defs, and the persistent background/departments groups.
+  // FIX #2: the world background map is fetched and drawn here, a single
+  // time, instead of inside the dataType-dependent effect below.
   useEffect(() => {
     if (!svgRef.current) return;
     const svg = d3.select(svgRef.current);
@@ -83,8 +107,8 @@ const D3Map = ({
     pathRef.current = path;
 
     const zoom = d3.zoom()
-      .scaleExtent([1, 18])
-      .translateExtent([[-100, -100], [WIDTH + 100, HEIGHT + 100]])
+      .scaleExtent([1, 16])
+      .translateExtent([[-70, -70], [WIDTH + 100, HEIGHT + 100]])
       .on("zoom", (event) => {
         g.style("stroke-width", 1.5 / event.transform.k + "px");
         g.attr("transform", event.transform);
@@ -92,20 +116,9 @@ const D3Map = ({
     zoomRef.current = zoom;
     svg.call(zoom);
 
-    const resetZoom = () => {
-      svg.transition()
-        .duration(750)
-        .call(zoom.transform, d3.zoomIdentity);
-      activeRef.current = null;
-      onRegionClick(null, countryData);
-      setWindowText(WebpageContent.transparent_window_label);
-      d3.selectAll("path.departments").classed("active", false);
-      tooltip.transition().duration(500).style("opacity", 0);
-    };
-
     svg.on("click", function (event) {
       if (event.target === this) {
-        resetZoom();
+        resetZoomRef.current();
       }
     });
 
@@ -124,26 +137,51 @@ const D3Map = ({
       .attr("y2", 8)
       .attr("stroke-width", 1);
 
-    const backgroundMapGroup = g.append("g").attr("class", "background-map");
+    backgroundGroupRef.current = g.append("g").attr("class", "background-map").node();
+    deptGroupRef.current = g.append("g").attr("class", "departments-group").node();
 
-    setIsLoading(true);
-    setMapError(null);
-
-    Promise.all([
-      d3.json(config[dataType].url),
-      d3.json(WORLD_MAP_JSON_DATA)
-    ]).then(([data, worldData]) => {
-      if (!data || !worldData) {
-        throw new Error('Failed to load map data');
-      }
-
-      backgroundMapGroup.selectAll("path.background-countries")
-        .data(worldData.features)
+    d3.json(WORLD_MAP_JSON_DATA).then((worldData) => {
+      if (!worldData) return;
+      const worldObjectName = Object.keys(worldData.objects)[0];
+      d3.select(backgroundGroupRef.current)
+        .selectAll("path.background-countries")
+        .data(topojson.feature(worldData, worldData.objects[worldObjectName]).features)
         .enter()
         .append("path")
         .attr("class", "background-countries")
         .attr("d", path)
         .style("pointer-events", "none");
+    }).catch((error) => {
+      console.error('Error al cargar el mapa de fondo:', error);
+    });
+
+    return () => {
+      tooltip.remove();
+    };
+  }, []);
+
+  // EFFECT B (runs whenever dataType changes): fetches and draws ONLY the
+  // department/ETC layer. The world background is no longer part of this
+  // effect, so switching between ETC and DEPARTMENTS no longer re-fetches
+  // or redraws the ~22KB/736KB world map (FIX #2).
+  useEffect(() => {
+    if (!deptGroupRef.current || !pathRef.current) return;
+    const path = pathRef.current;
+    const svg = d3.select(svgRef.current);
+    const deptGroup = d3.select(deptGroupRef.current);
+
+    // Clear only the departments layer before redrawing (fix #1 stays in
+    // effect, just scoped to this group instead of the whole <g>, since
+    // the background now lives outside this effect).
+    deptGroup.selectAll("*").remove();
+
+    setIsLoading(true);
+    setMapError(null);
+
+    d3.json(config[dataType].url).then((data) => {
+      if (!data) {
+        throw new Error('Failed to load map data');
+      }
 
       const extractValue = (ratesObj, year, bIndex) => {
         if (!ratesObj || !ratesObj[year]) return null;
@@ -161,7 +199,7 @@ const D3Map = ({
         return parseFloat(rawVal);
       };
 
-      g.selectAll("path.departments")
+      deptGroup.selectAll("path.departments")
         .data(topojson.feature(data, data.objects[config[dataType].topojsonObject]).features)
         .enter()
         .append("path")
@@ -169,7 +207,7 @@ const D3Map = ({
         .attr("data-dept-id", d => d.properties[config[dataType].idProperty])
         .attr("d", path)
         .on("mouseover", function (event, d) {
-          tooltip.transition()
+          tooltipRef.current.transition()
             .duration(200)
             .style("opacity", 0.9);
 
@@ -198,18 +236,18 @@ const D3Map = ({
                   </table>
                 `;
 
-          tooltip
+          tooltipRef.current
             .html(html)
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY - 28) + "px");
         })
         .on("mousemove", function (event) {
-          tooltip
+          tooltipRef.current
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY - 28) + "px");
         })
         .on("mouseout", function () {
-          tooltip.transition()
+          tooltipRef.current.transition()
             .duration(500)
             .style("opacity", 0);
         })
@@ -220,7 +258,7 @@ const D3Map = ({
           const rates = dataIDE.get(deptID) || countryData;
 
           if (activeRef.current === this) {
-            resetZoom();
+            resetZoomRef.current();
             d3.select(this).classed("active", false);
             setWindowText(WebpageContent.transparent_window_label);
             return;
@@ -243,7 +281,7 @@ const D3Map = ({
 
           svg.transition()
             .duration(750)
-            .call(zoom.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
+            .call(zoomRef.current.transform, d3.zoomIdentity.translate(translate[0], translate[1]).scale(scale));
 
           onRegionClick(d, rates);
           setWindowText(`Región: ${d.properties[config[dataType].nameProperty]}`);
@@ -271,14 +309,14 @@ const D3Map = ({
               </table>
             `;
 
-          tooltip
+          tooltipRef.current
             .html(html)
             .style("opacity", 0.9)
             .style("left", (event.pageX + 10) + "px")
             .style("top", (event.pageY - 28) + "px");
         });
 
-      g.append("path")
+      deptGroup.append("path")
         .datum(topojson.mesh(data, data.objects[config[dataType].topojsonObject], (a, b) => a !== b))
         .attr("class", "dept-borders")
         .attr("d", path);
@@ -289,10 +327,6 @@ const D3Map = ({
       setMapError(error.message);
       setIsLoading(false);
     });
-
-    return () => {
-      tooltip.remove();
-    };
   }, [dataType]);
 
   useEffect(() => {
@@ -529,3 +563,4 @@ D3Map.propTypes = {
 };
 
 export default D3Map;
+
