@@ -187,11 +187,13 @@ const WebpageContent = {
 
   credits_paragraph9_2: "Una iniciativa de:",
 
-  footer_copyright: "Colombia Map Visualization IDE.",
+  footer_copyright: "Mapa de visualización del IDE - Colombia",
   footer_uni1_title: "Facultad de Ciencias Económicas",
   footer_uni1_email: "viceinvfce_bog@unal.edu.co",
   footer_uni2_title: "Laboratorio de Economía de la Educación",
   footer_uni2_email: "lee@javeriana.edu.co",
+
+  year_slider_instruction: "Deslice para ver la información de otros años",
 
   legend_label: "IDE"
 };

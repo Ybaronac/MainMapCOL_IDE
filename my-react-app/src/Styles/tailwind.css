@@ -1099,7 +1099,7 @@
   .year-slider {
     width: 100%;
     box-sizing: border-box;
-    padding: 10px 5px 30px 5px;
+    padding: 0px 5px 30px 5px !important;
     /* Added bottom padding for marks */
     --halo-color: var(--halo-color);
     --normal-border-color: var(--normal-border-color, var(--accent));

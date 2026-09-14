@@ -55,13 +55,13 @@ const Footer = () => {
             imgClassName="h-10 sm:h-12 md:h-14 w-auto max-w-[120px] sm:max-w-[180px] md:max-w-[220px] object-contain shrink-0"
           />
           <div className="flex flex-col">
-            <p className="text-gray-200 text-xs sm:text-sm font-semibold tracking-wide" style={{ color: '#e5e7eb' }}>
+            <p className="text-gray-400 text-xs sm:text-sm font-semibold tracking-wide" style={{ color: '#9ca3af' }}>
               {WebpageContent.footer_uni1_title || "Facultad de Ciencias Económicas"}
             </p>
             <a
               href={`mailto:${WebpageContent.footer_uni1_email || "viceinvfce_bog@unal.edu.co"}`}
-              className="text-gray-400 hover:text-white text-[11px] sm:text-xs transition-colors"
-              style={{ color: '#9ca3af' }}
+              className="text-gray-500 hover:text-gray-300 text-[11px] sm:text-xs transition-colors"
+              style={{ color: '#6b7280' }}
             >
               {WebpageContent.footer_uni1_email || "viceinvfce_bog@unal.edu.co"}
             </a>
@@ -76,13 +76,13 @@ const Footer = () => {
             imgClassName="h-[67px] sm:h-[80px] md:h-[94px] w-auto max-w-[190px] sm:max-w-[290px] md:max-w-[380px] object-contain shrink-0"
           />
           <div className="flex flex-col">
-            <p className="text-gray-200 text-xs sm:text-sm font-semibold tracking-wide" style={{ color: '#e5e7eb' }}>
+            <p className="text-gray-400 text-xs sm:text-sm font-semibold tracking-wide" style={{ color: '#9ca3af' }}>
               {WebpageContent.footer_uni2_title || "Laboratorio de Economía de la Educación"}
             </p>
             <a
               href={`mailto:${WebpageContent.footer_uni2_email || "lee@javeriana.edu.co"}`}
-              className="text-gray-400 hover:text-white text-[11px] sm:text-xs transition-colors"
-              style={{ color: '#9ca3af' }}
+              className="text-gray-500 hover:text-gray-300 text-[11px] sm:text-xs transition-colors"
+              style={{ color: '#6b7280' }}
             >
               {WebpageContent.footer_uni2_email || "lee@javeriana.edu.co"}
             </a>
