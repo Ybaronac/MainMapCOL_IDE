@@ -43,15 +43,15 @@ const WebpageContent = {
   navigation_history: "Historia",
   navigation_credits: "Créditos",
 
-  header_title: "Índice del derecho a la Educación (IDE) en Colombia",
+  header_title: "Índice del Derecho a la Educación (IDE) en Colombia",
   header_subtitle: "IDE en Colombia por Entidad Territorial Certificada de Educación (ETC)",
 
   description_title1: "¿Qué es el IDE?",
-  description_paragraph1: "El Índice del Derecho a la Educación (IDE) para Colombia es un modelo de medición basado en el marco conceptual de las 4As (Tamasevski), diseñado para evaluar y monitorear el progreso del país en el cumplimiento del derecho fundamental a la educación. El detalle del modelo se puede encontrar en el libro El derecho a la educación en Colombia (Bayona-Rodríguez & Bernal, 2026).",
+  description_paragraph1: "El Índice del Derecho a la Educación (IDE) para Colombia es un modelo de medición basado en el marco conceptual de las 4As (Tomasevski), diseñado para evaluar y monitorear el progreso del país en el cumplimiento del derecho fundamental a la educación. El detalle del modelo se puede encontrar en el libro El derecho a la educación en Colombia (Bayona Rodríguez y Bernal Nisperuza, 2026).",
   description_paragraph1_1: "Esta página web es una herramienta de visualización interactiva que utiliza los datos del IDE para mostrar gráficamente las diferencias en la materialización del derecho a la educación entre las Entidades Territoriales Certificadas y, de esta forma, llamar la atención sobre las enormes brechas en el país.",
   description_paragraph1_2: "Nuestro objetivo es empoderar a ciudadanos, investigadores y formuladores de políticas con datos claros a través de esta plataforma, para impulsar cambios significativos.",
   description_title2: "Marco conceptual de las 4As",
-  description_paragraph2: "El Índice del Derecho a la Educación (IDE) se modeló a partir del marco conceptual de las 4A propuesto por Katarina Tomaševski: disponibilidad (availability), accesibilidad (accessibility), aceptabilidad (acceptability) y adaptabilidad (adaptability). Para comprender el alcance de cada dimensión, a continuación se presentan las preguntas centrales que el índice busca responder en el territorio:",
+  description_paragraph2: "El Índice del Derecho a la Educación (IDE) se modeló a partir del marco conceptual de las 4A propuesto por Katarina Tomasevski: disponibilidad (availability), accesibilidad (accessibility), aceptabilidad (acceptability) y adaptabilidad (adaptability). Para comprender el alcance de cada dimensión, a continuación se presentan las preguntas centrales que el índice busca responder en el territorio:",
 
   description_title3: "Disponibilidad (Availability)",
   description_paragraph3: "¿Cuenta el Estado con suficientes escuelas, aulas, pupitres, profesores y recursos para atender a todos los estudiantes?",
@@ -127,12 +127,12 @@ const WebpageContent = {
 
   purpose_paragraph6: "Una herramienta para la acción colectiva",
 
-  purpose_title7: "Para Investigadores y Académicos:",
+  purpose_title7: "Para Investigadores y Académicos",
   purpose_paragraph7: "Acceder a datos consolidados y replicables para profundizar en el análisis de los factores asociados a las brechas educativas y enriquecer el debate científico sobre el sector.",
   purpose_title8: "Para Gobiernos y Organizaciones Sociales",
   purpose_paragraph8: "Aumentar la visibilidad para priorizar las regiones históricamente marginadas y focalizar los programas de cooperación o intervención en las dimensiones más vulneradas.",
 
-  purpose_title9: "Para la Ciudadanía y Defensores de Derechos:",
+  purpose_title9: "Para la Ciudadanía y Defensores de Derechos",
   purpose_paragraph9: "Conocer la realidad educativa de su municipio o departamento, cualificar el control social, promover el debate informado y exigir la garantía plena del derecho a la educación.",
 
   purpose_paragraph10: "Te invitamos a explorar el mapa interactivo, a descargar los informes completos y a utilizar estos datos. La participación informada es indispensable para hacer realidad el derecho a la educación en cada rincón de Colombia.",
@@ -185,7 +185,13 @@ const WebpageContent = {
 
   credits_paragraph10: "Agradecemos a todas las instituciones, investigadores y expertos que han contribuido al desarrollo del IDE. Su compromiso con la educación en Colombia hace posible esta herramienta de análisis y toma de decisiones.",
 
+  credits_paragraph9_2: "Una iniciativa de:",
+
   footer_copyright: "Colombia Map Visualization IDE.",
+  footer_uni1_title: "Facultad de Ciencias Económicas",
+  footer_uni1_email: "viceinvfce_bog@unal.edu.co",
+  footer_uni2_title: "Laboratorio de Economía de la Educación",
+  footer_uni2_email: "lee@javeriana.edu.co",
 
   legend_label: "IDE"
 };

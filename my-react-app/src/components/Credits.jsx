@@ -91,6 +91,17 @@ const Credits = () => (
             </div>
         </div>
 
+
+        <div style={{ paddingTop: '1.5rem', paddingBottom: '1.5rem', textAlign: 'center' }}>
+            <p style={{ color: '#9ca3af', fontSize: '1.25rem', fontWeight: '600', letterSpacing: '0.025em', margin: 0 }}>
+                {WebpageContent.credits_paragraph9_2}
+            </p>
+        </div>
+
+
+        {/* Sección de Logos de Universidades*/}
+        <UniversityLogos />
+
         {/* Párrafo final */}
         <div className="pb-2" style={{ paddingTop: '0.5rem' }}>
             <TextSection
@@ -100,9 +111,6 @@ const Credits = () => (
                 className="transparent-section"
             />
         </div>
-
-        {/* Sección de Logos de Universidades e Instituciones */}
-        <UniversityLogos />
 
     </div>
 );

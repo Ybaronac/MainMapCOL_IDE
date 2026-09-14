@@ -713,9 +713,12 @@
 
   /* Footer */
   .footer {
-    background-color: var(--component-bg);
-    color: var(--text-color);
-    padding: 1rem;
+    background-color: #000000 !important;
+    color: #d1d5db !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
     text-align: center;
     width: 100%;
     margin-top: 3rem;
