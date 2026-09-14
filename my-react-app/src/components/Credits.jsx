@@ -4,6 +4,7 @@ import WebpageContent from '../config/WebpageContent';
 import TextSection from './TextSection';
 import TitleHeader from './TitleHeader.jsx';
 import InfoCards from './InfoCards';
+import UniversityLogos from './UniversityLogos';
 import { Database, FileText, Users, Building2, BookOpen, Award } from 'lucide-react';
 
 const Credits = () => (
@@ -99,6 +100,9 @@ const Credits = () => (
                 className="transparent-section"
             />
         </div>
+
+        {/* Sección de Logos de Universidades e Instituciones */}
+        <UniversityLogos />
 
     </div>
 );
