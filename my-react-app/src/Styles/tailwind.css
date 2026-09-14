@@ -725,6 +725,25 @@
     box-sizing: border-box;
   }
 
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    max-width: 64rem;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 3rem !important;
+    }
+  }
+
   .footer p {
     margin: 0;
     font-size: .9rem;
